@@ -1,0 +1,34 @@
+.card-box-shadow-style {
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+    border-radius: 10px;
+}
+
+.label-form-style {
+    font-size: 12px;
+    margin: 0px;
+    text-transform: uppercase;
+    font-weight: 400;
+    font-family: Helvetica;
+}
+
+.form-submit-btn-style{
+    border-radius: 5px;
+}
+
+.form-input-style{
+    border-radius: 5px;
+}
+
+.user-profile-container{
+    margin: 10px 15px !important;
+}
+
+.profile-picture-style {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+    height: 75px;
+    width: 75px;
+    margin-top: -60px;
+}
