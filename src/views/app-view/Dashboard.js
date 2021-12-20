@@ -1,6 +1,8 @@
 import React from "react";
 import ChartistGraph from "react-chartist";
 // react-bootstrap components
+import { useAuth } from "contexts/AuthContext";
+
 import {
   Badge,
   Button,
@@ -17,9 +19,13 @@ import {
 } from "react-bootstrap";
 
 function Dashboard() {
+  const { currentUser, localMid } = useAuth();
   return (
     <>
       <Container fluid>
+        {currentUser?.email}
+        {localMid}
+
         <Row>
           <Col lg="3" sm="6">
             <Card className="card-stats">

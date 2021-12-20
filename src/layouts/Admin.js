@@ -17,6 +17,7 @@
 */
 import React, { Component } from "react";
 import { useLocation, Route, Switch } from "react-router-dom";
+import { useAuth } from "contexts/AuthContext";
 
 import AdminNavbar from "components/Navbars/AdminNavbar";
 import Footer from "components/Footer/Footer";
@@ -28,6 +29,7 @@ import routes from "routes.js";
 import sidebarImage from "assets/img/sidebar-3.jpg";
 
 function Admin() {
+  const { localData } = useAuth();
   const [image, setImage] = React.useState(sidebarImage);
   const [color, setColor] = React.useState("black");
   const [hasImage, setHasImage] = React.useState(true);
@@ -49,6 +51,7 @@ function Admin() {
     });
   };
   React.useEffect(() => {
+    localData(localStorage.getItem("mid"), localStorage.getItem("role"));
     document.documentElement.scrollTop = 0;
     document.scrollingElement.scrollTop = 0;
     mainPanel.current.scrollTop = 0;

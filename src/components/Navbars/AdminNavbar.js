@@ -15,13 +15,28 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React, { Component } from "react";
-import { useLocation } from "react-router-dom";
+import React, { Component, useState } from "react";
+import { useLocation, useHistory } from "react-router-dom";
 import { Navbar, Container, Nav, Dropdown, Button } from "react-bootstrap";
+import { useAuth } from "contexts/AuthContext";
 
 import routes from "routes.js";
 
 function Header() {
+  const [error, setError] = useState("");
+  const { currentUser, logout } = useAuth();
+  const history = useHistory();
+
+  async function handleLogout() {
+    setError("");
+
+    try {
+      await logout();
+      history.push("/admin/login");
+    } catch {
+      setError("Failed to log out");
+    }
+  }
   const location = useLocation();
   const mobileSidebarToggle = (e) => {
     e.preventDefault();
@@ -196,7 +211,7 @@ function Header() {
               <Nav.Link
                 className="m-0"
                 href="#pablo"
-                onClick={(e) => e.preventDefault()}
+                onClick={() => handleLogout()}
               >
                 <span className="no-icon">Log out</span>
               </Nav.Link>
