@@ -46,6 +46,15 @@ const dashboardRoutes = [
     renderSidebar: false,
     isExact: true,
   },
+  {
+    path: "/user/1",
+    name: "User Profile",
+    icon: "nc-icon nc-circle-09",
+    component: UserProfile,
+    layout: "/admin",
+    renderSidebar: false,
+    isExact: false,
+  },
 ];
 
 // const dashboardRoutes = [
