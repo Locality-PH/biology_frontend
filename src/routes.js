@@ -7,6 +7,7 @@ import Maps from "views/Maps.js";
 import Notifications from "views/Notifications.js";
 import Upgrade from "views/Upgrade.js";
 import TestAntDesign from "./views/TestAntDesign";
+import UserProfileTest from "views/UserProfileTest";
 
 const dashboardRoutes = [
   {
@@ -15,6 +16,8 @@ const dashboardRoutes = [
     icon: "nc-icon nc-chart-pie-35",
     component: Dashboard,
     layout: "/admin",
+    renderSidebar: true,
+    isExact: false,
   },
   {
     path: "/table",
@@ -22,6 +25,8 @@ const dashboardRoutes = [
     icon: "nc-icon nc-notes",
     component: TableList,
     layout: "/admin",
+    renderSidebar: true,
+    isExact: false,
   },
   {
     path: "/antd",
@@ -29,6 +34,17 @@ const dashboardRoutes = [
     icon: "nc-icon nc-bell-55",
     component: TestAntDesign,
     layout: "/admin",
+    renderSidebar: true,
+    isExact: false,
+  },
+  {
+    path: "/user",
+    name: "User Profile",
+    icon: "nc-icon nc-circle-09",
+    component: UserProfileTest,
+    layout: "/admin",
+    renderSidebar: false,
+    isExact: true,
   },
 ];
 
