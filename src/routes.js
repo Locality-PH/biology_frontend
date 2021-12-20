@@ -19,6 +19,7 @@ import Dashboard from "views/app-view/Dashboard.js";
 import TableList from "views/app-view/TableList.js";
 import TestAntDesign from "./views/app-view/TestAntDesign";
 import UserProfileTest from "views/app-view/UserProfileTest";
+import UserProfile from "views/app-view/UserProfileTest";
 
 const dashboardRoutes = [
   {
