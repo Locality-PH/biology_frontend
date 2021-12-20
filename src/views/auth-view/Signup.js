@@ -3,6 +3,8 @@ import { Card, Button, Form, Alert, Container } from "react-bootstrap";
 import { useAuth } from "contexts/AuthContext";
 import { Link, useHistory } from "react-router-dom";
 import axios from "axios";
+import { auth } from "firebase";
+
 const Signup = () => {
   const emailRef = useRef();
   const passwordRef = useRef();
