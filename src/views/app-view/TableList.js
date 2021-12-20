@@ -26,21 +26,25 @@ const TableList = () => {
   const [campaignList, setCampaignList] = useState(campaignListData);
 
     const getShippingStatus = status => {
-        if(status === 'Approved') {
-            return 'cyan'
+        if(status === 'Completed') {
+            return 'green'
         }
-        if(status === 'Pending') {
+        if(status === 'Ongoing') {
             return 'blue'
-        }
-      if(status === 'Rejected') {
-            return 'volcano'
         }
         return ''
     }
     
     const tableColumns = [
+          {
+            title: 'Classroom Code',
+            dataIndex: 'code',
+            render: (_, record) => (
+                <span>#{record.code}</span>
+            )
+        },
         {
-            title: 'Suggestor',
+            title: 'Classroom Name',
             dataIndex: 'name',
             render: (_, record) => (
                 <Flex>
@@ -50,36 +54,25 @@ const TableList = () => {
             sorter: (a, b) => utils.antdTableSorter(a, b, 'name')
         },
         {
-            title: 'Campaign Name',
+            title: 'Section Name',
             dataIndex: 'campaignName',
             render: (_, record) => (
-                <Flex>
-                    <AvatarStatus size={30} src={record.logo} name={record.campaignName}/>
-                </Flex>
+              <span>{record.campaignName}</span>
             )
         },
         {
-            title: 'Date',
+            title: 'Date Created',
             dataIndex: 'date',
             render: (_, record) => (
                 <span>{moment.unix(record.date).format(DATE_FORMAT_DD_MM_YYYY)}</span>
             )
         },
         {
-            title: 'Status',
-            dataIndex: 'orderStatus',
-            render: (_, record) => (
-                <><Tag color={getShippingStatus(record.orderStatus)}>{record.orderStatus}</Tag></>
-            )
-        },
-        {
-            title: 'Category',
-            dataIndex: 'category',
-            render: (_, record) => (
-                <span className="font-weight-semibold">
-                {record.category}
-                </span>
-            )
+          title: 'Status',
+          dataIndex: 'orderStatus',
+          render: (_, record) => (
+              <><Tag color={getShippingStatus(record.orderStatus)}>{record.orderStatus}</Tag></>
+          )
         },
         {
             title: 'Actions',
@@ -89,7 +82,7 @@ const TableList = () => {
             menu={
                 <Menu>
                     <Menu.Item key="0">
-                        <Link to="/">
+                        <Link to={`classroom/${record.id}`}>
                             <EyeOutlined />
                             <span className="ml-2">View</span>
                         </Link>
@@ -109,21 +102,12 @@ const TableList = () => {
         setCampaignList(data);
     };
     
-    const campaignCategory = (value) => {
-        if (value !== "All") {
-            const key = "category";
-            const data = utils.filterArray(campaignListData, key, value);
-            setCampaignList(data);
-        } else {
-            setCampaignList(campaignListData);
-        }
-    };
   return (
     <>
       <Container fluid>
         <Row>
           <Col md="12">
-            <Card title="Campaigns Suggestion">
+            <Card title="Teacher Classroom">
               <Flex
                 alignItems="center"
                 className=""
@@ -138,22 +122,6 @@ const TableList = () => {
                       onChange={(e) => onCampaignSearch(e)}
                     />
                   </div>
-                  <div className="mb-3">
-                    <Select
-                      defaultValue="All"
-                      className="w-100"
-                      style={{ minWidth: 180 }}
-                      placeholder="Category"
-                      onChange={campaignCategory}
-                    >
-                      <Option value="All">All</Option>
-                      {categories.map((elm) => (
-                        <Option key={elm} value={elm}>
-                          {elm}
-                        </Option>
-                      ))}
-                    </Select>
-                  </div>
                 </Flex>
               </Flex>
               <Table
@@ -161,6 +129,7 @@ const TableList = () => {
                   columns={tableColumns} 
                   dataSource={campaignList} 
                   rowKey='id'
+                  scroll={{ x: "max-content" }}
               />
             </Card>
           </Col>

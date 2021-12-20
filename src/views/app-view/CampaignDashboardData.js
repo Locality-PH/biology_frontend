@@ -180,134 +180,62 @@ export const conbinedSessionData = jointSessionData()
 export const campaignListData = [
 	{
 		id: '1',
-		name: 'Eileen Horton',
-		image: '/img/avatars/thumb-1.jpg',
-        campaignName: 'Tapat mo Linis mo',
+		name: 'Operating System',
+		image: '/img/thumbs/thumb-5.jpg',
+        campaignName: '3CPE-A',
 		logo: '/img/thumbs/thumb-5.jpg',
 		date: 1573430400,
 		category: "Health",
 		paymentStatus: 'Paid',
-		orderStatus: 'Approved'
+		orderStatus: 'Ongoing',
+		code: "12345678"
 	},
 	{
 		id: '2',
-		name: 'Terrance Moreno',
-        image: '/img/avatars/thumb-2.jpg',
-        campaignName: 'Sumba Dance',
+		name: 'HDL',
+        image: '/img/thumbs/thumb-6.jpg',
+        campaignName: '3CPE-(A & B)',
 		logo: '/img/thumbs/thumb-6.jpg',
 		date: 1572393600,
 		category: "Sport",
 		paymentStatus: 'Paid',
-		orderStatus: 'Approved'
+		orderStatus: 'Completed',
+		code: "12345678"
 	},
 	{
 		id: '3',
-		name: 'Ron Vargas',
-		image: '/img/avatars/thumb-3.jpg',
-        campaignName: 'Covid Alis',
+		name: 'FCS',
+		image: '/img/thumbs/thumb-3.jpg',
+        campaignName: '1CPE-A',
 		logo: '/img/thumbs/thumb-3.jpg',
 		date: 1593949805,
 		category: "Health",
 		paymentStatus: 'Paid',
-		orderStatus: 'Pending'
+		orderStatus: 'Ongoing',
+		code: "12345678"
 	},
 	{
 		id: '4',
-		name: 'Luke Cook',
-		image: '/img/avatars/thumb-4.jpg',
-        campaignName: 'Online Dating',
+		name: 'FMMS',
+		image: '/img/thumbs/thumb-2.jpg',
+        campaignName: '4CPE-B',
 		logo: '/img/thumbs/thumb-2.jpg',
 		date: 1579132800,
 		category: "Technology",
 		paymentStatus: 'Paid',
-		orderStatus: 'Rejected'
+		orderStatus: 'Completed',
+		code: "12345678"
 	},
 	{
 		id: '5',
-		name: 'Joyce Freeman',
-		image: '/img/avatars/thumb-5.jpg',
-        campaignName: 'Clean and Green',
+		name: 'CAD',
+		image: '/img/thumbs/thumb-10.jpg',
+        campaignName: '2CPE-B',
 		logo: '/img/thumbs/thumb-10.jpg',
 		date: 1591286400,
 		category: "Environment",
 		paymentStatus: 'Pending',
-		orderStatus: 'Rejected'
-	},
-	{
-		id: '6',
-		name: 'Joyce Freeman',
-		image: '/img/avatars/thumb-5.jpg',
-        campaignName: 'Clean and Green',
-		logo: '/img/thumbs/thumb-10.jpg',
-		date: 1591286400,
-		category: "Environment",
-		paymentStatus: 'Pending',
-		orderStatus: 'Rejected'
-	},
-	{
-		id: '7',
-		name: 'Joyce Freeman',
-		image: '/img/avatars/thumb-5.jpg',
-        campaignName: 'Clean and Green',
-		logo: '/img/thumbs/thumb-10.jpg',
-		date: 1591286400,
-		category: "Environment",
-		paymentStatus: 'Pending',
-		orderStatus: 'Rejected'
-	},
-	{
-		id: '8',
-		name: 'Joyce Freeman',
-		image: '/img/avatars/thumb-5.jpg',
-        campaignName: 'Clean and Green',
-		logo: '/img/thumbs/thumb-10.jpg',
-		date: 1591286400,
-		category: "Environment",
-		paymentStatus: 'Pending',
-		orderStatus: 'Rejected'
-	},
-	{
-		id: '9',
-		name: 'Joyce Freeman',
-		image: '/img/avatars/thumb-5.jpg',
-        campaignName: 'Clean and Green',
-		logo: '/img/thumbs/thumb-10.jpg',
-		date: 1591286400,
-		category: "Environment",
-		paymentStatus: 'Pending',
-		orderStatus: 'Rejected'
-	},
-	{
-		id: '10',
-		name: 'Joyce Freeman',
-		image: '/img/avatars/thumb-5.jpg',
-        campaignName: 'Clean and Green',
-		logo: '/img/thumbs/thumb-10.jpg',
-		date: 1591286400,
-		category: "Environment",
-		paymentStatus: 'Pending',
-		orderStatus: 'Rejected'
-	},
-	{
-		id: '11',
-		name: 'Joyce Freeman',
-		image: '/img/avatars/thumb-5.jpg',
-        campaignName: 'Clean and Green',
-		logo: '/img/thumbs/thumb-10.jpg',
-		date: 1591286400,
-		category: "Environment",
-		paymentStatus: 'Pending',
-		orderStatus: 'Rejected'
-	},
-	{
-		id: '12',
-		name: 'Joyce Freeman',
-		image: '/img/avatars/thumb-5.jpg',
-        campaignName: 'Clean and Green',
-		logo: '/img/thumbs/thumb-10.jpg',
-		date: 1591286400,
-		category: "Environment",
-		paymentStatus: 'Pending',
-		orderStatus: 'Rejected'
-	},
+		orderStatus: 'Completed',
+		code: "12345678"
+	}
 ]

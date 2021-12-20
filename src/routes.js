@@ -31,12 +31,21 @@ const dashboardRoutes = [
     isExact: false,
   },
   {
-    path: "/table",
-    name: "Table List",
+    path: "/classroom",
+    name: "Classroom",
     icon: "nc-icon nc-notes",
     component: TableList,
     layout: "/admin",
     renderSidebar: true,
+    isExact: true,
+  },
+  {
+    path: "/classroom/:id",
+    name: "Classroom",
+    icon: "nc-icon nc-notes",
+    component: Dashboard,
+    layout: "/admin",
+    renderSidebar: false,
     isExact: false,
   },
   {
