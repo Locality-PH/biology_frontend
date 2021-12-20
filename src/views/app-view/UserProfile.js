@@ -13,7 +13,7 @@ import {
   Col,
 } from "react-bootstrap";
 
-function User() {
+function UserProfile() {
   return (
     <>
       <Container fluid>
@@ -215,4 +215,4 @@ function User() {
   );
 }
 
-export default User;
+export default UserProfile;

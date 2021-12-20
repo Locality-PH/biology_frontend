@@ -49,30 +49,34 @@ function Sidebar({ color, image, routes }) {
             </div>
           </a>
           <a className="simple-text" href="http://www.creative-tim.com">
-            Creative Tim
+            Biology App
           </a>
         </div>
         <Nav>
           {routes.map((prop, key) => {
             if (!prop.redirect)
               return (
-                <li
-                  className={
-                    prop.upgrade
-                      ? "active active-pro"
-                      : activeRoute(prop.layout + prop.path)
-                  }
-                  key={key}
-                >
-                  <NavLink
-                    to={prop.layout + prop.path}
-                    className="nav-link"
-                    activeClassName="active"
-                  >
-                    <i className={prop.icon} />
-                    <p>{prop.name}</p>
-                  </NavLink>
-                </li>
+                <div key={key}>
+
+                  {prop.renderSidebar &&
+                    <li
+                      className={
+                        prop.upgrade
+                          ? "active active-pro"
+                          : activeRoute(prop.layout + prop.path)
+                      }
+
+                    >
+                      <NavLink
+                        to={prop.layout + prop.path}
+                        className="nav-link"
+                        activeClassName="active"
+                      >
+                        <i className={prop.icon} />
+                        <p>{prop.name}</p>
+                      </NavLink>
+                    </li>}
+                </div>
               );
             return null;
           })}
