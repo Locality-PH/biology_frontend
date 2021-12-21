@@ -128,7 +128,7 @@ function UserProfileTest() {
             />
           }
         >
-          <Avatar src={require("assets/img/faces/face-3.jpg").default} className="profile-picture-style" />
+          <Avatar src={require("assets/img/faces/face-0.jpg").default} className="profile-picture-style" />
           <h4 className="text-center">Mike Andrew</h4>
           <p className="text-center">michael24</p>
           <p className=" text-center">
