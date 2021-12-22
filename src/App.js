@@ -1,6 +1,6 @@
 import { useAuth } from "contexts/AuthContext";
-import Login from "./auth-view/Login";
-import Signup from "./auth-view/Signup";
+import Login from "./views/auth-view/Login";
+import Signup from "./views/auth-view/Signup";
 import PrivateRouteAdmin from "components/Private/PrivateRouteAdmin";
 import AdminLayout from "layouts/Admin.js";
 import { Route, Switch, Redirect } from "react-router-dom";
