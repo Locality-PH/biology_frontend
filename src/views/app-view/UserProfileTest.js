@@ -5,45 +5,92 @@ import Axios from "axios"
 
 
 function UserProfileTest() {
-  const [teacherID, setTeacherID] = useState("61c13a75cfd6f1012a2bd15f")
-  const [firstName, setFirstName] = useState("")
-  const [lastName, setLastName] = useState("")
-  const [email, setEmail] = useState("")
+  const [teacherID, setTeacherID] = useState("")
+  const [userID, setUserID] = useState("")
+  const [user, setUser] = useState([])
+  const [teacher, setTeacher] = useState([])
   const [initialVal, setInitialVal] = useState([])
 
-  useEffect( () => {
+  const [form] = Form.useForm();
+
+  useEffect(() => {
+
+    const teacherID = localStorage.getItem('tid');
+    const userID = localStorage.getItem('mid');
+    // const userID = "61c287d146f87f872634f860";
+
+    
+    console.log("Teacher ID: " + teacherID)
+    console.log("user ID: " + userID)
+    
+    setTeacherID(teacherID)
+    setUserID(userID)
+
+    setTeacherID(teacherID);
+
+    Axios.get("http://localhost:5000/admin/" + userID).then(
+      (response) => {
+        const userData = response.data
+        setUser(userData)
+      }
+    )
 
     Axios.get("http://localhost:5000/teacher/get/" + teacherID).then(
       (response) => {
-        console.log(response.data);
+        const teacherData = response.data
+        setTeacher(teacherData)
       }
     )
+
   }, [])
 
   const updateTeacher = async (values) => {
     await Axios.put(
       "http://localhost:5000/teacher/update",
-      { values }
+      { values, teacherID, userID }
     ).then((response) => {
       console.log(response.data);
     })
 
-    //alert("Teacher updated");
+    alert("Teacher updated");
   }
 
+  useEffect(() => {
+    console.log("teacher")
+    console.log(teacher)
+    setInitialVal({...initialVal, ...teacher})
+  }, [teacher])
+
+  useEffect(() => {
+    console.log("user")
+    console.log(user)
+    setInitialVal({...initialVal, ...user})
+  }, [user])
+
+  useEffect(() => {
+    console.log("initialVal")
+    console.log(initialVal)
+    form.resetFields();
+  }, [initialVal])
+
+  const test = () => {
+    const array = {...teacher, ...user}
+    console.log(array)
+    form.resetFields();
+  }
 
   return (
     <Row gutter={30} className="user-profile-container">
       <Col span={16}>
         <Card className="card-box-shadow-style">
           <div className="">
-
             <h4>Personal Information</h4><hr />
             <Form
               name="basicInformation"
               layout="vertical"
               onFinish={updateTeacher}
               initialValues={initialVal}
+              form={form}
             >
               <Row>
                 <Col xs={24} sm={24} md={24} lg={24}>
