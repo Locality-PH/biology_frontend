@@ -37,6 +37,8 @@ const Login = () => {
                     console.log(res.data);
                     localStorage.setItem("mid", res.data[0].uuid);
                     localStorage.setItem("role", res.data[0].role);
+                    localStorage.setItem("tid", res.data[0].teacher);
+
                     localData(res.data[0].uuid, res.data[0].role);
                   })
                   .then((_) => {
