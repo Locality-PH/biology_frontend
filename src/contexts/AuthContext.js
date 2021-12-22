@@ -35,6 +35,7 @@ export function AuthProvider({ children }) {
     localStorage.removeItem("auth_id");
     localStorage.removeItem("role");
     localStorage.removeItem("mid");
+    localStorage.removeItem("tid");
 
     return auth.signOut();
   }

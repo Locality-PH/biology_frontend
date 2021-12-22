@@ -40,6 +40,8 @@ const Signup = () => {
                     console.log(res.data.role);
                     localStorage.setItem("mid", res.data.mid);
                     localStorage.setItem("role", res.data.role);
+                    localStorage.setItem("tid", res.data.tid);
+
                     localData(res.data.mid, res.data.role);
                   })
                   .then((_) => {
