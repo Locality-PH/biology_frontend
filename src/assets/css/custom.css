@@ -1,0 +1,31 @@
+.ellipsis-dropdown {
+    cursor: pointer;
+    font-size: calc(14px * 1.43);
+    transform: rotate(90deg);
+    display: inline-block;
+    line-height: 1;
+    padding: 0.3125rem;
+    border-radius: 50rem;
+    transition: background-color 0.3s ease;
+}
+
+.ellipsis-dropdown:hover,
+.ellipsis-dropdown:focus {
+        background-color: rgba(black, 0.05);
+}
+
+.ant-dropdown-menu {
+    min-width: 160px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.ant-dropdown-menu-item, 
+.ant-dropdown-menu-submenu-title{
+    padding: 8px 20px;
+}
+
+.ant-dropdown-menu-item a, 
+.ant-dropdown-menu-submenu-title a{
+    padding: 8px 20px;
+    margin: -8px -20px;
+}

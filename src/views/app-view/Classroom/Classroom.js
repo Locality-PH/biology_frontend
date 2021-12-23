@@ -56,8 +56,7 @@ const Classroom = () => {
                 <Flex>
                     <AvatarStatus src="/img/thumbs/thumb-5.jpg" size={30} name={record.name}/>
                 </Flex>
-            ),
-            sorter: (a, b) => utils.antdTableSorter(a, b, 'name')
+            )
         },
         {
             title: 'Section',
@@ -111,7 +110,7 @@ const Classroom = () => {
       <Container fluid>
         <Row>
           <Col md="12">
-            <Card title="Teacher Classroom" extra={<><Link to="classroom/create-new"><Button type="primary" >New Classroom</Button></Link></>}>
+            <Card title="Your Classroom" extra={<><Link to="classroom/create-new"><Button type="primary" style={{backgroundColor: "green", borderColor: "green"}}>New Classroom</Button></Link></>}>
               <Flex
                 alignItems="center"
                 className=""
@@ -132,7 +131,7 @@ const Classroom = () => {
                   pagination={true}
                   columns={tableColumns} 
                   dataSource={classroomsList} 
-                  rowKey='id'
+                  rowKey='class_code'
                   loading={isLoading}
                   scroll={{ x: "max-content" }}
               />
