@@ -1,26 +1,104 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./UserProfile.css"
 import { Form, Avatar, Button, Input, DatePicker, Row, Col, message, Upload, Card, } from 'antd';
+import Axios from "axios"
+
 
 function UserProfileTest() {
+  const [teacherID, setTeacherID] = useState("")
+  const [userID, setUserID] = useState("")
+  const [user, setUser] = useState([])
+  const [teacher, setTeacher] = useState([])
+  const [initialVal, setInitialVal] = useState([])
+
+  const [form] = Form.useForm();
+
+  useEffect(() => {
+
+    const teacherID = localStorage.getItem('tid');
+    const userID = localStorage.getItem('mid');
+    // const userID = "61c287d146f87f872634f860";
+
+    
+    console.log("Teacher ID: " + teacherID)
+    console.log("user ID: " + userID)
+    
+    setTeacherID(teacherID)
+    setUserID(userID)
+
+    setTeacherID(teacherID);
+
+    Axios.get("http://localhost:5000/admin/" + userID).then(
+      (response) => {
+        const userData = response.data
+        setUser(userData)
+      }
+    )
+
+    Axios.get("http://localhost:5000/teacher/get/" + teacherID).then(
+      (response) => {
+        const teacherData = response.data
+        setTeacher(teacherData)
+      }
+    )
+
+  }, [])
+
+  const updateTeacher = async (values) => {
+    await Axios.put(
+      "http://localhost:5000/teacher/update",
+      { values, teacherID, userID }
+    ).then((response) => {
+      console.log(response.data);
+    })
+
+    alert("Teacher updated");
+  }
+
+  useEffect(() => {
+    console.log("teacher")
+    console.log(teacher)
+    setInitialVal({...initialVal, ...teacher})
+  }, [teacher])
+
+  useEffect(() => {
+    console.log("user")
+    console.log(user)
+    setInitialVal({...initialVal, ...user})
+  }, [user])
+
+  useEffect(() => {
+    console.log("initialVal")
+    console.log(initialVal)
+    form.resetFields();
+  }, [initialVal])
+
+  const test = () => {
+    const array = {...teacher, ...user}
+    console.log(array)
+    form.resetFields();
+  }
+
   return (
     <Row gutter={30} className="user-profile-container">
       <Col span={16}>
         <Card className="card-box-shadow-style">
           <div className="">
-
             <h4>Personal Information</h4><hr />
             <Form
               name="basicInformation"
               layout="vertical"
+              onFinish={updateTeacher}
+              initialValues={initialVal}
+              form={form}
             >
               <Row>
                 <Col xs={24} sm={24} md={24} lg={24}>
                   <Row gutter={10}>
                     <Col xs={24} sm={24} md={12}>
                       <Form.Item
-                        label={<p className="label-form-style">Name: </p>}
-                        name="name"
+                        label={<p className="label-form-style">First Name: </p>}
+                        name="first_name"
                         rules={[
                           {
                             required: true,
@@ -33,12 +111,12 @@ function UserProfileTest() {
                     </Col>
                     <Col xs={24} sm={24} md={12}>
                       <Form.Item
-                        label={<p className="label-form-style">Username: </p>}
-                        name="username"
+                        label={<p className="label-form-style">Last Name: </p>}
+                        name="last_name"
                         rules={[
                           {
                             required: true,
-                            message: 'Please input your username!'
+                            message: 'Please input your lastname!'
                           },
                         ]}
                       >
@@ -66,46 +144,6 @@ function UserProfileTest() {
                         <DatePicker className="w-100 form-input-style" />
                       </Form.Item>
                     </Col>
-                    <Col xs={24} sm={24} md={12}>
-                      <Form.Item
-                        label={<p className="label-form-style">Phone Number: </p>}
-                        name="phoneNumber"
-                      >
-                        <Input className="form-input-style" />
-                      </Form.Item>
-                    </Col>
-                    <Col xs={24} sm={24} md={12}>
-                      <Form.Item
-                        label={<p className="label-form-style">Website: </p>}
-                        name="website"
-                      >
-                        <Input className="form-input-style" />
-                      </Form.Item>
-                    </Col>
-                    <Col xs={24} sm={24} md={24}>
-                      <Form.Item
-                        label={<p className="label-form-style">Address: </p>}
-                        name="address"
-                      >
-                        <Input className="form-input-style" />
-                      </Form.Item>
-                    </Col>
-                    <Col xs={24} sm={24} md={12}>
-                      <Form.Item
-                        label={<p className="label-form-style">City: </p>}
-                        name="city"
-                      >
-                        <Input className="form-input-style" />
-                      </Form.Item>
-                    </Col>
-                    <Col xs={24} sm={24} md={12}>
-                      <Form.Item
-                        label={<p className="label-form-style">Post Code: </p>}
-                        name="postcode"
-                      >
-                        <Input className="form-input-style" />
-                      </Form.Item>
-                    </Col>
                   </Row>
                   <Button type="primary" htmlType="submit" className="form-submit-btn-style">
                     Save Change
@@ -131,11 +169,6 @@ function UserProfileTest() {
           <Avatar src={require("assets/img/faces/face-0.jpg").default} className="profile-picture-style" />
           <h4 className="text-center">Mike Andrew</h4>
           <p className="text-center">michael24</p>
-          <p className=" text-center">
-            "3rd year College Student <br></br>
-            Your chick she so thirsty <br></br>
-            I'm in that two seat Lambo"
-          </p>
 
         </Card>
       </Col>
