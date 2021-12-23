@@ -46,6 +46,7 @@ const Signup = () => {
                   })
                   .then((_) => {
                     history.push("/admin/dashboard");
+                    setLoading(false);
                   });
               } else {
                 // User is signed out
@@ -60,7 +61,6 @@ const Signup = () => {
       setError("Failed to create an account");
       setError("");
     }
-    setLoading(false);
   }
   return (
     <div>
