@@ -35,11 +35,11 @@ const Login = () => {
                   .get("http://localhost:5000/admin/login/" + user.uid)
                   .then((res) => {
                     console.log(res.data);
-                    localStorage.setItem("mid", res.data[0].uuid);
-                    localStorage.setItem("role", res.data[0].role);
-                    localStorage.setItem("tid", res.data[0].teacher);
+                    localStorage.setItem("mid", res.data[0]?.auth_id);
+                    localStorage.setItem("role", res.data[0]?.role);
+                    localStorage.setItem("tid", res.data[0]?.teacher);
 
-                    localData(res.data[0].uuid, res.data[0].role);
+                    localData(res.data[0].uuid, res.data[0]?.role);
                   })
                   .then((_) => {
                     history.push("/admin/dashboard");
@@ -72,7 +72,7 @@ const Login = () => {
           <div>
             <Card>
               <Card.Body>
-                <h2 className="text-center mb-4">Login In</h2>
+                <h2 className="mb-4 text-center">Login In</h2>
                 {/* {JSON.stringify(currentUser)} */}
 
                 <Form onSubmit={handleSubmit}>
@@ -96,7 +96,7 @@ const Login = () => {
 
                   <Button
                     disabled={loading}
-                    className="w-100 mt-2"
+                    className="mt-2 w-100"
                     type="submit"
                   >
                     {" "}
@@ -104,11 +104,11 @@ const Login = () => {
                   </Button>
                 </Form>
               </Card.Body>
-              <div className="w-100 text-center mt-2 mb-2">
+              <div className="mt-2 mb-2 text-center w-100">
                 <Link to="/forgot-password">Forgot Password</Link>
               </div>
             </Card>
-            <div className="w-100 text-center mt-2">
+            <div className="mt-2 text-center w-100">
               Need an account? <Link to="/admin/signup">Sign up </Link>
             </div>
           </div>
