@@ -30,7 +30,7 @@ const dashboardRoutes = [
   },
   {
     path: "/classroom/create-new",
-    name: "Classroom",
+    name: "New Classroom",
     icon: "",
     component: CreateClassroom,
     layout: "/admin",

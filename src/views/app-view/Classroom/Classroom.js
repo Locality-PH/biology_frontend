@@ -27,6 +27,8 @@ const Classroom = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
 
+    const [deletedMessage, setDeletedMessage] = useState("");
+
     useEffect(() => {
         axios.get("http://localhost:5000/teacher/get-classrooms/" + userId).then((response) => {
             setClassrooms(response.data)
@@ -39,7 +41,14 @@ const Classroom = () => {
             setError("Could not fetch the data in the server!");
           });
     }
-    , []);
+    , [deletedMessage]);
+
+    const deleteClassroom = (classroom_id) => {
+      axios.post("http://localhost:5000/teacher/delete-classroom", {"user_id": userId, "classroom_id": classroom_id}).then((response) => {
+      setDeletedMessage(response.data)
+    });
+
+    }
 
     const tableColumns = [
         {
@@ -85,11 +94,12 @@ const Classroom = () => {
                             <span className="ml-2">Update</span>
                         </Link>
                     </Menu.Item>
-                    <Menu.Item key="2">
-                        <Link to={`classroom/${record.class_code}`}>
+                    <Menu.Divider/>
+                    <Menu.Item key="2" onClick={() => deleteClassroom(record.teacher_id)}>
+                        <>
                             <EyeOutlined />
                             <span className="ml-2">Delete</span>
-                        </Link>
+                        </>
                     </Menu.Item>
                 </Menu>
             }
