@@ -1,18 +1,21 @@
 import React, { useRef, useState } from "react";
-import { Card, Button, Form, Alert, Container } from "react-bootstrap";
+import { Card, Form, Alert, Container, Button} from "react-bootstrap";
 import { Link, useHistory } from "react-router-dom";
 import { useAuth } from "contexts/AuthContext";
 import { auth } from "firebase";
-
 import axios from "axios";
+import { FcGoogle } from "react-icons/fc"
+
+
 const Login = () => {
   const emailRef = useRef();
   const passwordRef = useRef();
-  const { login, currentUser, localData } = useAuth();
+  const { login, currentUser, localData, SignInWithGoogle } = useAuth();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const history = useHistory();
   console.log(currentUser?.uid);
+
   async function handleSubmit(e) {
     e.preventDefault();
     console.log(currentUser?.uid);
@@ -62,6 +65,11 @@ const Login = () => {
 
     setLoading(false);
   }
+
+  async function loginGoogleUser(e) {
+    SignInWithGoogle(history)
+  }
+
   return (
     <div>
       <Container
@@ -103,6 +111,10 @@ const Login = () => {
                     Login
                   </Button>
                 </Form>
+
+                <Button className="mt-4 text-center w-100" onClick={(e) => loginGoogleUser(e)}>
+                  <FcGoogle className="mr-2" /> Login with Google
+                </Button>
               </Card.Body>
               <div className="mt-2 mb-2 text-center w-100">
                 <Link to="/forgot-password">Forgot Password</Link>

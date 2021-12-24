@@ -1,5 +1,8 @@
 import React, { useContext, useState, useEffect } from "react";
 import { auth } from "../firebase";
+import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import Axios from "axios"
+const provider = new GoogleAuthProvider();
 const AuthContext = React.createContext();
 
 export function useAuth() {
@@ -11,6 +14,38 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
   const [localMid, setLocalMid] = useState();
   const [localrole, setLocalRole] = useState();
+
+  function SignInWithGoogle(history) {
+    return auth.signInWithPopup(provider)
+      .then((result) => {
+        const user = result.user;
+
+        Axios.post("http://localhost:5000/admin/google-login", { user })
+          .then(
+            (response) => {
+              const currentUserUUID = response.data;
+              console.log("response from controller")
+              console.log(currentUserUUID)
+
+              Axios.get("http://localhost:5000/admin/login/" + currentUserUUID)
+                .then((res) => {
+                  console.log(res.data);
+                  localStorage.setItem("mid", res.data[0]?.auth_id);
+                  localStorage.setItem("role", res.data[0]?.role);
+                  localStorage.setItem("tid", res.data[0]?.teacher);
+
+                  localData(res.data[0].uuid, res.data[0]?.role);
+                })
+                .then((_) => {
+                  history.push("/admin/dashboard");
+                });
+            }
+          );
+
+      }).catch((error) => {
+        console.log(error)
+      });
+  }
 
   function signup(email, password) {
     return auth.createUserWithEmailAndPassword(email, password);
@@ -62,6 +97,7 @@ export function AuthProvider({ children }) {
     resetPassword,
     updateEmail,
     updatePassword,
+    SignInWithGoogle
   };
   return (
     <AuthContext.Provider value={value}>
