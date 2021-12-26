@@ -19,10 +19,13 @@ const CreateClassroom = () => {
 
   const createClassroom = (data) => {
     axios.post("http://localhost:5000/teacher/create-classroom", data).then((response) => {
-      message.destroy()
-      setModalVisible(true)
-      setClassCode(response.data)
       console.log(response.data)
+      axios.get("http://localhost:5000/teacher/get-classroom-code/" + response.data).then((response) => {
+        message.destroy()
+        setModalVisible(true)
+        setClassCode(response.data)
+        console.log(response.data)
+      });
     });
 
   }
@@ -56,7 +59,7 @@ const CreateClassroom = () => {
   };
 
   const resetForm = () => {
-    // form.resetFields()
+    form.resetFields()
     setIsDisable(false)
     message.destroy()
   }
@@ -66,7 +69,8 @@ const CreateClassroom = () => {
   }
 
   const copyClasscode = () =>{
-    console.log("Copy Code")
+    console.log("Copy Class Code")
+    navigator.clipboard.writeText(classCode)
     setModalVisible(false)
   }
 
