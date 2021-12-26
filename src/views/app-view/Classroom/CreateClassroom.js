@@ -38,14 +38,23 @@ const CreateClassroom = () => {
     const moduleNames = []
     const quizLinks = []
 
+    console.log(values["modules_data"])
+    
     if(values["modules_data"] != null){
         values["modules_data"].map(result => {
-        moduleNames.push(result.module_name)
-        quizLinks.push(result.quiz_link)
-        fmData.append("file", result.module.file)
+          moduleNames.push(result.module_name)
+          quizLinks.push(result.quiz_link)
+          fmData.append("file", result.module.file)
       })
 
       delete values["modules_data"]
+    }
+    else if(Array.isArray(values["modules_data"])){
+      if(values["modules_data"].length ===0){
+        console.log("Empty Arrayy")
+      }
+    }else{
+      console.log("Modules is empty!")
     }
 
     values["user_id"] = userId;
