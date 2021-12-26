@@ -89,7 +89,7 @@ const Classroom = () => {
                         </Link>
                     </Menu.Item>
                     <Menu.Item key="1">
-                        <Link to={`classroom/${record.class_code}`}>
+                        <Link to={`classroom/edit/${record.class_code}`}>
                             <EyeOutlined />
                             <span className="ml-2">Update</span>
                         </Link>
