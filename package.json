@@ -4,8 +4,8 @@
   "dependencies": {
     "@ant-design/icons": "^4.7.0",
     "@fortawesome/fontawesome-free": "5.15.2",
-    "axios": "^0.24.0",
     "antd": "^4.17.3",
+    "axios": "^0.24.0",
     "bootstrap": "4.6.0",
     "chartist": "0.10.1",
     "firebase": "^9.6.1",
@@ -19,7 +19,8 @@
     "react-notification-alert": "0.0.13",
     "react-router": "5.2.0",
     "react-router-dom": "5.2.0",
-    "react-scripts": "4.0.1"
+    "react-scripts": "4.0.1",
+    "styled-components": "^5.3.3"
   },
   "optionalDependencies": {
     "jquery": "3.5.1",
