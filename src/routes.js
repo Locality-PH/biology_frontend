@@ -40,9 +40,9 @@ const dashboardRoutes = [
     isExact: false,
   },
   {
-    path: "/classroom/:id",
-    name: "Classroom",
-    icon: "nc-icon nc-notes",
+    path: "/classroom/:class_code",
+    name: "View Classroom",
+    icon: "",
     component: ViewClassroom,
     layout: "/admin",
     renderSidebar: false,
@@ -55,15 +55,6 @@ const dashboardRoutes = [
     component: EditClassroom,
     layout: "/admin",
     renderSidebar: false,
-    isExact: false,
-  },
-  {
-    path: "/antd",
-    name: "Test Ant Design",
-    icon: "nc-icon nc-bell-55",
-    component: TestAntDesign,
-    layout: "/admin",
-    renderSidebar: true,
     isExact: false,
   },
   {
