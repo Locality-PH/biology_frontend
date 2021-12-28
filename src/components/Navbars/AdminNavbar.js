@@ -15,17 +15,22 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React, { Component, useState } from "react";
-import { useLocation, useHistory } from "react-router-dom";
-import { Navbar, Container, Nav, Dropdown, Button } from "react-bootstrap";
+import React, { Component, useState, useEffect} from "react";
+import { useLocation, useHistory, Link } from "react-router-dom";
+import { Navbar, Container, Nav, Button } from "react-bootstrap";
 import { useAuth } from "contexts/AuthContext";
-
+import { Avatar, Menu, Dropdown } from "antd";
+import utils from "utils";
 import routes from "routes.js";
 
 function Header() {
   const [error, setError] = useState("");
   const { currentUser, logout } = useAuth();
   const history = useHistory();
+  
+  useEffect (() => {
+    console.log(localStorage.getItem('avatar'))
+  },[])
 
   async function handleLogout() {
     setError("");
@@ -58,6 +63,14 @@ function Header() {
     }
     return "Brand";
   };
+
+  const menu = (
+    <Menu style={{ marginTop: "5px" }}>
+      <Menu.Item key="1"><Link to="/admin/user">Edit Account</Link></Menu.Item>
+      <Menu.Item key="1" onClick={() => handleLogout()}>Log out</Menu.Item>
+    </Menu>
+  );
+
   return (
     <Navbar bg="light" expand="lg">
       <Container fluid>
@@ -96,22 +109,31 @@ function Header() {
             </Nav.Item>
           </Nav>
           <Nav className="ml-auto" navbar>
+            {/* <Nav.Item>
+              <Nav.Link
+                className="m-0"
+                href="/admin/user"
+              // onClick={(e) => e.preventDefault()}
+              >
+                <span className="no-icon">Account</span>
+              </Nav.Link>
+            </Nav.Item> */}
             <Nav.Item>
               <Nav.Link
                 className="m-0"
                 href="/admin/user"
-                // onClick={(e) => e.preventDefault()}
               >
-                <span className="no-icon">Account</span>
+                {/* <Avatar src="https://joeschmoe.io/api/v1/random" /> */}
+                <Avatar style={{ backgroundColor: "green" }} >{utils.getNameInitial("Giann Mediavillo")} </Avatar>
               </Nav.Link>
             </Nav.Item>
-            <Nav.Item>
+            <Nav.Item >
               <Nav.Link
-                className="m-0"
-                href="#pablo"
-                onClick={() => handleLogout()}
+                style={{ margin: "auto auto auto -10px" }}
               >
-                <span className="no-icon">Log out</span>
+                <Dropdown overlay={menu} trigger={['click']}>
+                  <img src="/img/others/settings.png" style={{ height: "32px", width: "32px" }} />
+                </Dropdown>
               </Nav.Link>
             </Nav.Item>
           </Nav>

@@ -26,6 +26,7 @@ import FixedPlugin from "components/FixedPlugin/FixedPlugin.js";
 
 import routes from "routes.js";
 
+impo
 import sidebarImage from "assets/img/sidebar-3.jpg";
 
 function Admin() {
@@ -35,6 +36,7 @@ function Admin() {
   const [hasImage, setHasImage] = React.useState(true);
   const location = useLocation();
   const mainPanel = React.useRef(null);
+
   const getRoutes = (routes) => {
     return routes.map((prop, key) => {
       if (prop.layout === "/admin") {
@@ -51,6 +53,7 @@ function Admin() {
       }
     });
   };
+
   React.useEffect(() => {
     localData(localStorage.getItem("mid"), localStorage.getItem("role"));
     document.documentElement.scrollTop = 0;
@@ -65,6 +68,7 @@ function Admin() {
       element.parentNode.removeChild(element);
     }
   }, [location]);
+  
   return (
     <>
       <div className="wrapper">

@@ -106,7 +106,7 @@ function UserProfileTest() {
                           },
                         ]}
                       >
-                        <Input className="form-input-style" />
+                        <input className="form-input-style" />
                       </Form.Item>
                     </Col>
                     <Col xs={24} sm={24} md={12}>
@@ -120,7 +120,7 @@ function UserProfileTest() {
                           },
                         ]}
                       >
-                        <Input className="form-input-style" />
+                        <input className="form-input-style" />
                       </Form.Item>
                     </Col>
                     <Col xs={24} sm={24} md={12}>
@@ -133,7 +133,7 @@ function UserProfileTest() {
                           message: 'Please enter a valid email!'
                         }]}
                       >
-                        <Input className="form-input-style" />
+                        <input className="form-input-style" />
                       </Form.Item>
                     </Col>
                     <Col xs={24} sm={24} md={12}>
