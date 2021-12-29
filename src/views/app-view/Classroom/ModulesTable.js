@@ -34,6 +34,11 @@ const ModulesTable = ({classCode}) => {
     }
     , []);
 
+    const viewModule = (moduleId) => {
+      console.log("View")
+      window.open("http://localhost:5000/teacher/view-module/" + moduleId, "_blank")
+    }
+
     const downloadModule = (moduleId) => {
       console.log("Downloading")
       window.open("http://localhost:5000/teacher/download-module/" + moduleId, "_blank")
@@ -75,17 +80,24 @@ const ModulesTable = ({classCode}) => {
             )
         },
         {
+          title: 'File Name',
+          dataIndex: 'filename',
+          render: (_, result) => (
+              <span>{result.module_file.filename}</span>
+          )
+      },
+        {
             title: 'Actions',
             dataIndex: 'actions',
             render: (_, result) => (
                 <EllipsisDropdown 
             menu={
                 <Menu>
-                    <Menu.Item key="0">
-                        <Link to="/">
+                    <Menu.Item key="0" onClick={() => viewModule(result.teacher_id)}>
+                        <>
                             <EyeOutlined />
                             <span className="ml-2">View</span>
-                        </Link>
+                        </>
                     </Menu.Item>
                     <Menu.Item key="1" onClick={() => downloadModule(result.teacher_id)}>
                         <>

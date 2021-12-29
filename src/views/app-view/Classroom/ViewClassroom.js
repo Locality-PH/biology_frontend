@@ -9,7 +9,7 @@ import ModulesTable from "./ModulesTable"
 
 const ViewClassroom = ({match}) => {
     const class_code = match.params.class_code
-    console.log(class_code)
+    
     return (
         <>
             <Container fluid>

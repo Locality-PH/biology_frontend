@@ -5,6 +5,7 @@ import CreateClassroom from "views/app-view/Classroom/CreateClassroom";
 import ViewClassroom from "views/app-view/Classroom/ViewClassroom";
 import EditClassroom from "views/app-view/Classroom/EditClassroom";
 
+import ViewModule from "views/app-view/Classroom/ViewModule"
 
 import TableList from "views/app-view/TableList.js";
 import TestAntDesign from "./views/app-view/TestAntDesign";
@@ -56,6 +57,15 @@ const dashboardRoutes = [
     layout: "/admin",
     renderSidebar: false,
     isExact: false,
+  },
+  {
+    path: "/classroom/:class_code/:module_id",
+    name: "View Module",
+    icon: "",
+    component: ViewModule,
+    layout: "/admin",
+    renderSidebar: false,
+    isExact: true,
   },
   {
     path: "/user",
