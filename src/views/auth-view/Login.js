@@ -1,12 +1,16 @@
 import React, { useRef, useState } from "react";
-import { Card, Form, Alert, Container, Button} from "react-bootstrap";
+import { Card, Button, Form, Alert, Container } from "react-bootstrap";
 import { Link, useHistory } from "react-router-dom";
 import { useAuth } from "contexts/AuthContext";
 import { auth } from "firebase";
+import { Row, Col } from "antd";
+import "assets/css/custom.css";
+import Wave from "assets/img/wave.png";
+import Bg from "assets/img/bg.svg";
+import Avatar from "assets/img/avatar.svg";
+import { LoginLink } from "./LoginElement";
+import { FcGoogle } from "react-icons/fc";
 import axios from "axios";
-import { FcGoogle } from "react-icons/fc"
-
-
 const Login = () => {
   const emailRef = useRef();
   const passwordRef = useRef();
@@ -15,7 +19,9 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const history = useHistory();
   console.log(currentUser?.uid);
-
+  async function loginGoogleUser(e) {
+    SignInWithGoogle(history);
+  }
   async function handleSubmit(e) {
     e.preventDefault();
     console.log(currentUser?.uid);
@@ -59,74 +65,102 @@ const Login = () => {
       );
       console.log("test");
     } catch (err) {
-      setError("Failed to log in");
+      setError("Email or Password is wrong");
       console.log(err);
     }
 
     setLoading(false);
   }
+  const inputs = document.querySelectorAll(".input");
 
-  async function loginGoogleUser(e) {
-    SignInWithGoogle(history)
+  function addcl() {
+    let parent = this.parentNode.parentNode;
+    parent.classList.add("focus");
   }
 
+  function remcl() {
+    let parent = this.parentNode.parentNode;
+    if (this.value == "") {
+      parent.classList.remove("focus");
+    }
+  }
+
+  inputs.forEach((input) => {
+    input.addEventListener("focus", addcl);
+    input.addEventListener("blur", remcl);
+  });
+
   return (
-    <div>
-      <Container
-        className="d-flex align-items-center justify-content-center"
-        style={{ minHeight: "100vh" }}
-      >
-        <div className="w-100" style={{ maxWidth: "400px" }}>
-          <div>
-            <Card>
-              <Card.Body>
-                <h2 className="mb-4 text-center">Login In</h2>
-                {/* {JSON.stringify(currentUser)} */}
-
-                <Form onSubmit={handleSubmit}>
-                  {error && <Alert variant="danger">{error}</Alert>}
-                  <Form.Group id="email">
-                    <Form.Label>Email</Form.Label>
-                    <Form.Control
-                      type="email"
-                      required
-                      ref={emailRef}
-                    ></Form.Control>
-                  </Form.Group>
-                  <Form.Group id="password">
-                    <Form.Label>Password</Form.Label>
-                    <Form.Control
-                      type="password"
-                      required
-                      ref={passwordRef}
-                    ></Form.Control>
-                  </Form.Group>
-
-                  <Button
-                    disabled={loading}
-                    className="mt-2 w-100"
-                    type="submit"
-                  >
-                    {" "}
-                    Login
-                  </Button>
-                </Form>
-
-                <Button className="mt-4 text-center w-100" onClick={(e) => loginGoogleUser(e)}>
-                  <FcGoogle className="mr-2" /> Login with Google
-                </Button>
-              </Card.Body>
-              <div className="mt-2 mb-2 text-center w-100">
-                <Link to="/forgot-password">Forgot Password</Link>
-              </div>
-            </Card>
-            <div className="mt-2 text-center w-100">
-              Need an account? <Link to="/admin/signup">Sign up </Link>
-            </div>
-          </div>
+    <>
+      <img className="wave" src={Wave} />
+      <div className="container">
+        {" "}
+        <div className="img">
+          {" "}
+          <img src={Bg} />
         </div>
-      </Container>
-    </div>
+        <div className="login-content">
+          {" "}
+          <form onSubmit={handleSubmit} className="form-login">
+            <img src={Avatar} />
+            <h2 className="title">Welcome</h2>
+            {error && <Alert variant="danger">{error}</Alert>}
+
+            <div className="input-div one">
+              <div className="i">
+                <i className="fas fa-user"></i>
+              </div>
+
+              <div className="div">
+                <input
+                  type="text"
+                  ref={emailRef}
+                  placeholder="Email"
+                  className="input"
+                />
+              </div>
+            </div>
+            <div className="input-div pass">
+              <div className="i">
+                <i className="fas fa-lock"></i>
+              </div>
+              <div className="div">
+                <input
+                  type="password"
+                  placeholder="Password"
+                  className="input"
+                  ref={passwordRef}
+                />
+              </div>
+            </div>
+            <div>
+              <div className="a-right">
+                <LoginLink to="/admin/forgotpassword">
+                  Forgot Password?
+                </LoginLink>
+              </div>
+            </div>
+
+            <input
+              type="submit"
+              disabled={loading}
+              className="form-button"
+              value="Login"
+            />
+            <Button
+              className="mt-4 text-center w-100"
+              onClick={(e) => loginGoogleUser(e)}
+            >
+              <FcGoogle className="mr-2" /> Login with Google
+            </Button>
+            <div className="mt-2 text-center w-100">
+              Need an account?{" "}
+              <LoginLink to="/admin/signup">Sign up </LoginLink>
+            </div>
+          </form>{" "}
+        </div>
+      </div>
+    </>
   );
 };
 

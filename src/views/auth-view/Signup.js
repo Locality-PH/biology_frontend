@@ -1,11 +1,16 @@
 import React, { useRef, useState } from "react";
 import { Card, Button, Form, Alert, Container } from "react-bootstrap";
-import { useAuth } from "contexts/AuthContext";
 import { Link, useHistory } from "react-router-dom";
-import axios from "axios";
+import { useAuth } from "contexts/AuthContext";
 import { auth } from "firebase";
-
-const Signup = () => {
+import { Row, Col } from "antd";
+import "assets/css/custom.css";
+import Wave from "assets/img/wave.png";
+import Bg from "assets/img/bg6.svg";
+import Avatar from "assets/img/avatar.svg";
+import { LoginLink } from "./LoginElement";
+import axios from "axios";
+const Login = () => {
   const emailRef = useRef();
   const passwordRef = useRef();
   const passwordConfirmRef = useRef();
@@ -15,6 +20,7 @@ const Signup = () => {
   const history = useHistory();
   async function handleSubmit(e) {
     e.preventDefault();
+    console.log(error);
     if (passwordRef.current.value !== passwordConfirmRef.current.value) {
       return setError("Password do not match");
     }
@@ -58,68 +64,103 @@ const Signup = () => {
       );
     } catch (e) {
       console.log(e.message);
-      setError("Failed to create an account");
       setError("");
+      setLoading(false);
+
+      setError("Failed to create an account");
     }
   }
-  return (
-    <div>
-      <Container
-        className="d-flex align-items-center justify-content-center"
-        style={{ minHeight: "100vh" }}
-      >
-        <div className="w-100" style={{ maxWidth: "400px" }}>
-          <div>
-            <Card>
-              <Card.Body>
-                <h2 className="mb-4 text-center">Sign up</h2>
-                {/* {JSON.stringify(currentUser)} */}
+  const inputs = document.querySelectorAll(".input");
 
-                <Form onSubmit={handleSubmit}>
-                  {error && <Alert variant="danger">{error}</Alert>}
-                  <Form.Group id="email">
-                    <Form.Label>Email</Form.Label>
-                    <Form.Control
-                      type="email"
-                      required
-                      ref={emailRef}
-                    ></Form.Control>
-                  </Form.Group>
-                  <Form.Group id="password">
-                    <Form.Label>Password</Form.Label>
-                    <Form.Control
-                      type="password"
-                      required
-                      ref={passwordRef}
-                    ></Form.Control>
-                  </Form.Group>
-                  <Form.Group id="password-confirm">
-                    <Form.Label>Confirm Password</Form.Label>
-                    <Form.Control
-                      type="password"
-                      required
-                      ref={passwordConfirmRef}
-                    ></Form.Control>
-                  </Form.Group>
-                  <Button
-                    disabled={loading}
-                    className="mt-2 w-100"
-                    type="submit"
-                  >
-                    {" "}
-                    Sign up
-                  </Button>
-                </Form>
-              </Card.Body>
-              <div className="mt-2 text-center w-100">
-                Already have an account? <Link to="/admin/login">Login </Link>
-              </div>
-            </Card>
-          </div>
+  function addcl() {
+    let parent = this.parentNode.parentNode;
+    parent.classList.add("focus");
+  }
+
+  function remcl() {
+    let parent = this.parentNode.parentNode;
+    if (this.value == "") {
+      parent.classList.remove("focus");
+    }
+  }
+
+  inputs.forEach((input) => {
+    input.addEventListener("focus", addcl);
+    input.addEventListener("blur", remcl);
+  });
+
+  return (
+    <>
+      <img className="wave" src={Wave} />
+      <div className="container">
+        {" "}
+        <div className="img">
+          {" "}
+          <img src={Bg} />
         </div>
-      </Container>
-    </div>
+        <div className="login-content">
+          {" "}
+          <form onSubmit={handleSubmit} className="form-login">
+            <img src={Avatar} />
+            <h2 className="title">Welcome</h2>
+            {error && <Alert variant="danger">{error}</Alert>}
+
+            <div className="input-div one">
+              <div className="i">
+                <i className="fas fa-user"></i>
+              </div>
+
+              <div className="div">
+                <input
+                  type="text"
+                  ref={emailRef}
+                  placeholder="Email"
+                  className="input"
+                />
+              </div>
+            </div>
+            <div className="input-div pass">
+              <div className="i">
+                <i className="fas fa-lock"></i>
+              </div>
+              <div className="div">
+                <input
+                  type="password"
+                  placeholder="Password"
+                  className="input"
+                  ref={passwordRef}
+                />
+              </div>
+            </div>
+            <div className="input-div pass">
+              <div className="i">
+                <i className="fas fa-lock"></i>
+              </div>
+              <div className="div">
+                <input
+                  type="password"
+                  placeholder="Confirm Password"
+                  className="input"
+                  ref={passwordConfirmRef}
+                />
+              </div>
+            </div>
+
+            <input
+              type="submit"
+              disabled={loading}
+              className="form-button"
+              value="Sign Up"
+            />
+            <div className="mt-2 text-center w-100">
+              Already have an account{" "}
+              <LoginLink to="/admin/login">Login </LoginLink>
+            </div>
+          </form>{" "}
+        </div>
+      </div>
+    </>
   );
 };
 
-export default Signup;
+export default Login;
