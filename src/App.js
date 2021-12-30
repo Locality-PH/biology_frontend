@@ -1,3 +1,4 @@
+import React from "react";
 import { useAuth } from "contexts/AuthContext";
 import Login from "./views/auth-view/Login";
 import Signup from "./views/auth-view/Signup";
@@ -7,7 +8,8 @@ import TestRegister from "./views/auth-view/TestRegister";
 import PrivateRouteAdmin from "components/Private/PrivateRouteAdmin";
 import AdminLayout from "layouts/Admin.js";
 import { Route, Switch, Redirect } from "react-router-dom";
-import React from "react";
+import ClientLogin from "views/auth-view/client/Login";
+import ClientRegister from "views/auth-view/client/Register";
 
 function App() {
   const { localData, localrole } = useAuth(); // determine if authorized, from context or however you're doing it
@@ -36,6 +38,14 @@ function App() {
           <Route path="/admin" render={(props) => <AdminLayout {...props} />} />
         </PrivateRouteAdmin>
         {/* ADMINSIDE */}
+        {/* CLIENTSIDE */}
+        <Route path="/client/login">
+          <ClientLogin />{" "}
+        </Route>
+        <Route path="/client/register">
+          <ClientRegister />{" "}
+        </Route>
+        {/* CLIENTSIDE */}
       </Switch>
     </div>
   );

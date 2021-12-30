@@ -26,7 +26,6 @@ import FixedPlugin from "components/FixedPlugin/FixedPlugin.js";
 
 import routes from "routes.js";
 
-impo
 import sidebarImage from "assets/img/sidebar-3.jpg";
 
 function Admin() {

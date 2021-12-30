@@ -19,10 +19,10 @@ function UserProfileTest() {
     const userID = localStorage.getItem('mid');
     // const userID = "61c287d146f87f872634f860";
 
-    
+
     console.log("Teacher ID: " + teacherID)
     console.log("user ID: " + userID)
-    
+
     setTeacherID(teacherID)
     setUserID(userID)
 
@@ -58,13 +58,13 @@ function UserProfileTest() {
   useEffect(() => {
     console.log("teacher")
     console.log(teacher)
-    setInitialVal({...initialVal, ...teacher})
+    setInitialVal({ ...initialVal, ...teacher })
   }, [teacher])
 
   useEffect(() => {
     console.log("user")
     console.log(user)
-    setInitialVal({...initialVal, ...user})
+    setInitialVal({ ...initialVal, ...user })
   }, [user])
 
   useEffect(() => {
@@ -74,7 +74,7 @@ function UserProfileTest() {
   }, [initialVal])
 
   const test = () => {
-    const array = {...teacher, ...user}
+    const array = { ...teacher, ...user }
     console.log(array)
     form.resetFields();
   }
@@ -92,9 +92,9 @@ function UserProfileTest() {
               initialValues={initialVal}
               form={form}
             >
-              <Row>
+              <Row >
                 <Col xs={24} sm={24} md={24} lg={24}>
-                  <Row gutter={10}>
+                  <Row gutter={10} className="form-row-style">
                     <Col xs={24} sm={24} md={12}>
                       <Form.Item
                         label={<p className="label-form-style">First Name: </p>}
@@ -106,7 +106,7 @@ function UserProfileTest() {
                           },
                         ]}
                       >
-                        <input className="form-input-style" />
+                        <input className="custom-input" />
                       </Form.Item>
                     </Col>
                     <Col xs={24} sm={24} md={12}>
@@ -120,7 +120,7 @@ function UserProfileTest() {
                           },
                         ]}
                       >
-                        <input className="form-input-style" />
+                        <input className="custom-input" />
                       </Form.Item>
                     </Col>
                     <Col xs={24} sm={24} md={12}>
@@ -133,21 +133,21 @@ function UserProfileTest() {
                           message: 'Please enter a valid email!'
                         }]}
                       >
-                        <input className="form-input-style" />
+                        <input className="custom-input" />
                       </Form.Item>
                     </Col>
-                    <Col xs={24} sm={24} md={12}>
+                    {/* <Col xs={24} sm={24} md={12}>
                       <Form.Item
                         label={<p className="label-form-style">Date of Birth: </p>}
                         name="dateOfBirth"
                       >
                         <DatePicker className="w-100 form-input-style" />
                       </Form.Item>
-                    </Col>
+                    </Col> */}
                   </Row>
-                  <Button type="primary" htmlType="submit" className="form-submit-btn-style">
+                  <button type="submit" className="form-submit-btn-style custom-button">
                     Save Change
-                  </Button>
+                  </button>
                 </Col>
               </Row>
             </Form>

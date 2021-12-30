@@ -22,6 +22,7 @@ import { useAuth } from "contexts/AuthContext";
 import { Avatar, Menu, Dropdown } from "antd";
 import utils from "utils";
 import routes from "routes.js";
+import "../../assets/css/admin-navbar.css"
 
 function Header() {
   const [error, setError] = useState("");
@@ -124,7 +125,7 @@ function Header() {
                 href="/admin/user"
               >
                 {/* <Avatar src="https://joeschmoe.io/api/v1/random" /> */}
-                <Avatar style={{ backgroundColor: "green" }} >{utils.getNameInitial("Giann Mediavillo")} </Avatar>
+                <Avatar className="navbar-avatar-icon"  size={33} style={{ backgroundColor: "green" }} >{utils.getNameInitial("Giann Mediavillo")} </Avatar>
               </Nav.Link>
             </Nav.Item>
             <Nav.Item >
@@ -132,7 +133,7 @@ function Header() {
                 style={{ margin: "auto auto auto -10px" }}
               >
                 <Dropdown overlay={menu} trigger={['click']}>
-                  <img src="/img/others/settings.png" style={{ height: "32px", width: "32px" }} />
+                  <img className="navbar-gear-icon" src="https://cdn-icons.flaticon.com/png/512/484/premium/484562.png?token=exp=1640689756~hmac=9200120429412fc6908b32e8fea9aa50" style={{ height: "32px", width: "32px" }} />
                 </Dropdown>
               </Nav.Link>
             </Nav.Item>

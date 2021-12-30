@@ -1,0 +1,16 @@
+.navbar-avatar-icon{
+    transition-duration: 200ms;
+}
+
+.navbar-avatar-icon:hover{
+    transform: translateY(-2px);
+}
+
+.navbar-gear-icon{
+    transition-duration: 300ms;
+    transition-timing-function: ease-in-out;
+}
+
+.navbar-gear-icon:hover{
+    transform: rotate(60deg)
+}
