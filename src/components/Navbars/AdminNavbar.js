@@ -68,7 +68,7 @@ function Header() {
   const menu = (
     <Menu style={{ marginTop: "5px" }}>
       <Menu.Item key="1"><Link to="/admin/user">Edit Account</Link></Menu.Item>
-      <Menu.Item key="1" onClick={() => handleLogout()}>Log out</Menu.Item>
+      <Menu.Item key="2" onClick={() => handleLogout()}>Log out</Menu.Item>
     </Menu>
   );
 

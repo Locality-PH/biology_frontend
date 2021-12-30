@@ -2,7 +2,10 @@ import Dashboard from "views/app-view/Dashboard.js";
 
 import Classroom from "views/app-view/Classroom/Classroom";
 import CreateClassroom from "views/app-view/Classroom/CreateClassroom";
+import ViewClassroom from "views/app-view/Classroom/ViewClassroom";
+import EditClassroom from "views/app-view/Classroom/EditClassroom";
 
+import ViewModule from "views/app-view/Classroom/ViewModule"
 
 import TableList from "views/app-view/TableList.js";
 import TestAntDesign from "./views/app-view/TestAntDesign";
@@ -30,7 +33,7 @@ const dashboardRoutes = [
   },
   {
     path: "/classroom/create-new",
-    name: "Classroom",
+    name: "New Classroom",
     icon: "",
     component: CreateClassroom,
     layout: "/admin",
@@ -38,22 +41,31 @@ const dashboardRoutes = [
     isExact: false,
   },
   {
-    path: "/classroom/:id",
+    path: "/classroom/:class_code",
+    name: "View Classroom",
+    icon: "",
+    component: ViewClassroom,
+    layout: "/admin",
+    renderSidebar: false,
+    isExact: true,
+  },
+  {
+    path: "/classroom/edit/:id",
     name: "Classroom",
     icon: "nc-icon nc-notes",
-    component: Dashboard,
+    component: EditClassroom,
     layout: "/admin",
     renderSidebar: false,
     isExact: false,
   },
   {
-    path: "/antd",
-    name: "Test Ant Design",
-    icon: "nc-icon nc-bell-55",
-    component: TestAntDesign,
+    path: "/classroom/:class_code/:module_id",
+    name: "View Module",
+    icon: "",
+    component: ViewModule,
     layout: "/admin",
-    renderSidebar: true,
-    isExact: false,
+    renderSidebar: false,
+    isExact: true,
   },
   {
     path: "/user",
@@ -74,72 +86,5 @@ const dashboardRoutes = [
     isExact: false,
   },
 ];
-
-// const dashboardRoutes = [
-//   {
-//     upgrade: true,
-//     path: "/upgrade",
-//     name: "Upgrade to PRO",
-//     icon: "nc-icon nc-alien-33",
-//     component: Upgrade,
-//     layout: "/admin",
-//   },
-//   {
-//     path: "/dashboard",
-//     name: "Dashboard",
-//     icon: "nc-icon nc-chart-pie-35",
-//     component: Dashboard,
-//     layout: "/admin",
-//   },
-//   {
-//     path: "/user",
-//     name: "User Profile",
-//     icon: "nc-icon nc-circle-09",
-//     component: UserProfile,
-//     layout: "/admin",
-//   },
-//   {
-//     path: "/table",
-//     name: "Table List",
-//     icon: "nc-icon nc-notes",
-//     component: TableList,
-//     layout: "/admin",
-//   },
-//   {
-//     path: "/typography",
-//     name: "Typography",
-//     icon: "nc-icon nc-paper-2",
-//     component: Typography,
-//     layout: "/admin",
-//   },
-//   {
-//     path: "/icons",
-//     name: "Icons",
-//     icon: "nc-icon nc-atom",
-//     component: Icons,
-//     layout: "/admin",
-//   },
-//   {
-//     path: "/maps",
-//     name: "Maps",
-//     icon: "nc-icon nc-pin-3",
-//     component: Maps,
-//     layout: "/admin",
-//   },
-//   {
-//     path: "/notifications",
-//     name: "Notifications",
-//     icon: "nc-icon nc-bell-55",
-//     component: Notifications,
-//     layout: "/admin",
-//   },
-//   {
-//     path: "/antd",
-//     name: "Test Ant Design",
-//     icon: "nc-icon nc-bell-55",
-//     component: TestAntDesign,
-//     layout: "/admin",
-//   },
-// ];
 
 export default dashboardRoutes;

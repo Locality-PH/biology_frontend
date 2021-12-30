@@ -138,7 +138,7 @@ function UserProfileTest() {
                           message: 'Please enter a valid email!'
                         }]}
                       >
-                        <Input className="custom-input" />
+                        <Input noStyle className="custom-input" />
                       </Form.Item>
                     </Col>
                     {/* <Col xs={24} sm={24} md={12}>
