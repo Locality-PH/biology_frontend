@@ -4,7 +4,7 @@ import {
   Row,
   Col,
 } from "react-bootstrap";
-import { Card, Table, Menu, Input, Button} from 'antd';
+import { Card, Table, Menu, Input, Button, message} from 'antd';
 import Flex from 'components/shared-components/Flex'
 import AvatarStatus from 'components/shared-components/AvatarStatus';
 import utils from 'utils'
@@ -38,7 +38,7 @@ const Classroom = () => {
             console.log(response.data)
           }).catch(() => {
             setIsLoading(false);
-            setError("Could not fetch the data in the server!");
+            message.error("Could not fetch the data in the server!")
           });
     }
     , []);
@@ -79,7 +79,6 @@ const Classroom = () => {
                 <span>{result.section_name}</span>
             )
         },
-        ,
         {
             title: 'Actions',
             dataIndex: 'actions',

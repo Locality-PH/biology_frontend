@@ -7,8 +7,6 @@ import {
 import {message, Button} from "antd"
 import { Document, Page, pdfjs} from "react-pdf";
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`
-
-import samplePDF from "./pdf/Evaluation.pdf"
 import { Link } from "react-router-dom";
 import axios from "axios";
 
@@ -19,17 +17,9 @@ const ViewModule = ({match}) => {
     const [modulePDF, setModulePDF] = useState(null)
 
     useEffect(() => {
+      message.loading("Loading module...", 0)
       axios.get("http://localhost:5000/teacher/get-module/" + moduleId).then((response) => {
-        const pdfData = response.data.module_file.file
-        var len = pdfData.length
-        var bytes = new Uint8Array(len);
-
-        for(var i = 0; i < len; i++){
-          bytes[i] = pdfData.charCodeAt(i)
-        }
-
-        const blob = new Blob(bytes, {type: "application/pdf"})
-        setModulePDF(samplePDF)
+        setModulePDF(response.data)
       }).catch(() => {
         message.error("The action can't be completed, please try again.")
       });
@@ -37,10 +27,9 @@ const ViewModule = ({match}) => {
     , []);
 
     const onDocumentLoadSuccess = ({numPages} ) => {
+      message.destroy()
       setNumPages(numPages);
     }
-
-    console.log(modulePDF)
 
     return (
         <>
@@ -56,6 +45,7 @@ const ViewModule = ({match}) => {
                     new Array(numPages),
                     (el, index) => (
                       <Page
+                        noData="Loading PDF..."
                         key={`page_${index + 1}`}
                         pageNumber={index + 1}
                       />

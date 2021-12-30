@@ -29,7 +29,7 @@ const ModulesTable = ({classCode}) => {
             console.log(response.data)
           }).catch(() => {
             setIsLoading(false);
-            setError("Could not fetch the data in the server!");
+            message.error("Could not fetch the data in the server!")
           });
     }
     , []);
@@ -58,6 +58,10 @@ const ModulesTable = ({classCode}) => {
           message.destroy()
           message.error("The action can't be completed, please try again.")
         }
+      }).catch(error => {
+          console.log(error)
+          message.destroy()
+          message.error("The action can't be completed, please try again.")
       });
 
     }
@@ -80,10 +84,10 @@ const ModulesTable = ({classCode}) => {
             )
         },
         {
-          title: 'File Name',
+          title: 'Finished by',
           dataIndex: 'filename',
           render: (_, result) => (
-              <span>{result.module_file.filename}</span>
+              <span>{result.finished} student</span>
           )
       },
         {
@@ -93,11 +97,11 @@ const ModulesTable = ({classCode}) => {
                 <EllipsisDropdown 
             menu={
                 <Menu>
-                    <Menu.Item key="0" onClick={() => viewModule(result.teacher_id)}>
-                        <>
+                    <Menu.Item key="0">
+                        <Link to={`/admin/classroom/${classCode}/${result.teacher_id}`}>
                             <EyeOutlined />
                             <span className="ml-2">View</span>
-                        </>
+                        </Link>
                     </Menu.Item>
                     <Menu.Item key="1" onClick={() => downloadModule(result.teacher_id)}>
                         <>
