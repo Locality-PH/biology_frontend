@@ -30,56 +30,12 @@
     display: block !important;
     margin-left: auto !important;
     margin-right: auto !important;
-    width: 50% !important;
+    /* width: 50% !important;
     height: 75px !important;
-    width: 75px !important;
+    width: 75px !important; */
     margin-top: -60px !important;
 }
 
-.custom-input{
-    border: 0;
-    outline: 0;
-    width: 100%;
-    background: transparent;
-    border-bottom: 2px solid black;
-    transition-duration: 150ms;
-    animation-direction:reverse;
-    margin-top: -5px;
-}
-
-.custom-input:hover, .custom-input:focus{
-    border-bottom: 4px solid green;
-    font-weight: bold;
-}
-
-
-.custom-button {
-  background-color: #0ca049;
-  border-color: #0ca049;
-  border-width: 2px;
-  border-radius: 4px;
-  box-shadow: rgba(0, 0, 0, .1) 0 2px 4px 0;
-  box-sizing: border-box;
-  color: #fff;
-  cursor: pointer;
-  font-family: "Akzidenz Grotesk BQ Medium", -apple-system, BlinkMacSystemFont, sans-serif;
-  font-weight: 400;
-  outline: none;
-  padding: 5px 8px;
-  text-align: center;
-  transform: translateY(0);
-  transition: transform 150ms, box-shadow 150ms;
-  user-select: none;
-  -webkit-user-select: none;
-  touch-action: manipulation;
-  float: right;
-}
-
-.custom-button:hover {
-  background-color: #0f8540;
-  box-shadow: rgba(0, 0, 0, .15) 0 3px 9px 0;
-  transform: translateY(-4px);
-}
 
 
 

@@ -17,8 +17,7 @@
 */
 import React, { Component, useState, useEffect} from "react";
 import { useLocation, useHistory, Link } from "react-router-dom";
-import { Navbar, Container, Nav, Button,Dropdown } from "react-bootstrap";
-
+import { Navbar, Container, Nav, Button } from "react-bootstrap";
 import { useAuth } from "contexts/AuthContext";
 import { Avatar, Menu, Dropdown } from "antd";
 import utils from "utils";
@@ -134,7 +133,7 @@ function Header() {
                 style={{ margin: "auto auto auto -10px" }}
               >
                 <Dropdown overlay={menu} trigger={['click']}>
-                  <img className="navbar-gear-icon" src="https://cdn-icons.flaticon.com/png/512/484/premium/484562.png?token=exp=1640689756~hmac=9200120429412fc6908b32e8fea9aa50" style={{ height: "32px", width: "32px" }} />
+                  <img className="navbar-gear-icon" src="/img/others/gear.png" style={{ height: "32px", width: "32px" }} />
                 </Dropdown>
               </Nav.Link>
             </Nav.Item>

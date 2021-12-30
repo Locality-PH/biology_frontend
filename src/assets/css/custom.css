@@ -235,7 +235,7 @@ body {
   }
 }
 
-.logo {
+/* .logo {
   float: left !important;
   width: 120px;
   height: 31px;
@@ -246,7 +246,7 @@ body {
 .logo {
   float: left;
   margin: 16px 0 16px 24px;
-}
+} */
 
 .site-layout-background {
   background: #fff !important;

@@ -1,10 +1,12 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import { Row, Card, Col, Form, Input, Checkbox, Button, Space } from "antd"
 import { FaUserAlt } from "react-icons/fa"
 import { AiFillLock } from "react-icons/ai"
 import { FcGoogle } from "react-icons/fc"
 
 import "./Login.css"
+import "assets/css/custom-design.css"
 
 
 function ClientLogin() {
@@ -26,6 +28,11 @@ function ClientLogin() {
         backgroundOrigin: "content-box",
         overflow: "hidden",
     }
+
+    const handleForm = (values) => {
+        console.log(values)
+    }
+
     return (
         <div style={divStyle}>
             <Row className="h-100" justify='center' align="middle" >
@@ -34,9 +41,12 @@ function ClientLogin() {
 
                     <Row gutter={70}>
 
-                        <Col span={12} style={{ height: "auto" }}>
+                        <Col xxl={12} xl={12} lg={12} md={24} sm={24} xs={24} style={{ height: "auto" }}>
                             <h2 className='login-card-label'>Login</h2>
-                            <Form layout='horizontal'>
+                            <Form
+                                layout='horizontal'
+                                onFinish={handleForm}
+                            >
 
                                 <div className="form-input-field-style">
                                     <Form.Item
@@ -70,27 +80,31 @@ function ClientLogin() {
                                 </div>
 
                                 <Space className='w-100' direction='vertical'>
-                                    <Row className='w-100' align='between'>
-                                        <Col span={12}>
-                                            <Checkbox>Remember me</Checkbox>
+                                    <Row className='w-100' align='between' justify="center" style={{ marginBottom: "15px" }}>
+                                        <Col xxl={12} xl={12} lg={12} md={24} sm={24} xs={24}>
+                                            <Checkbox className='remember-me-style'>Remember me</Checkbox>
                                         </Col>
-                                        <Col span={12} >
-                                            <button className="custom-button">Sign in</button>
+                                        <Col xxl={12} xl={12} lg={12} md={24} sm={24} xs={24} >
+                                            <button className="custom-button-green sm-btn">Sign in</button>
                                         </Col>
                                     </Row>
 
                                     <div className='w-100 center-div login-with'>
-                                        <Space align='center'>
+                                        <Space>
                                             <p className='m-0'>Login with: </p>
                                             <button className='custom-button-white'><FcGoogle /></button>
                                         </Space>
+                                    </div>
+
+                                    <div className="center-div">
+                                        <Link to="/client/register" className="login-custom-link">Create an account</Link>
                                     </div>
                                 </Space>
 
                             </Form>
                         </Col>
-                        <Col span={12} style={rightLoginDiv}>
 
+                        <Col xxl={12} xl={12} lg={12} md={0} sm={0} xs={0} style={rightLoginDiv}>
                         </Col>
                     </Row>
                 </Card>

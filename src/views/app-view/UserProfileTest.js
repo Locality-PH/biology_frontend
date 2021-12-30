@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
-import "./UserProfile.css"
 import { Form, Avatar, Button, Input, DatePicker, Row, Col, message, Upload, Card, } from 'antd';
 import Axios from "axios"
+import utils from "utils";
 
+import "./UserProfile.css"
+import "assets/css/custom-design.css"
 
 function UserProfileTest() {
   const [teacherID, setTeacherID] = useState("")
@@ -99,6 +101,7 @@ function UserProfileTest() {
                       <Form.Item
                         label={<p className="label-form-style">First Name: </p>}
                         name="first_name"
+                        required={false}
                         rules={[
                           {
                             required: true,
@@ -106,13 +109,14 @@ function UserProfileTest() {
                           },
                         ]}
                       >
-                        <input className="custom-input" />
+                        <Input className="custom-input" />
                       </Form.Item>
                     </Col>
                     <Col xs={24} sm={24} md={12}>
                       <Form.Item
                         label={<p className="label-form-style">Last Name: </p>}
                         name="last_name"
+                        required={false}
                         rules={[
                           {
                             required: true,
@@ -120,20 +124,21 @@ function UserProfileTest() {
                           },
                         ]}
                       >
-                        <input className="custom-input" />
+                        <Input className="custom-input" />
                       </Form.Item>
                     </Col>
                     <Col xs={24} sm={24} md={12}>
                       <Form.Item
                         label={<p className="label-form-style">Email: </p>}
                         name="email"
+                        required={false}
                         rules={[{
                           required: true,
                           type: 'email',
                           message: 'Please enter a valid email!'
                         }]}
                       >
-                        <input className="custom-input" />
+                        <Input className="custom-input" />
                       </Form.Item>
                     </Col>
                     {/* <Col xs={24} sm={24} md={12}>
@@ -145,7 +150,7 @@ function UserProfileTest() {
                       </Form.Item>
                     </Col> */}
                   </Row>
-                  <button type="submit" className="form-submit-btn-style custom-button">
+                  <button type="submit" className="form-submit-btn-style custom-button-green">
                     Save Change
                   </button>
                 </Col>
@@ -166,7 +171,7 @@ function UserProfileTest() {
             />
           }
         >
-          <Avatar src={require("assets/img/faces/face-0.jpg").default} className="profile-picture-style" />
+          <Avatar className="profile-picture-style" size={70} style={{ backgroundColor: "green" }} >{utils.getNameInitial("Giann Mediavillo")} </Avatar>
           <h4 className="text-center">Mike Andrew</h4>
           <p className="text-center">michael24</p>
 
