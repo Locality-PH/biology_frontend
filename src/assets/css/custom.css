@@ -234,3 +234,124 @@ body {
     justify-content: center;
   }
 }
+
+.logo {
+  float: left !important;
+  width: 120px;
+  height: 31px;
+  margin: 16px 24px 16px 0;
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.logo {
+  float: left;
+  margin: 16px 0 16px 24px;
+}
+
+.site-layout-background {
+  background: #fff !important;
+  height: 100vh;
+}
+
+.topnav {
+  overflow: hidden;
+  background-color: white;
+}
+
+.topnav a {
+  float: left;
+  color: #292525;
+  text-align: center;
+  padding: 0px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+.topnav a.active {
+  background-color: #04aa6d;
+  color: white;
+}
+
+.topnav-right {
+  float: right;
+}
+
+.ant-menu-overflow {
+  float: left;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 0px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+.ant-layout-header {
+  height: 64px;
+  padding: 0 50px;
+  color: rgba(0, 0, 0, 0.85);
+  line-height: 64px;
+  background: white !important;
+}
+
+.white-avatar {
+  background-color: white !important;
+  border-radius: 10px;
+}
+
+.hover-underline-animation {
+  display: inline-block;
+  position: relative;
+  color: #0087ca;
+}
+
+.hover-underline-animation:after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  transform: scaleX(0);
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background-color: #0087ca;
+  transform-origin: bottom right;
+  transition: transform 0.25s ease-out;
+}
+
+.hover-underline-animation:hover:after {
+  transform: scaleX(1);
+  transform-origin: bottom left;
+}
+
+.hover-underline-animation li {
+  color: #0087ca;
+}
+
+.hover-underline-animation li:after {
+  content: "";
+  position: absolute !important;
+  transform: scaleX(0) !important;
+  height: 2px !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  background-color: #0087ca !important;
+  transform-origin: bottom right !important;
+  transition: transform 0.25s ease-out !important;
+}
+
+.hover-underline-animation li:hover:after {
+  transform: scaleX(1);
+  transform-origin: bottom left;
+}
+
+.ant-menu-overflow {
+  background-color: transparent !important;
+  border: none !important;
+}
+@media (min-width: 304px) {
+  .navbar-expand-lg .navbar-nav {
+    flex-direction: row;
+  }
+}
+.navbar {
+  padding-top: 0px !important;
+  padding-bottom: 0px !important;
+}

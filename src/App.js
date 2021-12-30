@@ -1,6 +1,8 @@
 import { useAuth } from "contexts/AuthContext";
 import Login from "./views/auth-view/Login";
 import Signup from "./views/auth-view/Signup";
+import ClientLayout from "layouts/Client.js";
+
 // import TestLogin from "./views/auth-view/TestLogin";
 // import TestRegister from "./views/auth-view/TestRegister";
 
@@ -37,6 +39,8 @@ function App() {
           <Route path="/admin" render={(props) => <AdminLayout {...props} />} />
         </PrivateRouteAdmin>
         {/* ADMINSIDE */}
+
+        <ClientLayout />
       </Switch>
     </div>
   );

@@ -1,11 +1,10 @@
 import React, { useRef, useState } from "react";
-import { Card, Form, Alert, Container, Button} from "react-bootstrap";
+import { Card, Form, Alert, Container, Button } from "react-bootstrap";
 import { Link, useHistory } from "react-router-dom";
 import { useAuth } from "contexts/AuthContext";
 import { auth } from "firebase";
 import axios from "axios";
-import { FcGoogle } from "react-icons/fc"
-
+import { FcGoogle } from "react-icons/fc";
 
 const Login = () => {
   const emailRef = useRef();
@@ -67,7 +66,7 @@ const Login = () => {
   }
 
   async function loginGoogleUser(e) {
-    SignInWithGoogle(history)
+    SignInWithGoogle(history);
   }
 
   return (
@@ -112,7 +111,10 @@ const Login = () => {
                   </Button>
                 </Form>
 
-                <Button className="mt-4 text-center w-100" onClick={(e) => loginGoogleUser(e)}>
+                <Button
+                  className="mt-4 text-center w-100"
+                  onClick={(e) => loginGoogleUser(e)}
+                >
                   <FcGoogle className="mr-2" /> Login with Google
                 </Button>
               </Card.Body>
