@@ -171,6 +171,8 @@ function UserProfileTest() {
             />
           }
         >
+          {/* <Avatar className="profile-picture-style" size={70} style={{ backgroundColor: "green" }} >{utils.getNameInitial("Giann Mediavillo")} </Avatar> */}
+
           <Avatar className="profile-picture-style" size={70} style={{ backgroundColor: "green" }} >{utils.getNameInitial("Giann Mediavillo")} </Avatar>
           <h4 className="text-center">Mike Andrew</h4>
           <p className="text-center">michael24</p>
