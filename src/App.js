@@ -2,8 +2,10 @@ import React from "react";
 import { useAuth } from "contexts/AuthContext";
 import Login from "./views/auth-view/Login";
 import Signup from "./views/auth-view/Signup";
-import TestLogin from "./views/auth-view/TestLogin";
-import TestRegister from "./views/auth-view/TestRegister";
+import ClientLayout from "layouts/Client.js";
+
+// import TestLogin from "./views/auth-view/TestLogin";
+// import TestRegister from "./views/auth-view/TestRegister";
 
 import PrivateRouteAdmin from "components/Private/PrivateRouteAdmin";
 import AdminLayout from "layouts/Admin.js";
@@ -25,12 +27,13 @@ function App() {
         <Route path="/admin/login">
           <Login />{" "}
         </Route>
-        <Route path="/admin/testlogin">
+        {/* <Route path="/admin/testlogin">
           <TestLogin />{" "}
-        </Route>
-        <Route path="/admin/testregister">
+        </Route> */}
+        {/* <Route path="/admin/testregister">
           <TestRegister />{" "}
         </Route>
+        */}
         <Route path="/admin/signup">
           <Signup />{" "}
         </Route>
@@ -46,6 +49,8 @@ function App() {
           <ClientRegister />{" "}
         </Route>
         {/* CLIENTSIDE */}
+
+        <ClientLayout />
       </Switch>
     </div>
   );
