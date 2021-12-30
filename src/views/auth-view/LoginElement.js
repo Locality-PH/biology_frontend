@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import { Link as LinkRouter } from "react-router-dom";
 import { Card, Button, Form, Alert, Container } from "react-bootstrap";
-
 export const Nav = styled.nav`
   background: #000000;
   height: 80px;
@@ -40,102 +39,124 @@ export const LoginLink = styled(LinkRouter)`
     }
   }
 `;
-export const MobileIcon = styled.div`
-  display: none;
 
-  @media screen and (max-width: 768px) {
-    display: block;
+const BorderlessText = ({ className }) => {
+  const inputs = document.querySelectorAll(".input");
+
+  function addcl() {
+    let parent = this.parentNode.parentNode;
+    parent.classList.add("focus");
+  }
+
+  function remcl() {
+    let parent = this.parentNode.parentNode;
+    if (this.value == "") {
+      parent.classList.remove("focus");
+    }
+  }
+
+  inputs.forEach((input) => {
+    input.addEventListener("focus", addcl);
+    input.addEventListener("blur", remcl);
+  });
+
+  return (
+    <div className={className}>
+      <div className="container-group">
+        {" "}
+        <div className="form-list one">
+          <div className="div">
+            <input type="text" placeholder="Email" className="input" />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export const TextInput = styled(BorderlessText)`
+  .container-group .form-list {
+    position: relative;
+    grid-template-columns: 7% 93%;
+    margin: 25px 0;
+    padding: 5px 0;
+    border-bottom: 2px solid #d9d9d9;
+  }
+  .i i {
+    transition: 0.3s;
+  }
+
+  .form-list > div {
+    position: relative;
+    height: 45px;
+  }
+
+  .form-list > div > h5 {
     position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #999;
+    font-size: 18px;
+    transition: 0.3s;
+  }
+
+  .form-list:before,
+  .form-list:after {
+    content: "";
+    position: absolute;
+    bottom: -2px;
+    width: 0%;
+    height: 2px;
+    background-color: #38d39f;
+    transition: 0.4s;
+  }
+
+  .form-list:before {
+    right: 50%;
+    content: "";
+    position: absolute;
+    bottom: -2px;
+    width: 0%;
+    height: 2px;
+    background-color: #38d39f;
+  }
+
+  .form-list:after {
+    left: 50%;
+    content: "";
+    position: absolute;
+    bottom: -2px;
+    width: 0%;
+    height: 2px;
+    background-color: #38d39f;
+  }
+
+  .form-list.focus:before,
+  .form-list.focus:after {
+    width: 50%;
+  }
+
+  .form-list.focus > div > h5 {
+    top: -5px;
+    font-size: 15px;
+  }
+
+  .form-list.focus > .i > i {
+    color: #38d39f;
+  }
+
+  .form-list > div > input {
+    left: 0;
     top: 0;
-    right: 0;
-    transform: translate(-100%, 60%);
-    font-size: 1.8rem;
-    cursor: pointer;
-    color: #fff;
-  }
-`;
-export const NavMenu = styled.ul`
-  display: flex;
-  align-items: center;
-  list-style: none;
-  text-align: center;
-  margin-right: -22px;
-  @media screen and (max-width: 768px) {
-    display: none;
-  }
-`;
-
-export const NavItem = styled.li`
-  height: 80px;
-`;
-
-export const NavbarContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-  height: 80px;
-  z-index: 1;
-  width: 100%;
-  padding: 0 24px;
-  max-width: 1100px;
-`;
-export const NavBtn = styled.nav`
-  display: flex;
-  align-items: center;
-
-  @media screen and (max-width: 768px) {
-    display: none;
-  }
-`;
-
-//
-export const WaveImage = styled.img`
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  height: 100%;
-  z-index: -1;
-  @media screen and (max-width: 1000px) {
-    img {
-      width: 400px;
-    }
-  }
-`;
-
-export const ImageTwo = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-`;
-export const ImageSub = styled.img`
-  width: 500px;
-`;
-
-export const LoginContent = styled.div`
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  text-align: center;
-  img {
-    height: 100px;
-  }
-  h2 {
-    margin: 15px 0;
-    color: #333;
-    text-transform: uppercase;
-    font-size: 2.9rem;
-  }
-  @media screen and (max-width: 1000px) {
-    h2 {
-      font-size: 2.4rem;
-      margin: 8px 0;
-    }
-  }
-`;
-
-export const FormGlobal = styled(Form)`
-  width: 360px;
-
-  @media screen and (max-width: 1000px) {
-    width: 290px;
+    width: 100%;
+    height: 100%;
+    border: none;
+    outline: none;
+    background: none;
+    padding: 0.5rem 0.7rem;
+    font-size: 1.2rem;
+    color: #555;
+    font-family: "poppins", sans-serif;
   }
 `;
