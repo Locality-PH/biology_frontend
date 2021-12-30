@@ -2,7 +2,9 @@ import React from "react";
 import { Layout, Menu, Breadcrumb, Checkbox } from "antd";
 const { SubMenu } = Menu;
 const { Header, Content, Footer, Sider } = Layout;
-
+import { LoginLink, TextInput } from "../auth-view/LoginElement";
+import { Col, Row } from "antd";
+import TextUnderScore from "components/shared-components/TextUnderScore";
 const Classroom = () => {
   return (
     <Layout>
@@ -60,7 +62,11 @@ const Classroom = () => {
             minHeight: 280,
           }}
         >
-          Content
+          <Col lg={10}>
+            {" "}
+            <TextUnderScore placeholder="Username" />
+            <TextUnderScore placeholder="email" />
+          </Col>
         </Content>
       </Layout>
     </Layout>
