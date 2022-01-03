@@ -1,5 +1,10 @@
 import React, {useState, useEffect} from 'react'
-import { Card, Table, Menu, Input, Button} from 'antd';
+import {
+  Container,
+  Row,
+  Col,
+} from "react-bootstrap";
+import { Card, Table, Menu, Input, Button, message} from 'antd';
 import Flex from 'components/shared-components/Flex'
 import AvatarStatus from 'components/shared-components/AvatarStatus';
 import utils from 'utils'
@@ -13,7 +18,7 @@ import {
 } from '@ant-design/icons';
 import axios from "axios";
 
-const StudentsTable = () => {
+const StudentsTable = ({classCode}) => {
     const userId = localStorage.getItem("mid");
 
     const [students, setStudents] = useState([]);
@@ -25,28 +30,24 @@ const StudentsTable = () => {
     const [deletedMessage, setDeletedMessage] = useState("");
 
     useEffect(() => {
-      setStudents([])
-      setStudentsList([])
-      setIsLoading(false);
-            
-        // axios.get("http://localhost:5000/teacher/get-classrooms/" + userId).then((response) => {
-        //     setStudents(response.data)
-        //     setStudentsList(response.data)
-        //     setIsLoading(false);
-        //     setError(null);
-        //     console.log(response.data)
-        //   }).catch(() => {
-        //     setIsLoading(false);
-        //     setError("Could not fetch the data in the server!");
-        //   });
+        axios.get("http://localhost:5000/teacher/get-classroom-students/" + classCode).then((response) => {
+            setStudents(response.data)
+            setStudentsList(response.data)
+            setIsLoading(false);
+            setError(null);
+            console.log(response.data)
+          }).catch(() => {
+            setIsLoading(false);
+            message.error("Could not fetch the data in the server!")
+          });
     }
     , []);
 
-    const deleteClassroom = (classroom_id) => {
+    const deleteClassroom = (classroomId) => {
 
-      console.log("Delete: " + classroom_id);
+      console.log("Delete: " + classroomId);
       setStudentsList(
-      studentsList.filter((classes) => classes.teacher_id !== classroom_id)
+      studentsList.filter((classes) => classes.teacher_id !== classroomId)
       )
     //   axios.post("http://localhost:5000/teacher/delete-classroom", {"user_id": userId, "classroom_id": classroom_id}).then((response) => {
     //   setDeletedMessage(response.data)
@@ -56,14 +57,7 @@ const StudentsTable = () => {
 
     const tableColumns = [
         {
-            title: 'Classroom Code',
-            dataIndex: 'class_code',
-            render: (_, result) => (
-                <span>{result.class_code}</span>
-            )
-        },
-        {
-            title: 'Classroom Name',
+            title: 'Student Name',
             dataIndex: 'name',
             render: (_, result) => (
                 <Flex>
@@ -73,12 +67,11 @@ const StudentsTable = () => {
         },
         {
             title: 'Section',
-            dataIndex: 'section_name',
+            dataIndex: 'section',
             render: (_, result) => (
-                <span>{result.section_name}</span>
+                <span>{result.section}</span>
             )
         },
-        ,
         {
             title: 'Actions',
             dataIndex: 'actions',
@@ -121,7 +114,7 @@ const StudentsTable = () => {
     
   return (
     <>
-      <Card title="Students"  extra={<><Link to="/admin/classroom"><Button type="primary" style={{backgroundColor: "green", borderColor: "green"}}>Back</Button></Link></>}>
+      <Card title="Your Students" extra={<><Link to="/admin/classroom"><Button type="primary" style={{backgroundColor: "green", borderColor: "green"}}>Back</Button></Link></>}>
         <Flex
           alignItems="center"
           className=""

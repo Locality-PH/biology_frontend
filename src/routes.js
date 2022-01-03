@@ -50,7 +50,7 @@ const dashboardRoutes = [
     isExact: true,
   },
   {
-    path: "/classroom/edit/:id",
+    path: "/classroom/edit/:class_code",
     name: "Classroom",
     icon: "nc-icon nc-notes",
     component: EditClassroom,
