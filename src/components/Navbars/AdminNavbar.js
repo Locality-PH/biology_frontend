@@ -15,23 +15,25 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React, { Component, useState, useEffect} from "react";
+import React, { Component, useState, useEffect } from "react";
 import { useLocation, useHistory, Link } from "react-router-dom";
 import { Navbar, Container, Nav, Button } from "react-bootstrap";
 import { useAuth } from "contexts/AuthContext";
 import { Avatar, Menu, Dropdown } from "antd";
 import utils from "utils";
 import routes from "routes.js";
+
 import "../../assets/css/admin-navbar.css"
+import AvatarProfile from "components/shared-components/AvatarProfile/AvatarProfile";
 
 function Header() {
   const [error, setError] = useState("");
   const { currentUser, logout } = useAuth();
   const history = useHistory();
-  
-  useEffect (() => {
+
+  useEffect(() => {
     console.log(localStorage.getItem('avatar'))
-  },[])
+  }, [])
 
   async function handleLogout() {
     setError("");
@@ -125,7 +127,7 @@ function Header() {
                 href="/admin/user"
               >
                 {/* <Avatar src="https://joeschmoe.io/api/v1/random" /> */}
-                <Avatar className="navbar-avatar-icon"  size={33} style={{ backgroundColor: "green" }} >{utils.getNameInitial("Giann Mediavillo")} </Avatar>
+                <AvatarProfile classname="navbar-avatar-icon" size={35} style={{ backgroundColor: "green", fontSize: "12px", }}/>
               </Nav.Link>
             </Nav.Item>
             <Nav.Item >
@@ -133,7 +135,9 @@ function Header() {
                 style={{ margin: "auto auto auto -10px" }}
               >
                 <Dropdown overlay={menu} trigger={['click']}>
-                  <img className="navbar-gear-icon" src="/img/others/gear.png" style={{ height: "32px", width: "32px" }} />
+                  <div>
+                    <img className="navbar-gear-icon" src="/img/others/gear.png" style={{ height: "32px", width: "32px" }} />
+                  </div>
                 </Dropdown>
               </Nav.Link>
             </Nav.Item>

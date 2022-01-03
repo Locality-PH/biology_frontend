@@ -5,6 +5,8 @@ import utils from "utils";
 
 import "./UserProfile.css"
 import "assets/css/custom-design.css"
+import AvatarProfile from "components/shared-components/AvatarProfile/AvatarProfile";
+
 
 function UserProfileTest() {
   const [teacherID, setTeacherID] = useState("")
@@ -138,7 +140,7 @@ function UserProfileTest() {
                           message: 'Please enter a valid email!'
                         }]}
                       >
-                        <Input noStyle className="custom-input" />
+                        <Input className="custom-input" />
                       </Form.Item>
                     </Col>
                     {/* <Col xs={24} sm={24} md={12}>
@@ -171,9 +173,8 @@ function UserProfileTest() {
             />
           }
         >
-          {/* <Avatar className="profile-picture-style" size={70} style={{ backgroundColor: "green" }} >{utils.getNameInitial("Giann Mediavillo")} </Avatar> */}
 
-          <Avatar className="profile-picture-style" size={70} style={{ backgroundColor: "green" }} >{utils.getNameInitial("Giann Mediavillo")} </Avatar>
+          <AvatarProfile classname="profile-picture-style" size={70} style={{ backgroundColor: "green", fontSize: "25px", }}/>
           <h4 className="text-center">Mike Andrew</h4>
           <p className="text-center">michael24</p>
 

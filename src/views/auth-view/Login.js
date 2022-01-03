@@ -11,6 +11,7 @@ import Avatar from "assets/img/avatar.svg";
 import { LoginLink } from "./LoginElement";
 import { FcGoogle } from "react-icons/fc";
 import axios from "axios";
+
 const Login = () => {
   const emailRef = useRef();
   const passwordRef = useRef();
@@ -18,10 +19,13 @@ const Login = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const history = useHistory();
+
   console.log(currentUser?.uid);
+
   async function loginGoogleUser(e) {
     SignInWithGoogle(history);
   }
+  
   async function handleSubmit(e) {
     e.preventDefault();
     console.log(currentUser?.uid);
