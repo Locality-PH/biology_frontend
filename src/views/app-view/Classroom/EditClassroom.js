@@ -19,17 +19,36 @@ const EditClassroom = ({match}) => {
 
   const [classroomData, setClassroomData] = useState({})
   const [modulesData, setModulesData] = useState([])
+  const [modulesArray, setModulesArray] = useState([])
 
   useEffect(() => {
-    axios.get("http://localhost:5000/teacher/get-classroom-data/" + classCode).then((response) => {
+    axios.get("http://localhost:5000/teacher/get-classroom-modules-array/" + classCode).then((response) => {
+      setModulesArray(response.data)
+      axios.get("http://localhost:5000/teacher/get-classroom-data/" + classCode).then((response) => {
       setClassroomData(response.data)
       setModulesData(response.data.module)
       setIsLoading(false)
+
     }).catch(() => {
       message.error("The action can't be completed, please try again.")
     });
+
+    }).catch(() => {
+      message.error("The action can't be completed, please try again.")
+    });
+    
   }
   , []);
+
+  const updateInitialModules = (data) => {
+    axios.post("http://localhost:5000/teacher/update-initial-modules/" + classCode, data).then((response) => {
+
+    }).catch(error => {
+      console.log(error)
+      message.destroy()
+      message.error("The action can't be completed, please try again.")
+    });
+  }
 
   const updateClassroom = (data) => {
     axios.post("http://localhost:5000/teacher/update-classroom/" + classCode, data).then((response) => {
@@ -41,12 +60,81 @@ const EditClassroom = ({match}) => {
       console.log(error)
       message.destroy()
       message.error("The action can't be completed, please try again.")
-    });;
+    });
   }
 
   const onFinish = values => {
     message.loading("Updating " + values.name + "...", 0)
     setIsDisable(true)
+
+    const initialFmData = new FormData()
+    var finalInitialValues = {}
+
+    var deleteInitialModules = []
+    var onSendInitialModules = []
+
+    var nflInitialModulesId = []
+    var nflInitialModulesName = []
+    var nflInitialModulesLink = []
+
+    var nlInitialModulesId = []
+    var nlInitialModulesName = []
+    var nlInitialModulesLink = []
+
+    console.log("Initial Modules ", values["initial_modules"])
+
+    if(values["initial_modules"] != null){
+      values["initial_modules"].map(result => {
+        onSendInitialModules.push(result._id)
+    })
+
+    const difference = modulesArray
+    .filter(result => !onSendInitialModules.includes(result))
+    .concat(onSendInitialModules.filter(result => !modulesArray.includes(result)))
+
+    deleteInitialModules = difference
+
+    values["initial_modules"].map(result => {
+      if(result.hasOwnProperty("module")){
+        nflInitialModulesId.push(result._id)
+        nflInitialModulesName.push(result.module_name)
+        nflInitialModulesLink.push(result.quiz_link)
+        initialFmData.append("file", result.module.file)
+      }
+      else{
+        nlInitialModulesId.push(result._id)
+        nlInitialModulesName.push(result.module_name)
+        nlInitialModulesLink.push(result.quiz_link)
+      }
+    })
+
+    }
+    else if(values["initial_modules"].length == 0){
+      deleteInitialModules = modulesArray
+    }
+
+    finalInitialValues["class_code"] = classCode
+
+    finalInitialValues["delete_initial_modules"] = deleteInitialModules
+
+    finalInitialValues["nfl_initial_modules_id"] = nflInitialModulesId
+    finalInitialValues["nfl_initial_modules_name"] = nflInitialModulesName
+    finalInitialValues["nfl_initial_modules_link"] = nflInitialModulesLink
+
+    finalInitialValues["nl_initial_modules_id"] = nlInitialModulesId
+    finalInitialValues["nl_initial_modules_name"] = nlInitialModulesName
+    finalInitialValues["nl_initial_modules_link"] = nlInitialModulesLink
+
+    initialFmData.append("values", JSON.stringify(finalInitialValues))
+    updateInitialModules(initialFmData)
+
+    console.log("Onsend Initial Modules", onSendInitialModules)
+    console.log("Delete Initial Modules", deleteInitialModules)
+
+
+    delete values["initial_modules"]
+
+
 
     const fmData = new FormData()
     const moduleNames = []
@@ -101,10 +189,8 @@ const EditClassroom = ({match}) => {
     ["name"]: classroomData.name,
     ["section_name"]: classroomData.section_name,
     ["description"]: classroomData.description,
-    ["initial_modules_data"]: modulesData
+    ["initial_modules"]: modulesData
   }
-
-  console.log(modulesData)
 
 return (
     <Container fluid>
@@ -146,7 +232,7 @@ return (
                 </Form.Item> 
             </Form.Item>
 
-            {/* <Form.List name="initial_modules_data">
+            <Form.List name="initial_modules">
               {(fields, { add, remove }) => (
                 <>
                   {fields.map(({ key, name, fieldKey, ...restField }) => (
@@ -164,7 +250,7 @@ return (
                         valuePropName={[name, 'module']}
                         name={[name, 'module']}
                         fieldKey={[fieldKey, 'module']}
-                        rules={[{ required: true, message: 'Module is required' }]}
+                        // rules={[{ required: true, message: 'Module is required' }]}
                       >
                         <Upload {...props} maxCount={1} defaultFileList={[{
       name: modulesData[key].module_file.filename
@@ -185,7 +271,7 @@ return (
                   ))}
                 </>
               )}
-            </Form.List> */}
+            </Form.List>
 
             <Form.List name="modules_data">
               {(fields, { add, remove }) => (
@@ -233,7 +319,7 @@ return (
 
             <Form.Item>
                 <Button type="primary" htmlType="submit" className="mr-2" style={{backgroundColor: "green", borderColor: "green"}} disabled={isDisable}>Save</Button>
-                <Button htmlType="button" onClick={() => resetForm()}>Reset</Button>
+                {/* <Button htmlType="button" onClick={() => resetForm()}>Reset</Button> */}
             </Form.Item>
         </Form>
         </Card>
