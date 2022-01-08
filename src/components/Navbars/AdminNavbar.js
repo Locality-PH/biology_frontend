@@ -67,6 +67,15 @@ function Header() {
     return "Brand";
   };
 
+  const getBrandLink = () => {
+    for (let i = 0; i < routes.length; i++) {
+      if (location.pathname.indexOf(routes[i].layout + routes[i].path) !== -1) {
+        return routes[i].layout + routes[i].path;
+      }
+    }
+    return "#home";
+  };
+
   const menu = (
     <Menu style={{ marginTop: "5px" }}>
       <Menu.Item key="1"><Link to="/admin/user">Edit Account</Link></Menu.Item>
@@ -85,13 +94,13 @@ function Header() {
           >
             <i className="fas fa-ellipsis-v"></i>
           </Button>
-          <Navbar.Brand
-            href="#home"
-            onClick={(e) => e.preventDefault()}
-            className="mr-2"
-          >
-            {getBrandText()}
-          </Navbar.Brand>
+          <Link to={getBrandLink()}>
+            <Navbar.Brand
+              className="mr-2"
+            >
+              {getBrandText()}
+            </Navbar.Brand>
+          </Link>
         </div>
         <Navbar.Toggle aria-controls="basic-navbar-nav" className="mr-2">
           <span className="navbar-toggler-bar burger-lines"></span>

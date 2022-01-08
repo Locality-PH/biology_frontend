@@ -1,0 +1,54 @@
+.create-quiz .card-box-shadow-style{
+  box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+  border-radius: 10px ;
+  }
+
+.create-quiz .center-tag {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.create-quiz .question-number{
+  margin-top: 10px;
+  font-size: 14px;
+  font-family: "poppins", sans-serif;
+}
+
+.create-quiz .center-div{
+  margin: auto;
+}
+
+.create-quiz .title {
+  font-size: 36px;
+  font-weight: 300;
+  font-family: "poppins", sans-serif;
+}
+
+.create-quiz .question-card{
+  width: 700px;
+  margin-bottom: 40px;
+}
+
+.create-quiz .ant-card .ant-card-body{
+  width: 100% !important;
+  padding: 20px !important;
+}
+
+.create-quiz .underline-input {
+  border: 0 !important;
+  outline: 0 !important;
+  width: 100% !important;
+  background: transparent !important;
+  border-bottom: .5px solid grey !important;
+  transition-duration: 150ms !important;
+  margin-bottom: 10px;
+}
+
+.create-quiz .underline-input:hover, .underline-input:focus {
+  border-bottom: 3px solid green !important;
+  font-weight: bold;
+}
+
+
+  

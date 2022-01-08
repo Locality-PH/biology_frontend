@@ -3,7 +3,7 @@ import { Form, Avatar, Button, Input, DatePicker, Row, Col, message, Upload, Car
 import Axios from "axios"
 import utils from "utils";
 
-import "./UserProfile.css"
+import "assets/css/app-views/UserProfile.css"
 import "assets/css/custom-design.css"
 import AvatarProfile from "components/shared-components/AvatarProfile/AvatarProfile";
 
@@ -84,7 +84,7 @@ function UserProfileTest() {
   }
 
   return (
-    <Row gutter={30} className="user-profile-container">
+    <Row gutter={30} className="user-profile">
       <Col span={16}>
         <Card className="card-box-shadow-style">
           <div className="">

@@ -1,32 +1,32 @@
-.form-row-style .ant-col .ant-form-item .ant-form-item-label{
+.user-profile{
+    margin: 10px 15px !important;
+}
+
+.user-profile .form-row-style .ant-col .ant-form-item .ant-form-item-label{
     padding: 0px;
 }
 
-.card-box-shadow-style {
+.user-profile .card-box-shadow-style {
     box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
     border-radius: 10px;
 }
 
-.label-form-style {
+.user-profile .label-form-style {
     font-size: 14px;
     margin: 0px;
     text-transform: uppercase;
     font-family: "poppins", sans-serif;
 }
 
-.form-submit-btn-style{
+.user-profile .form-submit-btn-style{
     border-radius: 5px;
 }
 
-.form-input-style{
+.user-profile .form-input-style{
     border-radius: 5px;
 }
 
-.user-profile-container{
-    margin: 10px 15px !important;
-}
-
-.profile-picture-style {
+.user-profile .profile-picture-style {
     display: block !important;
     margin-left: auto !important;
     margin-right: auto !important;
