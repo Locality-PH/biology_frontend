@@ -16,7 +16,7 @@ const Login = () => {
   const passwordConfirmRef = useRef();
   const firstNameRef = useRef();
   const lastNameRef = useRef();
-
+  let inputs = document.querySelectorAll(".input");
   const { signup, currentUser, localData } = useAuth();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -34,7 +34,7 @@ const Login = () => {
       await signup(emailRef.current.value, passwordRef.current.value).then(
         () => {
           setTimeout(async () => {
-            auth.onAuthStateChanged((user) => {
+            await auth.onAuthStateChanged((user) => {
               if (user) {
                 const data = {
                   email: user.email,
@@ -82,7 +82,7 @@ const Login = () => {
                 // ...
               }
             });
-          }, 400);
+          }, 1000);
         }
       );
     } catch (e) {
@@ -91,6 +91,18 @@ const Login = () => {
       setLoading(false);
 
       setError("Failed to create an account");
+    }
+  }
+
+  function addcl() {
+    let parent = this.parentNode.parentNode;
+    parent.classList.add("focus");
+  }
+
+  function remcl() {
+    let parent = this.parentNode.parentNode;
+    if (this.value == "") {
+      parent.classList.remove("focus");
     }
   }
 

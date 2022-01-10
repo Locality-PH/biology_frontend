@@ -27,6 +27,7 @@ import "../../assets/css/admin-navbar.css";
 function Header() {
   const [error, setError] = useState("");
   const { currentUser, logout } = useAuth();
+
   const history = useHistory();
 
   useEffect(() => {
@@ -132,7 +133,7 @@ function Header() {
                   src={currentUser?.photoURL}
                   style={{ backgroundColor: "green" }}
                 >
-                  {utils.getNameInitial(currentUser?.displayName)}{" "}
+                  {utils.getNameInitial("fixed this")}{" "}
                 </Avatar>
               </Nav.Link>
             </Nav.Item>
