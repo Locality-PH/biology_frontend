@@ -15,11 +15,13 @@ const TextUnderScore = (props) => {
       parent.classList.remove("focus");
     }
   }
+  setTimeout(() => {
+    inputs.forEach((input) => {
+      input.addEventListener("focus", addcl);
+      input.addEventListener("blur", remcl);
+    });
+  }, 500);
 
-  inputs.forEach((input) => {
-    input.addEventListener("focus", addcl);
-    input.addEventListener("blur", remcl);
-  });
   return (
     <>
       {" "}

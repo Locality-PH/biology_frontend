@@ -15,7 +15,7 @@ const ViewClassroom = ({match}) => {
             <Container fluid>
                 <Row>
                     <Col md="12">
-                        <StudentsTable></StudentsTable>
+                        <StudentsTable classCode={class_code}></StudentsTable>
                     </Col>
                 </Row>
 

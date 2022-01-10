@@ -38,6 +38,7 @@ const ViewModule = ({match}) => {
               <Col md="12">
                 <Link to={`/admin/classroom/${match.params.class_code}`} ><Button type="primary" style={{backgroundColor: "green", borderColor: "green"}}>Back</Button></Link>
                 <Document
+                  noData=""
                   file={modulePDF}
                   onLoadSuccess={onDocumentLoadSuccess}
                 >
@@ -45,7 +46,6 @@ const ViewModule = ({match}) => {
                     new Array(numPages),
                     (el, index) => (
                       <Page
-                        noData="Loading PDF..."
                         key={`page_${index + 1}`}
                         pageNumber={index + 1}
                       />

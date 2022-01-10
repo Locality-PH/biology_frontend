@@ -43,15 +43,25 @@ const Classroom = () => {
     }
     , []);
 
-    const deleteClassroom = (classroomId) => {
-
-      console.log("Delete: " + classroomId);
-      setClassroomsList(
-      classroomsList.filter((classes) => classes.teacher_id !== classroomId)
-      )
-    //   axios.post("http://localhost:5000/teacher/delete-classroom", {"user_id": userId, "classroom_id": classroom_id}).then((response) => {
-    //   setDeletedMessage(response.data)
-    // });
+    const deleteClassroom = (classroomId, classroomName) => {
+      message.loading("Deleting " + classroomName + "...", 0)
+      
+      axios.post("http://localhost:5000/teacher/delete-classroom", {"user_id": userId, "classroom_id": classroomId}).then((response) => {
+        if(response.data == "Deleted"){
+          message.destroy()
+          setClassroomsList(
+            classroomsList.filter((classroom) => classroom.teacher_id !== classroomId)
+            )
+          message.success(classroomName + " has been successfully deleted")
+        }else{
+          message.destroy()
+          message.error("The action can't be completed, please try again.")
+        }
+      }).catch(error => {
+          console.log(error)
+          message.destroy()
+          message.error("The action can't be completed, please try again.")
+      });
 
     }
 
@@ -99,7 +109,7 @@ const Classroom = () => {
                         </Link>
                     </Menu.Item>
                     <Menu.Divider/>
-                    <Menu.Item key="2" onClick={() => deleteClassroom(result.teacher_id)}>
+                    <Menu.Item key="2" onClick={() => deleteClassroom(result.teacher_id, result.name)}>
                         <>
                             <DeleteOutlined />
                             <span className="ml-2">Delete</span>

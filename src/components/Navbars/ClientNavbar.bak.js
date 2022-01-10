@@ -13,6 +13,15 @@ const ClientNavbar = () => {
         >
           Biology App
         </Navbar.Brand>
+        <Navbar className="border-b justify-content-center">
+          <Nav.Item>
+            <Nav.Link href="/home">Active</Nav.Link>
+          </Nav.Item>
+
+          <Nav.Item>
+            <Nav.Link href="/home">Active</Nav.Link>
+          </Nav.Item>
+        </Navbar>
         <Nav.Item className="ml-auto">
           <Nav.Link>
             <NavProfile />

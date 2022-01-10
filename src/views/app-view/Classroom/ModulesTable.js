@@ -45,7 +45,7 @@ const ModulesTable = ({classCode}) => {
     }
 
     const deleteModule = (moduleId, moduleName) => {
-      message.loading("Deleting " + moduleName, 0 + "...")
+      message.loading("Deleting " + moduleName + "...", 0)
       
       axios.post("http://localhost:5000/teacher/delete-module", {"class_code": classCode, "module_id": moduleId}).then((response) => {
         if(response.data == "Deleted"){
@@ -53,7 +53,7 @@ const ModulesTable = ({classCode}) => {
           setModulesList(
             modulesList.filter((module) => module.teacher_id !== moduleId)
             )
-          message.success(moduleName + " has bee successfully deleted")
+          message.success(moduleName + " has been successfully deleted")
         }else{
           message.destroy()
           message.error("The action can't be completed, please try again.")

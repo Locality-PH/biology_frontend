@@ -25,12 +25,18 @@ const CreateClassroom = () => {
         setModalVisible(true)
         setClassCode(response.data)
         console.log(response.data)
+
+      }).catch(error => {
+        console.log(error)
+        message.destroy()
+        message.error("The action can't be completed, please try again.")
       });
+
     }).catch(error => {
       console.log(error)
       message.destroy()
       message.error("The action can't be completed, please try again.")
-    });;
+    });
 
   }
 
