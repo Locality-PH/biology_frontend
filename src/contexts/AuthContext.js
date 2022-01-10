@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect } from "react";
 import { auth } from "../firebase";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-import Axios from "axios"
+import Axios from "axios";
 const provider = new GoogleAuthProvider();
 const AuthContext = React.createContext();
 
@@ -15,38 +15,69 @@ export function AuthProvider({ children }) {
   const [localMid, setLocalMid] = useState();
   const [localrole, setLocalRole] = useState();
 
-  function SignInWithGoogle(history) {
-    return auth.signInWithPopup(provider)
+  async function SignInWithGoogle(history) {
+    return auth
+      .signInWithPopup(provider)
       .then((result) => {
         const user = result.user;
 
-        Axios.post("http://localhost:5000/admin/google-login", { user })
-          .then(
-            (response) => {
-              const currentUserUUID = response.data;
-              console.log("response from controller")
-              console.log(currentUserUUID)
+        Axios.post("http://localhost:5000/admin/google-login", { user }).then(
+          (response) => {
+            const currentUserUUID = response.data;
+            console.log("response from controller");
+            console.log(currentUserUUID);
 
-              Axios.get("http://localhost:5000/admin/login/" + currentUserUUID)
-                .then((res) => {
-                  console.log(res.data);
-                  localStorage.setItem("mid", res.data[0]?.auth_id);
-                  localStorage.setItem("role", res.data[0]?.role);
-                  localStorage.setItem("tid", res.data[0]?.teacher);
+            Axios.get("http://localhost:5000/admin/login/" + currentUserUUID)
+              .then((res) => {
+                console.log(res.data);
+                localStorage.setItem("mid", res.data[0]?.auth_id);
+                localStorage.setItem("role", res.data[0]?.role);
+                localStorage.setItem("tid", res.data[0]?.teacher);
 
-                  localData(res.data[0].uuid, res.data[0]?.role);
-                })
-                .then((_) => {
-                  history.push("/admin/dashboard");
-                });
-            }
-          );
-
-      }).catch((error) => {
-        console.log(error)
+                localData(res.data[0].uuid, res.data[0]?.role);
+              })
+              .then((_) => {
+                history.push("/admin/dashboard");
+              });
+          }
+        );
+      })
+      .catch((error) => {
+        console.log(error);
       });
   }
 
+  async function SignInWithGoogleStudent(history) {
+    return auth
+      .signInWithPopup(provider)
+      .then((result) => {
+        const user = result.user;
+
+        Axios.post("http://localhost:5000/student/google-login", {
+          user,
+        }).then((response) => {
+          const currentUserUUID = response.data;
+          console.log("response from controller");
+          console.log(currentUserUUID);
+
+          Axios.get("http://localhost:5000/student/login/" + currentUserUUID)
+            .then((res) => {
+              console.log(res.data);
+              localStorage.setItem("mid", res.data[0]?.auth_id);
+              localStorage.setItem("role", res.data[0]?.role);
+              localStorage.setItem("sid", res.data[0]?.student);
+
+              localData(res.data[0].uuid, res.data[0]?.role);
+            })
+            .then((_) => {
+              history.push("/home");
+            });
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
   function signup(email, password) {
     return auth.createUserWithEmailAndPassword(email, password);
   }
@@ -71,6 +102,7 @@ export function AuthProvider({ children }) {
     localStorage.removeItem("role");
     localStorage.removeItem("mid");
     localStorage.removeItem("tid");
+    localStorage.removeItem("sid");
 
     return auth.signOut();
   }
@@ -97,7 +129,8 @@ export function AuthProvider({ children }) {
     resetPassword,
     updateEmail,
     updatePassword,
-    SignInWithGoogle
+    SignInWithGoogle,
+    SignInWithGoogleStudent,
   };
   return (
     <AuthContext.Provider value={value}>

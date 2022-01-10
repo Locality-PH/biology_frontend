@@ -1,21 +1,32 @@
 import React from "react";
 import { Layout } from "antd";
-import ClientNavbar from "components/Navbars/ClientNavbar";
+import ClientNavbar from "components/Navbars/Navbar";
 import { useLocation, Route, Switch } from "react-router-dom";
 import HomeDashboard from "views/client-view/HomeDashboard";
-import Classroom from "views/client-view/Classroom";
+import Modules from "views/client-view/Modules";
+import Particles from "react-tsparticles";
+import particlesConfig from "./ParticlesConfig";
 
 function Admin() {
   return (
     <>
       <Layout>
-        <ClientNavbar />
+        <ClientNavbar />{" "}
+        <div>
+          <Particles
+            id="tsparticles"
+            canvasClassName="display-canvas"
+            options={particlesConfig}
+            width="25vw"
+            height="25vh"
+          />{" "}
+        </div>
         <Switch>
           <Route path="/home">
             <HomeDashboard />
           </Route>
-          <Route path="/classroom/">
-            <Classroom />
+          <Route path="/classroom/:id/modules">
+            <Modules />
           </Route>
         </Switch>
       </Layout>

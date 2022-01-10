@@ -11,8 +11,8 @@ import "./assets/css/demo.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import App from "./App";
 
-import 'antd/dist/antd.css';
-import "./assets/css/custom.css"
+import "antd/dist/antd.css";
+import "./assets/css/custom.css";
 
 import AdminLayout from "layouts/Admin.js";
 

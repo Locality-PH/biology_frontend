@@ -49,7 +49,7 @@ function App() {
           <ClientRegister />{" "}
         </Route>
         {/* CLIENTSIDE */}
-
+        {/* <Redirect from="/" to="/client/login" /> */}
         <ClientLayout />
       </Switch>
     </div>
