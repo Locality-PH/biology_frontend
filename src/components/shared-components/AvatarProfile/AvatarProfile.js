@@ -7,8 +7,6 @@ function AvatarProfile(props) {
     const avatar = localStorage.getItem('avatar');
     var AvatarComponent, test;
     
-
-
     useEffect(() => {
         console.log("avatar")
         console.log(avatar)
