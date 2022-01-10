@@ -20,6 +20,7 @@ import {
 
 function Dashboard() {
   const { currentUser, localMid } = useAuth();
+  console.log(currentUser);
   return (
     <>
       <Container fluid>
@@ -32,7 +33,7 @@ function Dashboard() {
               <Card.Body>
                 <Row>
                   <Col xs="5">
-                    <div className="icon-big text-center icon-warning">
+                    <div className="text-center icon-big icon-warning">
                       <i className="nc-icon nc-chart text-warning"></i>
                     </div>
                   </Col>
@@ -47,7 +48,7 @@ function Dashboard() {
               <Card.Footer>
                 <hr></hr>
                 <div className="stats">
-                  <i className="fas fa-redo mr-1"></i>
+                  <i className="mr-1 fas fa-redo"></i>
                   Update Now
                 </div>
               </Card.Footer>
@@ -58,7 +59,7 @@ function Dashboard() {
               <Card.Body>
                 <Row>
                   <Col xs="5">
-                    <div className="icon-big text-center icon-warning">
+                    <div className="text-center icon-big icon-warning">
                       <i className="nc-icon nc-light-3 text-success"></i>
                     </div>
                   </Col>
@@ -73,7 +74,7 @@ function Dashboard() {
               <Card.Footer>
                 <hr></hr>
                 <div className="stats">
-                  <i className="far fa-calendar-alt mr-1"></i>
+                  <i className="mr-1 far fa-calendar-alt"></i>
                   Last day
                 </div>
               </Card.Footer>
@@ -84,7 +85,7 @@ function Dashboard() {
               <Card.Body>
                 <Row>
                   <Col xs="5">
-                    <div className="icon-big text-center icon-warning">
+                    <div className="text-center icon-big icon-warning">
                       <i className="nc-icon nc-vector text-danger"></i>
                     </div>
                   </Col>
@@ -99,7 +100,7 @@ function Dashboard() {
               <Card.Footer>
                 <hr></hr>
                 <div className="stats">
-                  <i className="far fa-clock-o mr-1"></i>
+                  <i className="mr-1 far fa-clock-o"></i>
                   In the last hour
                 </div>
               </Card.Footer>
@@ -110,7 +111,7 @@ function Dashboard() {
               <Card.Body>
                 <Row>
                   <Col xs="5">
-                    <div className="icon-big text-center icon-warning">
+                    <div className="text-center icon-big icon-warning">
                       <i className="nc-icon nc-favourite-28 text-primary"></i>
                     </div>
                   </Col>
@@ -125,7 +126,7 @@ function Dashboard() {
               <Card.Footer>
                 <hr></hr>
                 <div className="stats">
-                  <i className="fas fa-redo mr-1"></i>
+                  <i className="mr-1 fas fa-redo"></i>
                   Update now
                 </div>
               </Card.Footer>
@@ -346,7 +347,7 @@ function Dashboard() {
                     <tbody>
                       <tr>
                         <td>
-                          <Form.Check className="mb-1 pl-0">
+                          <Form.Check className="pl-0 mb-1">
                             <Form.Check.Label>
                               <Form.Check.Input
                                 defaultValue=""
@@ -360,7 +361,7 @@ function Dashboard() {
                           Sign contract for "What are conference organizers
                           afraid of?"
                         </td>
-                        <td className="td-actions text-right">
+                        <td className="text-right td-actions">
                           <OverlayTrigger
                             overlay={
                               <Tooltip id="tooltip-488980961">
@@ -369,7 +370,7 @@ function Dashboard() {
                             }
                           >
                             <Button
-                              className="btn-simple btn-link p-1"
+                              className="p-1 btn-simple btn-link"
                               type="button"
                               variant="info"
                             >
@@ -382,7 +383,7 @@ function Dashboard() {
                             }
                           >
                             <Button
-                              className="btn-simple btn-link p-1"
+                              className="p-1 btn-simple btn-link"
                               type="button"
                               variant="danger"
                             >
@@ -393,7 +394,7 @@ function Dashboard() {
                       </tr>
                       <tr>
                         <td>
-                          <Form.Check className="mb-1 pl-0">
+                          <Form.Check className="pl-0 mb-1">
                             <Form.Check.Label>
                               <Form.Check.Input
                                 defaultChecked
@@ -408,7 +409,7 @@ function Dashboard() {
                           Lines From Great Russian Literature? Or E-mails From
                           My Boss?
                         </td>
-                        <td className="td-actions text-right">
+                        <td className="text-right td-actions">
                           <OverlayTrigger
                             overlay={
                               <Tooltip id="tooltip-537440761">
@@ -417,7 +418,7 @@ function Dashboard() {
                             }
                           >
                             <Button
-                              className="btn-simple btn-link p-1"
+                              className="p-1 btn-simple btn-link"
                               type="button"
                               variant="info"
                             >
@@ -430,7 +431,7 @@ function Dashboard() {
                             }
                           >
                             <Button
-                              className="btn-simple btn-link p-1"
+                              className="p-1 btn-simple btn-link"
                               type="button"
                               variant="danger"
                             >
@@ -441,7 +442,7 @@ function Dashboard() {
                       </tr>
                       <tr>
                         <td>
-                          <Form.Check className="mb-1 pl-0">
+                          <Form.Check className="pl-0 mb-1">
                             <Form.Check.Label>
                               <Form.Check.Input
                                 defaultChecked
@@ -457,7 +458,7 @@ function Dashboard() {
                           what was found when a ravaging rain swept through
                           metro Detroit
                         </td>
-                        <td className="td-actions text-right">
+                        <td className="text-right td-actions">
                           <OverlayTrigger
                             overlay={
                               <Tooltip id="tooltip-577232198">
@@ -466,7 +467,7 @@ function Dashboard() {
                             }
                           >
                             <Button
-                              className="btn-simple btn-link p-1"
+                              className="p-1 btn-simple btn-link"
                               type="button"
                               variant="info"
                             >
@@ -479,7 +480,7 @@ function Dashboard() {
                             }
                           >
                             <Button
-                              className="btn-simple btn-link p-1"
+                              className="p-1 btn-simple btn-link"
                               type="button"
                               variant="danger"
                             >
@@ -490,7 +491,7 @@ function Dashboard() {
                       </tr>
                       <tr>
                         <td>
-                          <Form.Check className="mb-1 pl-0">
+                          <Form.Check className="pl-0 mb-1">
                             <Form.Check.Label>
                               <Form.Check.Input
                                 defaultChecked
@@ -504,7 +505,7 @@ function Dashboard() {
                           Create 4 Invisible User Experiences you Never Knew
                           About
                         </td>
-                        <td className="td-actions text-right">
+                        <td className="text-right td-actions">
                           <OverlayTrigger
                             overlay={
                               <Tooltip id="tooltip-422471719">
@@ -513,7 +514,7 @@ function Dashboard() {
                             }
                           >
                             <Button
-                              className="btn-simple btn-link p-1"
+                              className="p-1 btn-simple btn-link"
                               type="button"
                               variant="info"
                             >
@@ -526,7 +527,7 @@ function Dashboard() {
                             }
                           >
                             <Button
-                              className="btn-simple btn-link p-1"
+                              className="p-1 btn-simple btn-link"
                               type="button"
                               variant="danger"
                             >
@@ -537,7 +538,7 @@ function Dashboard() {
                       </tr>
                       <tr>
                         <td>
-                          <Form.Check className="mb-1 pl-0">
+                          <Form.Check className="pl-0 mb-1">
                             <Form.Check.Label>
                               <Form.Check.Input
                                 defaultValue=""
@@ -548,7 +549,7 @@ function Dashboard() {
                           </Form.Check>
                         </td>
                         <td>Read "Following makes Medium better"</td>
-                        <td className="td-actions text-right">
+                        <td className="text-right td-actions">
                           <OverlayTrigger
                             overlay={
                               <Tooltip id="tooltip-160575228">
@@ -557,7 +558,7 @@ function Dashboard() {
                             }
                           >
                             <Button
-                              className="btn-simple btn-link p-1"
+                              className="p-1 btn-simple btn-link"
                               type="button"
                               variant="info"
                             >
@@ -570,7 +571,7 @@ function Dashboard() {
                             }
                           >
                             <Button
-                              className="btn-simple btn-link p-1"
+                              className="p-1 btn-simple btn-link"
                               type="button"
                               variant="danger"
                             >
@@ -581,7 +582,7 @@ function Dashboard() {
                       </tr>
                       <tr>
                         <td>
-                          <Form.Check className="mb-1 pl-0">
+                          <Form.Check className="pl-0 mb-1">
                             <Form.Check.Label>
                               <Form.Check.Input
                                 defaultValue=""
@@ -593,7 +594,7 @@ function Dashboard() {
                           </Form.Check>
                         </td>
                         <td>Unfollow 5 enemies from twitter</td>
-                        <td className="td-actions text-right">
+                        <td className="text-right td-actions">
                           <OverlayTrigger
                             overlay={
                               <Tooltip id="tooltip-938342127">
@@ -602,7 +603,7 @@ function Dashboard() {
                             }
                           >
                             <Button
-                              className="btn-simple btn-link p-1"
+                              className="p-1 btn-simple btn-link"
                               type="button"
                               variant="info"
                             >
@@ -615,7 +616,7 @@ function Dashboard() {
                             }
                           >
                             <Button
-                              className="btn-simple btn-link p-1"
+                              className="p-1 btn-simple btn-link"
                               type="button"
                               variant="danger"
                             >

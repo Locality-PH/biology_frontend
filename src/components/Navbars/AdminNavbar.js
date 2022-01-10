@@ -15,23 +15,23 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React, { Component, useState, useEffect} from "react";
+import React, { Component, useState, useEffect } from "react";
 import { useLocation, useHistory, Link } from "react-router-dom";
 import { Navbar, Container, Nav, Button } from "react-bootstrap";
 import { useAuth } from "contexts/AuthContext";
 import { Avatar, Menu, Dropdown } from "antd";
 import utils from "utils";
 import routes from "routes.js";
-import "../../assets/css/admin-navbar.css"
+import "../../assets/css/admin-navbar.css";
 
 function Header() {
   const [error, setError] = useState("");
   const { currentUser, logout } = useAuth();
   const history = useHistory();
-  
-  useEffect (() => {
-    console.log(localStorage.getItem('avatar'))
-  },[])
+
+  useEffect(() => {
+    console.log(localStorage.getItem("avatar"));
+  }, []);
 
   async function handleLogout() {
     setError("");
@@ -67,18 +67,22 @@ function Header() {
 
   const menu = (
     <Menu style={{ marginTop: "5px" }}>
-      <Menu.Item key="1"><Link to="/admin/user">Edit Account</Link></Menu.Item>
-      <Menu.Item key="2" onClick={() => handleLogout()}>Log out</Menu.Item>
+      <Menu.Item key="1">
+        <Link to="/admin/user">Edit Account</Link>
+      </Menu.Item>
+      <Menu.Item key="2" onClick={() => handleLogout()}>
+        Log out
+      </Menu.Item>
     </Menu>
   );
 
   return (
     <Navbar bg="light" expand="lg">
       <Container fluid>
-        <div className="d-flex justify-content-center align-items-center ml-2 ml-lg-0">
+        <div className="ml-2 d-flex justify-content-center align-items-center ml-lg-0">
           <Button
             variant="dark"
-            className="d-lg-none btn-fill d-flex justify-content-center align-items-center rounded-circle p-2"
+            className="p-2 d-lg-none btn-fill d-flex justify-content-center align-items-center rounded-circle"
             onClick={mobileSidebarToggle}
           >
             <i className="fas fa-ellipsis-v"></i>
@@ -97,7 +101,7 @@ function Header() {
           <span className="navbar-toggler-bar burger-lines"></span>
         </Navbar.Toggle>
         <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="nav mr-auto" navbar>
+          <Nav className="mr-auto nav" navbar>
             <Nav.Item>
               <Nav.Link
                 data-toggle="dropdown"
@@ -105,7 +109,7 @@ function Header() {
                 onClick={(e) => e.preventDefault()}
                 className="m-0"
               >
-                <span className="d-lg-none ml-1">Dashboard</span>
+                <span className="ml-1 d-lg-none">Dashboard</span>
               </Nav.Link>
             </Nav.Item>
           </Nav>
@@ -120,20 +124,26 @@ function Header() {
               </Nav.Link>
             </Nav.Item> */}
             <Nav.Item>
-              <Nav.Link
-                className="m-0"
-                href="/admin/user"
-              >
+              <Nav.Link className="m-0" href="/admin/user">
                 {/* <Avatar src="https://joeschmoe.io/api/v1/random" /> */}
-                <Avatar className="navbar-avatar-icon"  size={33} style={{ backgroundColor: "green" }} >{utils.getNameInitial("Giann Mediavillo")} </Avatar>
+                <Avatar
+                  className="navbar-avatar-icon"
+                  size={33}
+                  src={currentUser?.photoURL}
+                  style={{ backgroundColor: "green" }}
+                >
+                  {utils.getNameInitial(currentUser?.displayName)}{" "}
+                </Avatar>
               </Nav.Link>
             </Nav.Item>
-            <Nav.Item >
-              <Nav.Link
-                style={{ margin: "auto auto auto -10px" }}
-              >
-                <Dropdown overlay={menu} trigger={['click']}>
-                  <img className="navbar-gear-icon" src="/img/others/gear.png" style={{ height: "32px", width: "32px" }} />
+            <Nav.Item>
+              <Nav.Link style={{ margin: "auto auto auto -10px" }}>
+                <Dropdown overlay={menu} trigger={["click"]}>
+                  <img
+                    className="navbar-gear-icon"
+                    src="/img/others/gear.png"
+                    style={{ height: "32px", width: "32px" }}
+                  />
                 </Dropdown>
               </Nav.Link>
             </Nav.Item>
