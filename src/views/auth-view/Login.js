@@ -1,9 +1,9 @@
 import React, { useRef, useState } from "react";
-import { Card, Button, Form, Alert, Container } from "react-bootstrap";
+import { Card, Form, Alert, Container } from "react-bootstrap";
 import { Link, useHistory } from "react-router-dom";
 import { useAuth } from "contexts/AuthContext";
 import { auth } from "firebase";
-import { Row, Col } from "antd";
+import { Row, Col, Button, Space } from "antd";
 import "assets/css/custom.css";
 import Wave from "assets/img/wave.png";
 import Bg from "assets/img/bg.svg";
@@ -150,13 +150,18 @@ const Login = () => {
               disabled={loading}
               className="form-button"
               value="Login"
+              style={{marginTop:50}}
             />
-            <Button
-              className="mt-4 text-center w-100"
+            <button
+              className="text-center w-100 admin-login-custom-button-style"
               onClick={(e) => loginGoogleUser(e)}
+              style={{borderRadius:30, }}
             >
-              <FcGoogle className="mr-2" /> Login with Google
-            </Button>
+              <Space direction="horizontal" align="middle">
+                <FcGoogle style={{marginTop:-2}}/>
+                <p className="m-0" style={{fontSize:20, color:"grey"}}>Login with Google</p>
+              </Space>
+            </button>
             <div className="mt-2 text-center w-100">
               Need an account?{" "}
               <LoginLink to="/admin/signup">Sign up </LoginLink>
