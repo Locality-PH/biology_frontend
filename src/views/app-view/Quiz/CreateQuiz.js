@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Card, Row, Col, Form, Input, Space, Button, Checkbox, Radio, Select } from 'antd'
+import { Card, Row, Col, Form, Input, Space, Button, Checkbox, Radio, Select, } from 'antd'
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { AiOutlinePlus } from "react-icons/ai"
 import "assets/css/app-views/Quiz/CreateQuiz.css"
@@ -7,8 +7,9 @@ import "assets/css/app-views/Quiz/CreateQuiz.css"
 const { Option } = Select;
 
 const CreateQuiz = () => {
-
+    const [form] = Form.useForm();
     const formRef = React.createRef();
+    const [newQuizType, SetNewQuizType] = useState("Identification")
 
     const tempQuiz = {
         Qid: 1,
@@ -16,7 +17,7 @@ const CreateQuiz = () => {
         Description: "Dis is the description.",
         Question: [
             {
-                id: 1,
+                id: 6,
                 String: "This is the test question 1",
                 Type: "Identification",
                 Answer: [
@@ -25,7 +26,7 @@ const CreateQuiz = () => {
                 Option: [null]
             },
             {
-                id: 2,
+                id: 7,
                 String: "This is a test question 2",
                 Type: "Multiple Choice",
                 Answer: [
@@ -38,7 +39,7 @@ const CreateQuiz = () => {
                 ]
             },
             {
-                id: 3,
+                id: 8,
                 String: "This is a test question 3",
                 Type: "Checkbox",
                 Answer: [
@@ -55,11 +56,16 @@ const CreateQuiz = () => {
     }
 
     const [quiz, setQuiz] = useState(tempQuiz)
-    const [question, setQuestion] = useState(tempQuiz.Question)
+    const [question, setQuestion] = useState(tempQuiz.Question) 
+
+    useEffect(() => {
+        console.log(question)
+        form.resetFields();
+    }, [question])
 
     //Initialize default value here
     const tempInitialVal = [
-        {quiz_type: "Identification"}
+        { quiz_type: "Identification" }
     ]
 
     question.map((question, i) => {
@@ -74,8 +80,8 @@ const CreateQuiz = () => {
                 }
             })
 
-        console.log("option for question " + [i + 1])
-        console.log(optionArray)
+        // console.log("option for question " + [i + 1])
+        // console.log(optionArray)
 
         tempInitialVal.push({ ["question" + [i + 1] + "_options"]: optionArray })
     })
@@ -83,8 +89,8 @@ const CreateQuiz = () => {
     let initialVal = tempInitialVal.reduce(((r, c) => Object.assign(r, c)), {})
     // initialVal = Object.assign(initialVal, initialValuesOptions)
 
-    console.log(tempQuiz)
-    console.log(initialVal)
+    // console.log(tempQuiz)
+    // console.log(initialVal)
 
     const setIsAnswer = (key, Qkey) => {
         let temp_options = formRef.current.getFieldValue("question" + Qkey + "_options");
@@ -103,14 +109,17 @@ const CreateQuiz = () => {
         formRef.current.setFieldsValue({ temp_options });
     };
 
-    const AddQuestion = (quiz_type) => {
-        console.log("add Question")
-        console.log(question.length)
+    const addQuestion = () => {
+        let quiz_type = newQuizType
+        var newQid = 1 // this should be object id
 
-        let newQid = question.length + 1
+       if (question.length > 0) {
+        newQid = question[question.length - 1].id + 1
+       }
 
         const newQuestion = {
-            String: "This is a test question " + newQid,
+            id: newQid,
+            String: "This is a new test question ",
             Type: quiz_type,
             Answer: [null],
             Option: [null]
@@ -120,14 +129,38 @@ const CreateQuiz = () => {
         setQuestion(question.concat(newQuestion))
     }
 
+    const removeQuestion = (Qid) => {
+        console.log(Qid)
+
+        const newQuestion = question.filter(
+            (question) => {
+                return (question.id != Qid)
+            }
+        )
+
+        setQuestion(newQuestion)
+    }
+
+    const changeQuizType = (value) => {
+        SetNewQuizType(value)
+    }
+
     const PrintQuestion = () => {
         return (
             question.map((question, key) => {
+                let Qid = question.id;
                 key += 1
 
                 if (question.Type == "Identification") {
                     return (
                         <Card className='card-box-shadow-style question-card center-div' key={key}>
+                            <img
+                                src='https://cdn-icons-png.flaticon.com/512/1828/1828665.png'
+                                title="Remove question"
+                                className='question-close-btn'
+                                onClick={() => removeQuestion(Qid)}
+                            />
+
                             <Form.Item
                                 className='mb-0'
                                 name={"question" + key}
@@ -142,7 +175,7 @@ const CreateQuiz = () => {
 
                             <Form.Item
                                 name={"question" + key + "-options"}
-                                rules={[{ required: true, message: "Need answer for this question!" }]}
+                                // rules={[{ required: true, message: "Need answer for this question!" }]}
                                 required={false}
                             >
                                 <Input prefix={<b>Answer:</b>} />
@@ -153,6 +186,12 @@ const CreateQuiz = () => {
                     const Qkey = key;
                     return (
                         <Card className='card-box-shadow-style question-card center-div' key={Qkey}>
+                            <img
+                                src='https://cdn-icons-png.flaticon.com/512/1828/1828665.png'
+                                title="Remove question"
+                                className='question-close-btn'
+                                onClick={() => removeQuestion(Qid)}
+                            />
 
                             <Form.Item
                                 className='mb-0'
@@ -181,7 +220,7 @@ const CreateQuiz = () => {
                                                     name={[name, "isAnswer"]}
                                                     className='mb-0'
                                                     valuePropName="checked"
-                                                    initialValue={false}
+                                                // initialValue={false}
                                                 >
                                                     <Radio onChange={() =>
                                                         setIsAnswer(key, Qkey)
@@ -228,6 +267,13 @@ const CreateQuiz = () => {
 
                     return (
                         <Card className='card-box-shadow-style question-card center-div' key={Qkey}>
+                            <img
+                                src='https://cdn-icons-png.flaticon.com/512/1828/1828665.png'
+                                title="Remove question"
+                                className='question-close-btn'
+                                onClick={() => removeQuestion(Qid)}
+                            />
+
 
                             <Form.Item
                                 className='mb-0'
@@ -301,7 +347,16 @@ const CreateQuiz = () => {
     }
 
     const onFinish = (values) => {
+        let quiz_length = Object.keys(values).length / 2;
+        let newQuiz = {}
+
         console.log('Received values of form:', values);
+
+        for (let i = 1; i < quiz_length + 1; i++) {
+            newQuiz["giann pogi" + i] = values["question" + i]
+
+        }
+        console.log(newQuiz)
     };
 
     const dynamicVal = (key) => {
@@ -315,20 +370,52 @@ const CreateQuiz = () => {
         <div className='create-quiz'>
             {/* CreateQuiz {questionLenght} */}
 
-            <Form name="quiz-form" onFinish={onFinish} initialValues={initialVal} ref={formRef} scrollToFirstError={true}>
+            <Form
+                name="quiz-form"
+                onFinish={onFinish}
+                initialValues={initialVal}
+                ref={formRef}
+                form={form}
+                scrollToFirstError={true}
+            >
+
+                <Card className='card-box-shadow-style question-card center-div'>
+                    <Form.Item
+                        className='mb-0'
+                        name="quiz_name"
+                        colon={false}
+                        rules={[{ required: true, message: "Quiz Name can't be blank!" }]}
+                        required={false}
+                    >
+                        <Input placeholder='Quiz Name' className='underline-input quiz-name-input' />
+                    </Form.Item>
+
+
+                    <Form.Item
+                        name="quiz_description"
+                        // rules={[{ required: true, message: "Need answer for this question!" }]}
+                        required={false}
+                    >
+                        <Input.TextArea placeholder="Description..." autoSize={{ minRows: 1, maxRows: 4 }} />
+                    </Form.Item>
+                </Card>
 
                 {PrintQuestion()}
 
                 <div className="center-div mb-4" style={{ marginTop: "20px" }}>
-                    <Button onClick={(e) => AddQuestion(formRef.current.getFieldValue("quiz_type"))}>Add Question</Button>
+                    <Button onClick={(e) => addQuestion()}>Add Question</Button>
 
-                    <Form.Item noStyle name="quiz_type">
-                        <Select style={{ width: 150, marginLeft: 10 }}>
-                            <Option value="Identification">Identification</Option>
-                            <Option value="Multiple Choice">Multiple Choice</Option>
-                            <Option value="Checkbox">Checkbox</Option>
-                        </Select>
-                    </Form.Item>
+                    <Select
+                        style={{ width: 150, marginLeft: 10 }}
+                        onChange={(value) => { changeQuizType(value) }}
+                        defaultValue={newQuizType}
+                    >
+
+                        <Option value="Identification">Identification</Option>
+                        <Option value="Multiple Choice">Multiple Choice</Option>
+                        <Option value="Checkbox">Checkbox</Option>
+                    </Select>
+
 
                 </div>
 

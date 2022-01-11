@@ -19,7 +19,7 @@
   margin: auto;
 }
 
-.create-quiz .title {
+.create-quiz .quiz-name-input {
   font-size: 36px;
   font-weight: 300;
   font-family: "poppins", sans-serif;
@@ -35,6 +35,13 @@
   padding: 20px !important;
 }
 
+.create-quiz .question-close-btn{
+  height: 10px;
+  float: right;
+  margin-top: -6px;
+  margin-right: -6px;
+}
+
 .create-quiz .underline-input {
   border: 0 !important;
   outline: 0 !important;
@@ -42,6 +49,17 @@
   background: transparent !important;
   border-bottom: .5px solid grey !important;
   transition-duration: 150ms !important;
+  margin-bottom: 10px;
+}
+
+.create-quiz .ant-form-item-has-error .underline-input,
+.create-quiz .ant-form-item-has-error .underline-input:hover,
+.create-quiz .ant-form-item-has-error .underline-input:focus{
+  border-bottom: 3px solid red !important;
+  margin-bottom: 0px;
+}
+
+.create-quiz .ant-form-item-explain-error{
   margin-bottom: 10px;
 }
 
