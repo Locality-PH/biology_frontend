@@ -28,23 +28,23 @@ export function AuthProvider({ children }) {
             console.log("response from controller");
             console.log(currentUserUUID);
 
-              Axios.get("http://localhost:5000/admin/login/" + currentUserUUID)
-                .then((res) => {
-                  console.log(res.data);
-                  localStorage.setItem("mid", res.data[0]?.auth_id);
-                  localStorage.setItem("role", res.data[0]?.role);
-                  localStorage.setItem("tid", res.data[0]?.teacher);
-                  localStorage.setItem("avatar", avatar);
-                  localData(res.data[0].uuid, res.data[0]?.role);
-                })
-                .then((_) => {
-                  history.push("/admin/dashboard");
-                });
-            }
-          );
-
-      }).catch((error) => {
-        console.log(error)
+            Axios.get("http://localhost:5000/admin/login/" + currentUserUUID)
+              .then((res) => {
+                console.log(res.data);
+                localStorage.setItem("mid", res.data[0]?.auth_id);
+                localStorage.setItem("role", res.data[0]?.role);
+                localStorage.setItem("tid", res.data[0]?.teacher);
+                localStorage.setItem("avatar", avatar);
+                localData(res.data[0].uuid, res.data[0]?.role);
+              })
+              .then((_) => {
+                history.push("/admin/dashboard");
+              });
+          }
+        );
+      })
+      .catch((error) => {
+        console.log(error);
       });
   }
 
@@ -61,7 +61,7 @@ export function AuthProvider({ children }) {
           console.log("response from controller");
           console.log(currentUserUUID);
 
-          Axios.get("http://localhost:5000/student/login/" + currentUserUUID)
+          Axios.get("http://localhost:5000/admin/login/" + currentUserUUID)
             .then((res) => {
               console.log(res.data);
               localStorage.setItem("mid", res.data[0]?.auth_id);
