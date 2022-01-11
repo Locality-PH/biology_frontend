@@ -35,6 +35,9 @@ function UserProfileTest() {
     const userID = localStorage.getItem("mid");
     // const userID = "61c287d146f87f872634f860";
 
+    console.log("current user:")
+    console.log(currentUser)
+
     console.log("Teacher ID: " + teacherID);
     console.log("user ID: " + userID);
 

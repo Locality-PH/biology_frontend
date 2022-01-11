@@ -143,12 +143,12 @@ function ClientLogin() {
                     justify="center"
                     style={{ marginBottom: "15px" }}
                   >
-                    <Col xxl={12} xl={12} lg={12} md={24} sm={24} xs={24}>
+                    <Col xxl={12} xl={12} lg={12} md={12} sm={24} xs={24}>
                       <Checkbox className="remember-me-style">
                         Remember me
                       </Checkbox>
                     </Col>
-                    <Col xxl={12} xl={12} lg={12} md={24} sm={24} xs={24}>
+                    <Col xxl={12} xl={12} lg={12} md={12} sm={24} xs={24}>
                       <button className="custom-button-green sm-btn">
                         Sign in
                       </button>

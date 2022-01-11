@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Layout, Menu, Breadcrumb, Row, Col, Carousel } from "antd";
 import { Avatar } from "antd";
+
 import {
   EditOutlined,
   EllipsisOutlined,
@@ -10,12 +11,16 @@ const { Meta } = Card;
 import Images from "../../assets/img/carousel3.jpg";
 import Card from "components/shared-components/Card";
 import { useParams } from "react-router-dom";
+import { useAuth } from "contexts/AuthContext";
 
 const { SubMenu } = Menu;
 const { Header, Content, Footer, Sider } = Layout;
 
+
+
 const HomeDashboard = () => {
   // const [history, setHistory] = useState();
+  const { currentUser } = useAuth();
 
   return (
     <>

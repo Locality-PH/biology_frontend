@@ -1,12 +1,15 @@
 import React, { useEffect } from 'react'
 import { Avatar } from "antd";
 import utils from "utils";
+import { useAuth } from "contexts/AuthContext";
 
 function AvatarProfile(props) {
+    const { currentUser } = useAuth();
 
+    console.log(currentUser)
     const avatar = localStorage.getItem('avatar');
     var AvatarComponent, test;
-    
+
     useEffect(() => {
         console.log("avatar")
         console.log(avatar)
