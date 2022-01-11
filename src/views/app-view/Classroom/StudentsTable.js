@@ -19,15 +19,11 @@ import {
 import axios from "axios";
 
 const StudentsTable = ({classCode}) => {
-    const userId = localStorage.getItem("mid");
-
     const [students, setStudents] = useState([]);
     const [studentsList, setStudentsList] = useState([]);
 
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
-
-    const [deletedMessage, setDeletedMessage] = useState("");
 
     useEffect(() => {
         axios.get("http://localhost:5000/teacher/get-classroom-students/" + classCode).then((response) => {
@@ -43,15 +39,18 @@ const StudentsTable = ({classCode}) => {
     }
     , []);
 
-    const deleteClassroom = (classroomId) => {
+    const deleteStudent = (studentId, studentEnrolledId, studentName) => {
+      message.loading("Removing " + studentName, 0)
 
-      console.log("Delete: " + classroomId);
-      setStudentsList(
-      studentsList.filter((classes) => classes.teacher_id !== classroomId)
-      )
-    //   axios.post("http://localhost:5000/teacher/delete-classroom", {"user_id": userId, "classroom_id": classroom_id}).then((response) => {
-    //   setDeletedMessage(response.data)
-    // });
+      axios.post("http://localhost:5000/teacher/delete-student", {"student_id": studentId, "student_enrolled_id": studentEnrolledId, "class_code": classCode}).then((response) => {
+        if(response.data == "Deleted"){
+          message.destroy()
+          setStudentsList(
+            studentsList.filter((students) => students.students !== studentId)
+            )
+          message.success(studentName + " has been successfully deleted")
+        }
+    });
 
     }
 
@@ -61,16 +60,16 @@ const StudentsTable = ({classCode}) => {
             dataIndex: 'name',
             render: (_, result) => (
                 <Flex>
-                    <AvatarStatus src="/img/thumbs/thumb-5.jpg" size={30} name={result.name}/>
+                    <AvatarStatus src="/img/thumbs/thumb-5.jpg" size={30} name={result.student_name}/>
                 </Flex>
             )
         },
         {
-            title: 'Section',
-            dataIndex: 'section',
-            render: (_, result) => (
-                <span>{result.section}</span>
-            )
+          title: 'Student Id',
+          dataIndex: 'id',
+          render: (_, result) => (
+            <span>{result.students}</span>
+          )
         },
         {
             title: 'Actions',
@@ -80,22 +79,16 @@ const StudentsTable = ({classCode}) => {
             menu={
                 <Menu>
                     <Menu.Item key="0">
-                        <Link to={`classroom/${result.class_code}`}>
+                        <Link to={`${classCode}/student/${result.students}`}>
                             <EyeOutlined />
                             <span className="ml-2">View</span>
                         </Link>
                     </Menu.Item>
-                    <Menu.Item key="1">
-                        <Link to={`classroom/edit/${result.class_code}`}>
-                            <EditOutlined />
-                            <span className="ml-2">Edit</span>
-                        </Link>
-                    </Menu.Item>
                     <Menu.Divider/>
-                    <Menu.Item key="2" onClick={() => deleteClassroom(result.teacher_id)}>
+                    <Menu.Item key="2" onClick={() => deleteStudent(result.students, result.teacher_id, result.student_name)}>
                         <>
                             <DeleteOutlined />
-                            <span className="ml-2">Delete</span>
+                            <span className="ml-2">Remove</span>
                         </>
                     </Menu.Item>
                 </Menu>
@@ -135,7 +128,7 @@ const StudentsTable = ({classCode}) => {
             pagination={true}
             columns={tableColumns} 
             dataSource={studentsList} 
-            rowKey='class_code'
+            rowKey='students'
             loading={isLoading}
             scroll={{ x: "max-content" }}
         />

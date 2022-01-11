@@ -10,7 +10,6 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 
 const EditClassroom = ({match}) => {
-  const userId = localStorage.getItem("mid");
   const classCode = match.params.class_code
 
   const [form] = Form.useForm();
@@ -159,7 +158,6 @@ const EditClassroom = ({match}) => {
       console.log("Modules is empty!")
     }
 
-    values["user_id"] = userId;
     values["modules_name"] = moduleNames;
     values["quizs_link"] = quizLinks;
 

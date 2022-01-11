@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Layout, Menu, Breadcrumb, Row, Col, Carousel } from "antd";
+import React, { useState, useEffect } from "react";
+import { Layout, Menu, Breadcrumb, Row, Col, Carousel, message } from "antd";
 import { Avatar } from "antd";
 import {
   EditOutlined,
@@ -9,13 +9,39 @@ import {
 const { Meta } = Card;
 import Images from "../../assets/img/carousel3.jpg";
 import Card from "components/shared-components/Card";
+import axios from "axios";
 import { useParams } from "react-router-dom";
 
 const { SubMenu } = Menu;
 const { Header, Content, Footer, Sider } = Layout;
 
 const HomeDashboard = () => {
-  // const [history, setHistory] = useState();
+  const studentId = localStorage.getItem("sid");
+
+  const [classrooms, setClassrooms] = useState([]);
+
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const getClassrooms = () => {
+    message.loading("Loading classrooms...", 0)
+
+    axios.get("http://localhost:5000/student/get-classrooms/" + studentId).then((response) => {
+        message.destroy()
+        setClassrooms(response.data)
+        setIsLoading(false);
+        setError(null);
+      }).catch(() => {
+        message.destroy()
+        setIsLoading(false);
+        message.error("Could not fetch the data in the server!")
+      });
+
+  }
+  
+  useEffect(() => {
+    getClassrooms()
+  }, []);
 
   return (
     <>
@@ -33,7 +59,7 @@ const HomeDashboard = () => {
                 xl={18}
               >
                 {" "}
-                <Carousel className="rounded" autoplay>
+                {/* <Carousel className="rounded" autoplay>
                   <div>
                     <h3 className="carousel-1"></h3>
                   </div>
@@ -46,7 +72,7 @@ const HomeDashboard = () => {
                   <div>
                     <h3 className="carousel-4"></h3>
                   </div>
-                </Carousel>{" "}
+                </Carousel>{" "} */}
                 {/* <Card
                   style={{ width: 300 }}
                   className="shadow-box "
@@ -65,160 +91,31 @@ const HomeDashboard = () => {
                   />
                 </Card>{" "} */}{" "}
                 <Row justify="center" gutter={40}>
-                  {" "}
-                  <Col
-                    justify="center"
-                    xxs={1}
-                    xs={24}
-                    sm={12}
-                    md={12}
-                    lg={11}
-                    xl={7}
-                  >
-                    {" "}
-                    <Card
-                      image={Images}
-                      name="Rojhon Buenaventura"
-                      section="3 CPE-A"
-                      color="green"
-                      currentPhoto="https://joeschmoe.io/api/v1/random"
-                      modules={"/classroom/mongodb_id_classroom/modules"}
-                      students={"/classroom/mongodb_id_classroom/students"}
-                    />
-                  </Col>{" "}
-                  <Col
-                    justify="center"
-                    xxs={1}
-                    xs={24}
-                    sm={12}
-                    md={12}
-                    lg={11}
-                    xl={7}
-                  >
-                    {" "}
-                    <Card
-                      image={Images}
-                      name="Rojhon Buenaventura"
-                      section="3 CPE-A"
-                      currentPhoto="https://joeschmoe.io/api/v1/random"
-                      modules={"/classroom/mongodb_id_classroom/modules"}
-                      students={"/classroom/mongodb_id_classroom/students"}
-                    />
-                  </Col>{" "}
-                  <Col
-                    justify="center"
-                    xxs={1}
-                    xs={24}
-                    sm={12}
-                    md={12}
-                    lg={11}
-                    xl={7}
-                  >
-                    {" "}
-                    <Card
-                      image={Images}
-                      name="Rojhon Buenaventura"
-                      section="3 CPE-A"
-                      currentPhoto="https://joeschmoe.io/api/v1/random"
-                      modules={"/classroom/mongodb_id_classroom/modules"}
-                      students={"/classroom/mongodb_id_classroom/students"}
-                    />
-                  </Col>{" "}
-                  <Col
-                    justify="center"
-                    xxs={1}
-                    xs={24}
-                    sm={12}
-                    md={12}
-                    lg={11}
-                    xl={7}
-                  >
-                    {" "}
-                    <Card
-                      image={Images}
-                      name="Rojhon Buenaventura"
-                      section="3 CPE-A"
-                      currentPhoto="https://joeschmoe.io/api/v1/random"
-                      modules={"/classroom/mongodb_id_classroom/modules"}
-                      students={"/classroom/mongodb_id_classroom/students"}
-                    />
-                  </Col>{" "}
-                  <Col
-                    justify="center"
-                    xxs={1}
-                    xs={24}
-                    sm={12}
-                    md={12}
-                    lg={11}
-                    xl={7}
-                  >
-                    {" "}
-                    <Card
-                      image={Images}
-                      name="Rojhon Buenaventura"
-                      section="3 CPE-A"
-                      currentPhoto="https://joeschmoe.io/api/v1/random"
-                      modules={"/classroom/mongodb_id_classroom/modules"}
-                      students={"/classroom/mongodb_id_classroom/students"}
-                    />
-                  </Col>{" "}
-                  <Col
-                    justify="center"
-                    xxs={1}
-                    xs={24}
-                    sm={12}
-                    md={12}
-                    lg={11}
-                    xl={7}
-                  >
-                    {" "}
-                    <Card
-                      image={Images}
-                      name="Rojhon Buenaventura"
-                      section="3 CPE-A"
-                      currentPhoto="https://joeschmoe.io/api/v1/random"
-                      modules={"/classroom/mongodb_id_classroom/modules"}
-                      students={"/classroom/mongodb_id_classroom/students"}
-                    />
-                  </Col>{" "}
-                  <Col
-                    justify="center"
-                    xxs={1}
-                    xs={24}
-                    sm={12}
-                    md={12}
-                    lg={11}
-                    xl={7}
-                  >
-                    {" "}
-                    <Card
-                      image={Images}
-                      name="Rojhon Buenaventura"
-                      section="3 CPE-A"
-                      currentPhoto="https://joeschmoe.io/api/v1/random"
-                      modules={"/classroom/mongodb_id_classroom/modules"}
-                      students={"/classroom/mongodb_id_classroom/students"}
-                    />
-                  </Col>{" "}
-                  <Col
-                    justify="center"
-                    xxs={1}
-                    xs={24}
-                    sm={12}
-                    md={12}
-                    lg={11}
-                    xl={7}
-                  >
-                    {" "}
-                    <Card
-                      image={Images}
-                      name="Rojhon Buenaventura"
-                      section="3 CPE-A"
-                      currentPhoto="https://joeschmoe.io/api/v1/random"
-                      modules={"/classroom/mongodb_id_classroom/modules"}
-                      students={"/classroom/mongodb_id_classroom/students"}
-                    />
-                  </Col>
+                  {classrooms.map((result, i)=>
+                    <Col
+                      key={i}
+                      justify="center"
+                      xxs={1}
+                      xs={24}
+                      sm={12}
+                      md={12}
+                      lg={11}
+                      xl={7}
+                    >
+                      {" "}
+                      <Card
+                        image={Images}
+                        name="This is test name"
+                        className={result.name}
+                        section={result.section_name}
+                        color="green"
+                        currentPhoto="https://joeschmoe.io/api/v1/random"
+                        modules={`/classroom/${result.class_code}/modules`}
+                        students={`/classroom/${result.class_code}/students`}
+                      />
+                    </Col>
+                  )}
+                  
                 </Row>
               </Col>
             </Row>

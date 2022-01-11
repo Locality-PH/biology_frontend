@@ -10,7 +10,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 
 const CreateClassroom = () => {
-  const userId = localStorage.getItem("mid");
+  const teacherId = localStorage.getItem("tid");
 
   const [form] = Form.useForm();
   const [isDisable, setIsDisable] = useState(false)
@@ -67,7 +67,7 @@ const CreateClassroom = () => {
       console.log("Modules is empty!")
     }
 
-    values["user_id"] = userId;
+    values["teacher_id"] = teacherId;
     values["modules_name"] = moduleNames;
     values["quizs_link"] = quizLinks;
 
@@ -94,7 +94,6 @@ const CreateClassroom = () => {
   }
 
   const props = {
-    action:"http://localhost:5000/teacher/create-classroom",
     beforeUpload: file => {
       if (file.type !== 'application/pdf') {
         message.error(`${file.name} is not a pdf file`);
