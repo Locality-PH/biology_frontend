@@ -5,9 +5,12 @@ import { auth } from "firebase";
 import { Alert } from "react-bootstrap";
 
 import { Row, Card, Col, Form, Input, Checkbox, Button } from "antd";
-import { FaUserAlt } from "react-icons/fa";
+
+//Icons
+import { FaUserAlt, FaFeatherAlt } from "react-icons/fa";
 import { AiFillLock } from "react-icons/ai";
 import { FcGoogle } from "react-icons/fc";
+
 import axios from "axios";
 import "./Register.css";
 import "assets/css/custom-design.css";
@@ -55,6 +58,7 @@ function ClientRegister() {
               const data = {
                 email: user.email,
                 uuid: user.uid,
+                full_name: values.fullname,
               };
               console.log(data);
               axios
@@ -115,11 +119,25 @@ function ClientRegister() {
                     rules={[
                       {
                         required: true,
-                        message: "Please input Email",
+                        message: "Please input Email!!",
                       },
                     ]}
                   >
                     <Input className="custom-input" placeholder="Email" />
+                  </Form.Item>
+                  <Form.Item
+                    label={<FaFeatherAlt />}
+                    labelAlign="left"
+                    required={false}
+                    name="fullname"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please input your Full Name!!",
+                      },
+                    ]}
+                  >
+                    <Input className="custom-input" placeholder="Full Name" />
                   </Form.Item>
                   <Form.Item
                     label={<AiFillLock />}
@@ -129,7 +147,7 @@ function ClientRegister() {
                     rules={[
                       {
                         required: true,
-                        message: "Please input password",
+                        message: "Please input password!!",
                       },
                     ]}
                   >
@@ -147,7 +165,7 @@ function ClientRegister() {
                     rules={[
                       {
                         required: true,
-                        message: "Please type your password again.",
+                        message: "Please type your password again!!",
                       },
                     ]}
                   >

@@ -20,6 +20,7 @@ export function AuthProvider({ children }) {
       .signInWithPopup(provider)
       .then((result) => {
         const user = result.user;
+        const avatar = user.photoURL;
 
         Axios.post("http://localhost:5000/admin/google-login", { user }).then(
           (response) => {
@@ -33,7 +34,7 @@ export function AuthProvider({ children }) {
                 localStorage.setItem("mid", res.data[0]?.auth_id);
                 localStorage.setItem("role", res.data[0]?.role);
                 localStorage.setItem("tid", res.data[0]?.teacher);
-
+                localStorage.setItem("avatar", avatar);
                 localData(res.data[0].uuid, res.data[0]?.role);
               })
               .then((_) => {
@@ -60,7 +61,7 @@ export function AuthProvider({ children }) {
           console.log("response from controller");
           console.log(currentUserUUID);
 
-          Axios.get("http://localhost:5000/student/login/" + currentUserUUID)
+          Axios.get("http://localhost:5000/admin/login/" + currentUserUUID)
             .then((res) => {
               console.log(res.data);
               localStorage.setItem("mid", res.data[0]?.auth_id);
@@ -102,6 +103,7 @@ export function AuthProvider({ children }) {
     localStorage.removeItem("role");
     localStorage.removeItem("mid");
     localStorage.removeItem("tid");
+    localStorage.removeItem("avatar");
     localStorage.removeItem("sid");
 
     return auth.signOut();

@@ -74,8 +74,8 @@ const Classroom = () => {
         >
           <Col lg={10}>
             {" "}
-            {/* <TextUnderScore placeholder="Username" />
-            <TextUnderScore placeholder="email" /> */}
+            <TextUnderScore placeholder="Username" />
+            <TextUnderScore placeholder="email" />
             <h1> {sampleNav}</h1>
           </Col>
         </Content>

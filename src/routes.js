@@ -1,11 +1,19 @@
 import Dashboard from "views/app-view/Dashboard.js";
-
+import Icons from "views/app-view/Icons.js";
 import Classroom from "views/app-view/Classroom/Classroom";
 import CreateClassroom from "views/app-view/Classroom/CreateClassroom";
 import ViewClassroom from "views/app-view/Classroom/ViewClassroom";
 import EditClassroom from "views/app-view/Classroom/EditClassroom";
 
+<<<<<<< HEAD
 import ViewStudent from "views/app-view/Classroom/ViewStudent";
+=======
+import Quiz from "views/app-view/Quiz/Quiz.js";
+import ViewQuiz from "views/app-view/Quiz/ViewQuiz.js";
+import CreateQuiz from "views/app-view/Quiz/CreateQuiz.js";
+import EditQuiz from "views/app-view/Quiz/EditQuiz";
+import AssignQuiz from "views/app-view/Quiz/AssignQuiz";
+>>>>>>> 6d7fa9440ef0b6debdb8883c131d70b93a28a0e3
 
 import ViewModule from "views/app-view/Classroom/ViewModule"
 
@@ -24,6 +32,15 @@ const dashboardRoutes = [
     renderSidebar: true,
     isExact: false,
   },
+  // {
+  //   path: "/icons",
+  //   name: "Icons",
+  //   icon: "nc-icon nc-attach-87",
+  //   component: Icons,
+  //   layout: "/admin",
+  //   renderSidebar: true,
+  //   isExact: false,
+  // },
   {
     path: "/classroom",
     name: "Classroom",
@@ -79,22 +96,58 @@ const dashboardRoutes = [
     isExact: true,
   },
   {
+    path: "/quiz",
+    name: "Quiz",
+    icon: "nc-icon nc-attach-87",
+    component: Quiz,
+    layout: "/admin",
+    renderSidebar: true,
+    isExact: true,
+  },
+  {
+    path: "/quiz/view/:Qid",
+    name: "View Quiz",
+    icon: "nc-icon nc-attach-87",
+    component: ViewQuiz,
+    layout: "/admin",
+    renderSidebar: false,
+    isExact: false,
+  },
+  {
+    path: "/quiz/create-new",
+    name: "Create Quiz",
+    icon: "nc-icon nc-attach-87",
+    component: CreateQuiz,
+    layout: "/admin",
+    renderSidebar: false,
+    isExact: false,
+  },
+  {
+    path: "/quiz/edit/:Qid",
+    name: "Edit Quiz",
+    icon: "nc-icon nc-attach-87",
+    component: EditQuiz,
+    layout: "/admin",
+    renderSidebar: false,
+    isExact: false,
+  },
+  {
+    path: "/quiz/assign/:Qid",
+    name: "Assign Quiz",
+    icon: "nc-icon nc-attach-87",
+    component: AssignQuiz,
+    layout: "/admin",
+    renderSidebar: false,
+    isExact: false,
+  },
+  {
     path: "/user",
     name: "User Profile",
-    icon: "nc-icon nc-circle-09",
+    icon: null,
     component: UserProfileTest,
     layout: "/admin",
     renderSidebar: false,
     isExact: true,
-  },
-  {
-    path: "/user/1",
-    name: "User Profile",
-    icon: "nc-icon nc-circle-09",
-    component: UserProfile,
-    layout: "/admin",
-    renderSidebar: false,
-    isExact: false,
   },
 ];
 

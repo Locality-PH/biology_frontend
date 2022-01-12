@@ -14,10 +14,14 @@ const Login = () => {
   const emailRef = useRef();
   const passwordRef = useRef();
   const passwordConfirmRef = useRef();
+  const fullNameRef = useRef();
+  let inputs = document.querySelectorAll(".input");
   const { signup, currentUser, localData } = useAuth();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const history = useHistory();
+  // const user = auth.currentUser;
+  // console.log(user);
   async function handleSubmit(e) {
     e.preventDefault();
     console.log(error);
@@ -29,15 +33,30 @@ const Login = () => {
       await signup(emailRef.current.value, passwordRef.current.value).then(
         () => {
           setTimeout(async () => {
-            auth.onAuthStateChanged((user) => {
+            await auth.onAuthStateChanged((user) => {
               if (user) {
-                // User is signed in, see docs for a list of available properties
-                // https://firebase.google.com/docs/reference/js/firebase.User
-
                 const data = {
                   email: user.email,
+                  fullName: fullNameRef.current.value,
                   uuid: user.uid,
                 };
+                user
+                  .updateProfile({
+                    displayName: fullNameRef.current.value,
+
+                    // photoURL: "https://example.com/jane-q-user/profile.jpg",
+                  })
+                  .then(() => {
+                    // Update successful
+                    // ...
+                    console.log("update successful");
+                  })
+                  .catch((error) => {
+                    // An error occurred
+                    // ...
+                    console.log("task failed successful hehehe");
+                  });
+
                 console.log(data);
                 axios
                   .post("http://localhost:5000/admin/register", data)
@@ -59,7 +78,7 @@ const Login = () => {
                 // ...
               }
             });
-          }, 400);
+          }, 1000);
         }
       );
     } catch (e) {
@@ -70,7 +89,6 @@ const Login = () => {
       setError("Failed to create an account");
     }
   }
-  const inputs = document.querySelectorAll(".input");
 
   function addcl() {
     let parent = this.parentNode.parentNode;
@@ -100,11 +118,24 @@ const Login = () => {
         </div>
         <div className="login-content">
           {" "}
-          <form onSubmit={handleSubmit} className="form-login">
+          <form onSubmit={() => handleSubmit} className="form-login">
             <img src={Avatar} />
             <h2 className="title">Welcome</h2>
             {error && <Alert variant="danger">{error}</Alert>}
+            <div className="input-div one">
+              <div className="i">
+                <i className="fas fa-user"></i>
+              </div>
 
+              <div className="div">
+                <input
+                  type="text"
+                  ref={fullNameRef}
+                  placeholder="Full Name"
+                  className="input"
+                />
+              </div>
+            </div>{" "}
             <div className="input-div one">
               <div className="i">
                 <i className="fas fa-user"></i>
@@ -145,7 +176,6 @@ const Login = () => {
                 />
               </div>
             </div>
-
             <input
               type="submit"
               disabled={loading}

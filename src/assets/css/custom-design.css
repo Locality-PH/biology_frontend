@@ -9,8 +9,8 @@
 }
 
 .custom-input:hover, .custom-input:focus{
-    border-bottom: 3px solid green !important;
-    
+  border-bottom: 3px solid green !important;
+  font-weight: bold;
 }
 
 .custom-button-green {

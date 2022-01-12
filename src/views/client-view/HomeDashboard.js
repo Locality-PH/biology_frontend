@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Layout, Menu, Breadcrumb, Row, Col, Carousel, message } from "antd";
 import { Avatar } from "antd";
+
 import {
   EditOutlined,
   EllipsisOutlined,
@@ -11,11 +12,15 @@ import Images from "../../assets/img/carousel3.jpg";
 import Card from "components/shared-components/Card";
 import axios from "axios";
 import { useParams } from "react-router-dom";
+import { useAuth } from "contexts/AuthContext";
 
 const { SubMenu } = Menu;
 const { Header, Content, Footer, Sider } = Layout;
 
+
+
 const HomeDashboard = () => {
+<<<<<<< HEAD
   const studentId = localStorage.getItem("sid");
 
   const [classrooms, setClassrooms] = useState([]);
@@ -42,6 +47,10 @@ const HomeDashboard = () => {
   useEffect(() => {
     getClassrooms()
   }, []);
+=======
+  // const [history, setHistory] = useState();
+  const { currentUser } = useAuth();
+>>>>>>> 6d7fa9440ef0b6debdb8883c131d70b93a28a0e3
 
   return (
     <>

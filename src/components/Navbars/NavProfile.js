@@ -112,7 +112,7 @@ export const NavProfile = () => {
             }}
           >
             {" "}
-            <a>
+            <a href="#/">
               <PlusOutlined className="mr-3" />
               <span className="font-weight-normal">Join Classroom</span>
             </a>
