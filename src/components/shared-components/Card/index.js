@@ -58,6 +58,7 @@ function CardContent(props) {
         </div>
         <div className="float-child-right">
           {" "}
+          <p className="styleLocationLabel">{props.className}</p>
           <p className="styleLocationLabel">{props.section}</p>
           <p className="styleCardTitle">{props.name}</p>
         </div>
@@ -80,6 +81,7 @@ export default class Card extends React.Component {
           <CardContent
             currentPhoto={this.props.currentPhoto}
             name={this.props.name}
+            className={this.props.className}
             section={this.props.section}
             colors={this.props.color}
           />{" "}

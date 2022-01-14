@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Container,
   Row,
@@ -10,12 +10,23 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 
 const CreateClassroom = () => {
-  const userId = localStorage.getItem("mid");
+  const teacherId = localStorage.getItem("tid");
+  const [teacherName, setTeacherName]= useState("")
 
   const [form] = Form.useForm();
   const [isDisable, setIsDisable] = useState(false)
   const [modalVisible, setModalVisible] = useState(false)
   const [classCode, setClassCode] = useState("")
+
+  useEffect(() => {
+    axios.get("http://localhost:5000/teacher/get-teacher-fullname/" + teacherId).then((response) => {
+      setTeacherName(response.data)
+        console.log(response.data)
+      }).catch(() => {
+        message.error("Could not fetch the data in the server!")
+      });
+  }
+  , []);
 
   const createClassroom = (data) => {
     axios.post("http://localhost:5000/teacher/create-classroom", data).then((response) => {
@@ -67,7 +78,8 @@ const CreateClassroom = () => {
       console.log("Modules is empty!")
     }
 
-    values["user_id"] = userId;
+    values["teacher_id"] = teacherId;
+    values["teacher_name"] = teacherName;
     values["modules_name"] = moduleNames;
     values["quizs_link"] = quizLinks;
 
@@ -94,7 +106,6 @@ const CreateClassroom = () => {
   }
 
   const props = {
-    action:"http://localhost:5000/teacher/create-classroom",
     beforeUpload: file => {
       if (file.type !== 'application/pdf') {
         message.error(`${file.name} is not a pdf file`);

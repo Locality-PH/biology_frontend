@@ -58,6 +58,7 @@ function ClientRegister() {
               const data = {
                 email: user.email,
                 uuid: user.uid,
+                full_name: values.fullname,
               };
               console.log(data);
               axios

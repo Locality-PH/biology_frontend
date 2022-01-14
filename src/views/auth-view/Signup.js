@@ -14,8 +14,7 @@ const Login = () => {
   const emailRef = useRef();
   const passwordRef = useRef();
   const passwordConfirmRef = useRef();
-  const firstNameRef = useRef();
-  const lastNameRef = useRef();
+  const fullNameRef = useRef();
   let inputs = document.querySelectorAll(".input");
   const { signup, currentUser, localData } = useAuth();
   const [error, setError] = useState("");
@@ -38,16 +37,13 @@ const Login = () => {
               if (user) {
                 const data = {
                   email: user.email,
-                  firstName: firstNameRef.current.value,
-                  lastName: lastNameRef.current.value,
+                  fullName: fullNameRef.current.value,
                   uuid: user.uid,
                 };
                 user
                   .updateProfile({
-                    displayName:
-                      firstNameRef.current.value +
-                      " " +
-                      lastNameRef.current.value,
+                    displayName: fullNameRef.current.value,
+
                     // photoURL: "https://example.com/jane-q-user/profile.jpg",
                   })
                   .then(() => {
@@ -122,7 +118,7 @@ const Login = () => {
         </div>
         <div className="login-content">
           {" "}
-          <form onSubmit={handleSubmit} className="form-login">
+          <form onSubmit={() => handleSubmit} className="form-login">
             <img src={Avatar} />
             <h2 className="title">Welcome</h2>
             {error && <Alert variant="danger">{error}</Alert>}
@@ -134,22 +130,8 @@ const Login = () => {
               <div className="div">
                 <input
                   type="text"
-                  ref={firstNameRef}
-                  placeholder="FirstName"
-                  className="input"
-                />
-              </div>
-            </div>{" "}
-            <div className="input-div one">
-              <div className="i">
-                <i className="fas fa-user"></i>
-              </div>
-
-              <div className="div">
-                <input
-                  type="text"
-                  ref={lastNameRef}
-                  placeholder="Last Name"
+                  ref={fullNameRef}
+                  placeholder="Full Name"
                   className="input"
                 />
               </div>
