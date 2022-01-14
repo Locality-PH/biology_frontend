@@ -32,7 +32,7 @@ const Modules = ({ match }) => {
   useEffect(() => {
     message.loading("Loading modules...", 0);
     axios
-      .get("http://localhost:5000/student/get-classroom-modules/" + classCode)
+      .get("/student/get-classroom-modules/" + classCode)
       .then((response) => {
         setModules(response.data);
         setError(null);

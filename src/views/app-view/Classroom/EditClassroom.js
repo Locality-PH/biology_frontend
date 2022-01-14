@@ -21,9 +21,9 @@ const EditClassroom = ({match}) => {
   const [modulesArray, setModulesArray] = useState([])
 
   useEffect(() => {
-    axios.get("http://localhost:5000/teacher/get-classroom-modules-array/" + classCode).then((response) => {
+    axios.get("/teacher/get-classroom-modules-array/" + classCode).then((response) => {
       setModulesArray(response.data)
-      axios.get("http://localhost:5000/teacher/get-classroom-data/" + classCode).then((response) => {
+      axios.get("/teacher/get-classroom-data/" + classCode).then((response) => {
       setClassroomData(response.data)
       setModulesData(response.data.module)
       setIsLoading(false)
@@ -40,7 +40,7 @@ const EditClassroom = ({match}) => {
   , []);
 
   const updateInitialModules = (data) => {
-    axios.post("http://localhost:5000/teacher/update-initial-modules/" + classCode, data).then((response) => {
+    axios.post("/teacher/update-initial-modules/" + classCode, data).then((response) => {
 
     }).catch(error => {
       console.log(error)
@@ -50,7 +50,7 @@ const EditClassroom = ({match}) => {
   }
 
   const updateClassroom = (data) => {
-    axios.post("http://localhost:5000/teacher/update-classroom/" + classCode, data).then((response) => {
+    axios.post("/teacher/update-classroom/" + classCode, data).then((response) => {
       if(response.data == "Updated"){
         message.destroy()
         message.success("Successfully Updated")
