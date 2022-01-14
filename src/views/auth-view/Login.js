@@ -156,6 +156,7 @@ const Login = () => {
               className="text-center w-100 admin-login-custom-button-style"
               onClick={(e) => loginGoogleUser(e)}
               style={{ borderRadius: 30 }}
+              type="button"
             >
               <Space direction="horizontal" align="middle">
                 <FcGoogle style={{ marginTop: -2 }} />

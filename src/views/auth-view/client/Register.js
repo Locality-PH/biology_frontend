@@ -62,7 +62,7 @@ function ClientRegister() {
               };
               console.log(data);
               axios
-                .post("http://localhost:5000/student/register", data)
+                .post("/student/register", data)
                 .then((res) => {
                   console.log(res.data);
                   console.log(res.data.role);

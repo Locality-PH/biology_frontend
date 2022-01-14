@@ -432,7 +432,7 @@ const CreateQuiz = () => {
         )
     }
 
-    const onFinish = async (values) => {
+    const onFinish = (values) => {
         let quiz_length = (Object.keys(values).length - 2) / 3;
         let newQuiz = {}
 
@@ -470,14 +470,14 @@ const CreateQuiz = () => {
             newQuiz["question"].push(newQuestion)
         }
 
-        console.log("Quiz before submit" + newQuiz)
-        // (async () => {
-        //     console.log(newQuiz)
-        //     await Axios.post("http://localhost:5000/quiz/create-quiz", { newQuiz }).then((response) => {
-        //         console.log(response.data)
-        //     });
+        
+        (async () => {
+            console.log(newQuiz)
+            await Axios.post("/quiz/create-quiz", { newQuiz }).then((response) => {
+                console.log(response.data)
+            });
 
-        // })()
+        })()
     };
 
     const dynamicVal = (key) => {

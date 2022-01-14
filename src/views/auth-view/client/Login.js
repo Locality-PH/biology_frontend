@@ -38,7 +38,7 @@ function ClientLogin() {
               console.log("user is signed in");
               console.log(user?.uid);
               axios
-                .get("http://localhost:5000/student/login/" + user.uid)
+                .get("/student/login/" + user.uid)
                 .then((res) => {
                   console.log(res.data);
                   localStorage.setItem("mid", res.data[0]?.auth_id);
