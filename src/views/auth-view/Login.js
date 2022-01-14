@@ -25,7 +25,7 @@ const Login = () => {
   async function loginGoogleUser(e) {
     SignInWithGoogle(history);
   }
-  
+
   async function handleSubmit(e) {
     e.preventDefault();
     console.log(currentUser?.uid);
@@ -45,7 +45,7 @@ const Login = () => {
                 console.log("user is signed in");
                 console.log(user?.uid);
                 axios
-                  .get("http://localhost:5000/admin/login/" + user.uid)
+                  .get("/admin/login/" + user.uid)
                   .then((res) => {
                     console.log(res.data);
                     localStorage.setItem("mid", res.data[0]?.auth_id);
@@ -150,16 +150,18 @@ const Login = () => {
               disabled={loading}
               className="form-button"
               value="Login"
-              style={{marginTop:50}}
+              style={{ marginTop: 50 }}
             />
             <button
               className="text-center w-100 admin-login-custom-button-style"
               onClick={(e) => loginGoogleUser(e)}
-              style={{borderRadius:30, }}
+              style={{ borderRadius: 30 }}
             >
               <Space direction="horizontal" align="middle">
-                <FcGoogle style={{marginTop:-2}}/>
-                <p className="m-0" style={{fontSize:20, color:"grey"}}>Login with Google</p>
+                <FcGoogle style={{ marginTop: -2 }} />
+                <p className="m-0" style={{ fontSize: 20, color: "grey" }}>
+                  Login with Google
+                </p>
               </Space>
             </button>
             <div className="mt-2 text-center w-100">
