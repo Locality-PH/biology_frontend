@@ -43,16 +43,8 @@
     "build:scss": "npm run compile:scss && npm run minify:scss && npm run map:scss"
   },
   "proxy": {
-    "/.netlify/functions/*": {
-      "target": "https://xenodochial-gates-876873.netlify.app",
-      "pathRewrite": {
-        "^/\\.netlify/functions": ""
-      },
-      "secure": false,
-      "headers": {
-        "host": "xenodochial-gates-876873.netlify.app"
-      },
-      "cookieDomainRewrite": ""
+    "/.netlify/functions/api/": {
+      "target": "https://xenodochial-gates-876873.netlify.app"
     }
   },
   "browserslist": {

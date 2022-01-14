@@ -3,7 +3,7 @@
 # PROXY
 [[redirects]]
   from = "/api/*"
-  to = "https://xenodochial-gates-876873.netlify.app"
+  to = "https://xenodochial-gates-876873.netlify.app/.netlify/functions/"
   status = 200
   force = true
   headers = {X-From = "Netlify"}
