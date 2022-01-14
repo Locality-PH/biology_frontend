@@ -42,11 +42,7 @@
     "map:scss": "node-sass src/assets/scss/light-bootstrap-dashboard-react.scss src/assets/css/light-bootstrap-dashboard-react.css --source-map true",
     "build:scss": "npm run compile:scss && npm run minify:scss && npm run map:scss"
   },
-  "proxy": {
-    "/.netlify/functions/api/": {
-      "target": "https://xenodochial-gates-876873.netlify.app"
-    }
-  },
+  "proxy": "https://xenodochial-gates-876873.netlify.app/.netlify/functions/api/",
   "browserslist": {
     "production": [
       ">0.2%",
