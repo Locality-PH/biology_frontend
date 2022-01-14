@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Menu, Dropdown, Avatar, Modal, Button, Input, message} from "antd";
 import {
   EditOutlined,
@@ -25,6 +25,7 @@ const menuItem = [
 
 export const NavProfile = () => {
   const studentId = localStorage.getItem("sid");
+  const [studentName, setStudentName]= useState("")
 
   const [error, setError] = useState("");
   const history = useHistory();
@@ -33,6 +34,16 @@ export const NavProfile = () => {
   const [modalVisible, setModalVisible] = useState(false)
   const [classCode, setClassCode] = useState("")
   const [isDisable, setIsDisable] = useState(false)
+
+  useEffect(() => {
+    axios.get("http://localhost:5000/student/get-student-fullname/" + studentId).then((response) => {
+      setStudentName(response.data)
+        console.log(response.data)
+      }).catch(() => {
+        message.error("Could not fetch the data in the server!")
+      });
+  }
+  , []);
 
   const closeModal = () =>{
     setModalVisible(false)
@@ -60,7 +71,7 @@ export const NavProfile = () => {
     setModalVisible(false)
     message.loading(`Joining "${classCode}" classroom...`, 0)
 
-    const data = {"student_id": studentId,"class_code": classCode, "student_name": "test name"}
+    const data = {"student_id": studentId,"class_code": classCode, "student_name": studentName}
 
     axios.post("http://localhost:5000/student/join-classroom", data).then((response) => {
       if(response.data == "Error"){
@@ -70,6 +81,9 @@ export const NavProfile = () => {
       else{
         message.destroy()
         message.success(response.data)
+        if(response.data == "Successfully join the classroom"){
+          location.reload()
+        }
       }
       }).catch(() => {
         message.error("Could not fetch the data in the server!")

@@ -4,16 +4,13 @@ import Classroom from "views/app-view/Classroom/Classroom";
 import CreateClassroom from "views/app-view/Classroom/CreateClassroom";
 import ViewClassroom from "views/app-view/Classroom/ViewClassroom";
 import EditClassroom from "views/app-view/Classroom/EditClassroom";
-
-<<<<<<< HEAD
 import ViewStudent from "views/app-view/Classroom/ViewStudent";
-=======
+
 import Quiz from "views/app-view/Quiz/Quiz.js";
 import ViewQuiz from "views/app-view/Quiz/ViewQuiz.js";
 import CreateQuiz from "views/app-view/Quiz/CreateQuiz.js";
 import EditQuiz from "views/app-view/Quiz/EditQuiz";
 import AssignQuiz from "views/app-view/Quiz/AssignQuiz";
->>>>>>> 6d7fa9440ef0b6debdb8883c131d70b93a28a0e3
 
 import ViewModule from "views/app-view/Classroom/ViewModule"
 

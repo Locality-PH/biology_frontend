@@ -17,10 +17,7 @@ import { useAuth } from "contexts/AuthContext";
 const { SubMenu } = Menu;
 const { Header, Content, Footer, Sider } = Layout;
 
-
-
 const HomeDashboard = () => {
-<<<<<<< HEAD
   const studentId = localStorage.getItem("sid");
 
   const [classrooms, setClassrooms] = useState([]);
@@ -47,10 +44,8 @@ const HomeDashboard = () => {
   useEffect(() => {
     getClassrooms()
   }, []);
-=======
   // const [history, setHistory] = useState();
   const { currentUser } = useAuth();
->>>>>>> 6d7fa9440ef0b6debdb8883c131d70b93a28a0e3
 
   return (
     <>
@@ -114,7 +109,7 @@ const HomeDashboard = () => {
                       {" "}
                       <Card
                         image={Images}
-                        name="This is test name"
+                        name={result.teacher_name}
                         className={result.name}
                         section={result.section_name}
                         color="green"
