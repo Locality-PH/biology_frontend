@@ -43,7 +43,7 @@
     "build:scss": "npm run compile:scss && npm run minify:scss && npm run map:scss"
   },
   "proxy": {
-    "/.netlify/functions/api/*": {
+    "/.netlify/functions/*": {
       "target": "https://xenodochial-gates-876873.netlify.app",
       "pathRewrite": {
         "^/\\.netlify/functions": ""
