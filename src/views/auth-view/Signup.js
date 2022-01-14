@@ -118,7 +118,7 @@ const Login = () => {
         </div>
         <div className="login-content">
           {" "}
-          <form onSubmit={() => handleSubmit} className="form-login">
+          <form onSubmit={handleSubmit} className="form-login">
             <img src={Avatar} />
             <h2 className="title">Welcome</h2>
             {error && <Alert variant="danger">{error}</Alert>}
