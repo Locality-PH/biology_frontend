@@ -2,9 +2,14 @@
   command  = "npm run build"
 # PROXY
 [[redirects]]
-  from = "/*"
+  from = "/api/*"
   to = "https://xenodochial-gates-876873.netlify.app/.netlify/functions/:splat"
   status = 200
   force = true
   headers = {X-From = "Netlify"}
 
+# REACT ROUTER
+[[redirects]]
+  from = "/*"
+  to = "/"
+  status = 200
