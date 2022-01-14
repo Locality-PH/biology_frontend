@@ -36,7 +36,7 @@ export const NavProfile = () => {
   const [isDisable, setIsDisable] = useState(false)
 
   useEffect(() => {
-    axios.get("http://localhost:5000/student/get-student-fullname/" + studentId).then((response) => {
+    axios.get("/student/get-student-fullname/" + studentId).then((response) => {
       setStudentName(response.data)
         console.log(response.data)
       }).catch(() => {
@@ -73,7 +73,7 @@ export const NavProfile = () => {
 
     const data = {"student_id": studentId,"class_code": classCode, "student_name": studentName}
 
-    axios.post("http://localhost:5000/student/join-classroom", data).then((response) => {
+    axios.post("/student/join-classroom", data).then((response) => {
       if(response.data == "Error"){
         message.destroy()
         message.error("Couldn't find classroom please try again")

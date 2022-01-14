@@ -11,7 +11,7 @@ const ModulePages = ({ moduleId, fileName }) => {
   const downloadModule = () => {
     console.log("Downloading");
     window.open(
-      "http://localhost:5000/student/download-module/" + moduleId,
+      "/student/download-module/" + moduleId,
       "_blank"
     );
   };
@@ -20,7 +20,7 @@ const ModulePages = ({ moduleId, fileName }) => {
     message.loading("Loading " + fileName + "...", 0)
 
     axios
-    .get("http://localhost:5000/student/get-module/" + moduleId)
+    .get("/student/get-module/" + moduleId)
     .then((response) => {
       setModulePDF(response.data);
     })

@@ -21,7 +21,7 @@ const ModulesTable = ({classCode}) => {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        axios.get("http://localhost:5000/teacher/get-classroom-modules/" + classCode).then((response) => {
+        axios.get("/teacher/get-classroom-modules/" + classCode).then((response) => {
             setModules(response.data)
             setModulesList(response.data)
             setIsLoading(false);
@@ -36,18 +36,18 @@ const ModulesTable = ({classCode}) => {
 
     const viewModule = (moduleId) => {
       console.log("View")
-      window.open("http://localhost:5000/teacher/view-module/" + moduleId, "_blank")
+      window.open("/teacher/view-module/" + moduleId, "_blank")
     }
 
     const downloadModule = (moduleId) => {
       console.log("Downloading")
-      window.open("http://localhost:5000/teacher/download-module/" + moduleId, "_blank")
+      window.open("/teacher/download-module/" + moduleId, "_blank")
     }
 
     const deleteModule = (moduleId, moduleName) => {
       message.loading("Deleting " + moduleName + "...", 0)
       
-      axios.post("http://localhost:5000/teacher/delete-module", {"class_code": classCode, "module_id": moduleId}).then((response) => {
+      axios.post("/teacher/delete-module", {"class_code": classCode, "module_id": moduleId}).then((response) => {
         if(response.data == "Deleted"){
           message.destroy()
           setModulesList(
