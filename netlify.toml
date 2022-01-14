@@ -1,6 +1,14 @@
 [build]
   command  = "npm run build"
+# PROXY
+[[redirects]]
+  from = "/*"
+  to = "https://xenodochial-gates-876873.netlify.app"
+  status = 200
+  force = true
+  headers = {X-From = "Netlify"}
 
+# REACT ROUTER
 [[redirects]]
   from = "/*"
   to = "/"
