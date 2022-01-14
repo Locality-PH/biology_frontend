@@ -44,19 +44,21 @@ function UserProfileTest() {
     setTeacherID(teacherID);
     setUserID(userID);
 
-    setTeacherID(teacherID);
+    (async () => {
+      await Axios.get("http://localhost:5000/admin/" + userID).then((response) => {
+        const userData = response.data;
+        setUser(userData);
+      });
+  
+      // await Axios.get("http://localhost:5000/teacher/get/" + teacherID).then(
+      //   (response) => {
+      //     const teacherData = response.data;
+      //     setTeacher(teacherData);
+      //   }
+      // );
+    })()
 
-    Axios.get("http://localhost:5000/admin/" + userID).then((response) => {
-      const userData = response.data;
-      setUser(userData);
-    });
 
-    Axios.get("http://localhost:5000/teacher/get/" + teacherID).then(
-      (response) => {
-        const teacherData = response.data;
-        setTeacher(teacherData);
-      }
-    );
   }, []);
 
   const updateTeacher = async (values) => {
@@ -72,29 +74,20 @@ function UserProfileTest() {
   };
 
   useEffect(() => {
-    console.log("teacher");
-    console.log(teacher);
     setInitialVal({ ...initialVal, ...teacher });
   }, [teacher]);
 
   useEffect(() => {
-    console.log("user");
-    console.log(user);
     setInitialVal({ ...initialVal, ...user });
   }, [user]);
 
   useEffect(() => {
-    console.log("initialVal");
-    console.log(initialVal);
     form.resetFields();
+    console.log(initialVal)
   }, [initialVal]);
 
-  const test = () => {
-    const array = { ...teacher, ...user };
-    console.log(array);
-    form.resetFields();
-  };
-  console.log(initialVal);
+  // console.log(initialVal);
+
   return (
     <Row gutter={30} className="user-profile">
       <Col span={16}>
@@ -158,14 +151,6 @@ function UserProfileTest() {
                         <Input className="custom-input" />
                       </Form.Item>
                     </Col>
-                    {/* <Col xs={24} sm={24} md={12}>
-                      <Form.Item
-                        label={<p className="label-form-style">Date of Birth: </p>}
-                        name="dateOfBirth"
-                      >
-                        <DatePicker className="w-100 form-input-style" />
-                      </Form.Item>
-                    </Col> */}
                   </Row>
                   <button
                     type="submit"
