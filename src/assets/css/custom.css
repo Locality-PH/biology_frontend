@@ -661,6 +661,7 @@ ul {
   min-height: 0;
   background: #f0f2f5;
   height: 100vh;
+  overflow-y: auto;
 }
 .checkbox-span {
   box-sizing: border-box;
@@ -679,13 +680,12 @@ ul {
   margin-left: 8px;
 }
 
-
 /* CSS */
 .admin-login-custom-button-style {
   align-items: center;
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   border: 1px solid rgba(0, 0, 0, 0.1);
-  border-radius: .25rem;
+  border-radius: 0.25rem;
   box-shadow: rgba(0, 0, 0, 0.02) 0 1px 3px 0;
   box-sizing: border-box;
   color: rgba(0, 0, 0, 0.85);
@@ -698,7 +698,7 @@ ul {
   line-height: 1.25;
   margin: 0;
   min-height: 3rem;
-  padding: calc(.875rem - 1px) calc(1.5rem - 1px);
+  padding: calc(0.875rem - 1px) calc(1.5rem - 1px);
   position: relative;
   text-decoration: none;
   transition: all 250ms;
@@ -709,7 +709,7 @@ ul {
   width: auto;
 }
 
-.admin-login-custom-button-style p{
+.admin-login-custom-button-style p {
   font-family: "Poppins", sans-serif;
 }
 .admin-login-custom-button-style:hover,
@@ -724,9 +724,16 @@ ul {
 }
 
 .admin-login-custom-button-style:active {
-  background-color: #F0F0F1;
+  background-color: #f0f0f1;
   border-color: rgba(0, 0, 0, 0.15);
   box-shadow: rgba(0, 0, 0, 0.06) 0 2px 4px;
   color: rgba(0, 0, 0, 0.65);
   transform: translateY(0);
+}
+.content-data {
+  height: 100%;
+  width: 100%;
+  background-color: white;
+  position: relative;
+  padding: 20px;
 }

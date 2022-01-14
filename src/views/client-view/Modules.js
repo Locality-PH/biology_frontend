@@ -67,16 +67,19 @@ const Classroom = () => {
         <Content
           className="site-layout-background"
           style={{
-            padding: 24,
+            padding: 0,
             margin: 0,
             minHeight: 280,
           }}
         >
-          <Col lg={10}>
+          <Col lg={24}>
             {" "}
-            <TextUnderScore placeholder="Username" />
-            <TextUnderScore placeholder="email" />
-            <h1> {sampleNav}</h1>
+            {/* <TextUnderScore placeholder="Username" /> */}
+            {/* <TextUnderScore placeholder="email" /> */}
+            <div className="content-data">
+              {" "}
+              <h1> {sampleNav}</h1> <h1> {sampleNav}</h1> <h1> {sampleNav}</h1>{" "}
+            </div>
           </Col>
         </Content>
       </Layout>
