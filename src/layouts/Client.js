@@ -25,8 +25,7 @@ function Admin() {
           <Route path="/home">
             <HomeDashboard />
           </Route>
-          <Route path="/classroom/:id/modules">
-            <Modules />
+          <Route path="/classroom/:class_code/modules" component={Modules}>
           </Route>
         </Switch>
       </Layout>

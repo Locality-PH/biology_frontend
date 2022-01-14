@@ -19,7 +19,7 @@ import {
 import axios from "axios";
 
 const Classroom = () => {
-    const userId = localStorage.getItem("mid");
+    const teacherId = localStorage.getItem("tid");
 
     const [classrooms, setClassrooms] = useState([]);
     const [classroomsList, setClassroomsList] = useState([]);
@@ -30,7 +30,7 @@ const Classroom = () => {
     const [deletedMessage, setDeletedMessage] = useState("");
 
     useEffect(() => {
-        axios.get("http://localhost:5000/teacher/get-classrooms/" + userId).then((response) => {
+        axios.get("http://localhost:5000/teacher/get-classrooms/" + teacherId).then((response) => {
             setClassrooms(response.data)
             setClassroomsList(response.data)
             setIsLoading(false);
@@ -46,7 +46,7 @@ const Classroom = () => {
     const deleteClassroom = (classroomId, classroomName) => {
       message.loading("Deleting " + classroomName + "...", 0)
       
-      axios.post("http://localhost:5000/teacher/delete-classroom", {"user_id": userId, "classroom_id": classroomId}).then((response) => {
+      axios.post("http://localhost:5000/teacher/delete-classroom", {"teacher_id": teacherId, "classroom_id": classroomId}).then((response) => {
         if(response.data == "Deleted"){
           message.destroy()
           setClassroomsList(
