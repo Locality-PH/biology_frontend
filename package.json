@@ -45,6 +45,9 @@
   "proxy": {
     "/.netlify/functions/api/*": {
       "target": "https://xenodochial-gates-876873.netlify.app",
+      "pathRewrite": {
+        "^/\\.netlify/functions": ""
+      },
       "secure": false,
       "headers": {
         "host": "xenodochial-gates-876873.netlify.app"
