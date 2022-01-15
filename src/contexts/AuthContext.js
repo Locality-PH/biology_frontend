@@ -38,7 +38,7 @@ export function AuthProvider({ children }) {
                 localData(res.data[0].uuid, res.data[0]?.role);
               })
               .then((_) => {
-                history.push("api/admin/dashboard");
+                history.push("admin/dashboard");
               });
           }
         );

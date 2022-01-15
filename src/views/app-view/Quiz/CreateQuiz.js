@@ -478,7 +478,7 @@ const CreateQuiz = () => {
 
         (async () => {
             console.log(newQuiz)
-            await Axios.post("api/quiz/create-quiz", { newQuiz }).then((response) => {
+            await Axios.post("/api/quiz/create-quiz", { newQuiz }).then((response) => {
                 console.log(response.data)
             });
 
