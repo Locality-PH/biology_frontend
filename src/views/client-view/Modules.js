@@ -32,7 +32,7 @@ const Modules = ({ match }) => {
   useEffect(() => {
     message.loading("Loading modules...", 0);
     axios
-      .get("/student/get-classroom-modules/" + classCode)
+      .get("api/student/get-classroom-modules/" + classCode)
       .then((response) => {
         setModules(response.data);
         setError(null);
@@ -55,7 +55,7 @@ const Modules = ({ match }) => {
   };
 
   const ModuleContent = () => {
-    const module = modules.filter((module) => module.teacher_id == moduleId);
+    const module = modules.filter((module) => module._id == moduleId);
     var fileName = "";
     var quizLink = "";
 
@@ -108,7 +108,7 @@ const Modules = ({ match }) => {
           onClick={HandleModules}
         >
           {modules.map((result, i) => (
-            <Menu.Item key={result.teacher_id}>
+            <Menu.Item key={result._id}>
               <Checkbox></Checkbox>
               <span className="checkbox-span">{result.module_name}</span>
             </Menu.Item>

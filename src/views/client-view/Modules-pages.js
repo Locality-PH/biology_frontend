@@ -20,7 +20,7 @@ const ModulePages = ({ moduleId, fileName }) => {
     message.loading("Loading " + fileName + "...", 0)
 
     axios
-    .get("/student/get-module/" + moduleId)
+    .get("api/student/get-module/" + moduleId)
     .then((response) => {
       setModulePDF(response.data);
     })

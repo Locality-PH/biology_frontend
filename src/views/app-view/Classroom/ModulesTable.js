@@ -21,12 +21,11 @@ const ModulesTable = ({classCode}) => {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        axios.get("/teacher/get-classroom-modules/" + classCode).then((response) => {
+        axios.get("api/teacher/get-classroom-modules/" + classCode).then((response) => {
             setModules(response.data)
             setModulesList(response.data)
             setIsLoading(false);
             setError(null);
-            console.log(response.data)
           }).catch(() => {
             setIsLoading(false);
             message.error("Could not fetch the data in the server!")
@@ -47,11 +46,11 @@ const ModulesTable = ({classCode}) => {
     const deleteModule = (moduleId, moduleName) => {
       message.loading("Deleting " + moduleName + "...", 0)
       
-      axios.post("/teacher/delete-module", {"class_code": classCode, "module_id": moduleId}).then((response) => {
+      axios.post("api/teacher/delete-module", {"class_code": classCode, "module_id": moduleId}).then((response) => {
         if(response.data == "Deleted"){
           message.destroy()
           setModulesList(
-            modulesList.filter((module) => module.teacher_id !== moduleId)
+            modulesList.filter((module) => module._id !== moduleId)
             )
           message.success(moduleName + " has been successfully deleted")
         }else{
@@ -98,19 +97,19 @@ const ModulesTable = ({classCode}) => {
             menu={
                 <Menu>
                     <Menu.Item key="0">
-                        <Link to={`/admin/classroom/${classCode}/${result.teacher_id}`}>
+                        <Link to={`/admin/classroom/${classCode}/${result._id}`}>
                             <EyeOutlined />
                             <span className="ml-2">View</span>
                         </Link>
                     </Menu.Item>
-                    <Menu.Item key="1" onClick={() => downloadModule(result.teacher_id)}>
+                    <Menu.Item key="1" onClick={() => downloadModule(result._id)}>
                         <>
                             <DownloadOutlined />
                             <span className="ml-2">Download</span>
                         </>
                     </Menu.Item>
                     <Menu.Divider/>
-                    <Menu.Item key="2" onClick={() => deleteModule(result.teacher_id, result.module_name)}>
+                    <Menu.Item key="2" onClick={() => deleteModule(result._id, result.module_name)}>
                         <>
                             <DeleteOutlined />
                             <span className="ml-2">Delete</span>
@@ -153,7 +152,7 @@ const ModulesTable = ({classCode}) => {
             pagination={true}
             columns={tableColumns} 
             dataSource={modulesList} 
-            rowKey='teacher_id'
+            rowKey='_id'
             loading={isLoading}
             scroll={{ x: "max-content" }}
         />
