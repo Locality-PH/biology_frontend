@@ -21,7 +21,7 @@ const ModulesTable = ({classCode}) => {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        axios.get("/teacher/get-classroom-modules/" + classCode).then((response) => {
+        axios.get("api/teacher/get-classroom-modules/" + classCode).then((response) => {
             setModules(response.data)
             setModulesList(response.data)
             setIsLoading(false);
@@ -46,7 +46,7 @@ const ModulesTable = ({classCode}) => {
     const deleteModule = (moduleId, moduleName) => {
       message.loading("Deleting " + moduleName + "...", 0)
       
-      axios.post("/teacher/delete-module", {"class_code": classCode, "module_id": moduleId}).then((response) => {
+      axios.post("api/teacher/delete-module", {"class_code": classCode, "module_id": moduleId}).then((response) => {
         if(response.data == "Deleted"){
           message.destroy()
           setModulesList(

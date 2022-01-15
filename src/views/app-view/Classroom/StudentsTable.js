@@ -26,7 +26,7 @@ const StudentsTable = ({classCode}) => {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        axios.get("/teacher/get-classroom-students/" + classCode).then((response) => {
+        axios.get("api/teacher/get-classroom-students/" + classCode).then((response) => {
             setStudents(response.data)
             setStudentsList(response.data)
             setIsLoading(false);
@@ -41,7 +41,7 @@ const StudentsTable = ({classCode}) => {
     const deleteStudent = (studentId, studentEnrolledId, studentName) => {
       message.loading("Removing " + studentName, 0)
 
-      axios.post("/teacher/delete-student", {"student_id": studentId, "student_enrolled_id": studentEnrolledId, "class_code": classCode}).then((response) => {
+      axios.post("api/teacher/delete-student", {"student_id": studentId, "student_enrolled_id": studentEnrolledId, "class_code": classCode}).then((response) => {
         if(response.data == "Deleted"){
           message.destroy()
           setStudentsList(
