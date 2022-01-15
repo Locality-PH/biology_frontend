@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Menu, Dropdown, Avatar, Modal, Button, Input, message} from "antd";
+import { Menu, Dropdown, Avatar, Modal, Button, Input, message } from "antd";
 import {
   EditOutlined,
   SettingOutlined,
@@ -25,29 +25,31 @@ const menuItem = [
 
 export const NavProfile = () => {
   const studentId = localStorage.getItem("sid");
-  const [studentName, setStudentName]= useState("")
+  const [studentName, setStudentName] = useState("");
 
   const [error, setError] = useState("");
   const history = useHistory();
   const { currentUser, logout } = useAuth();
 
-  const [modalVisible, setModalVisible] = useState(false)
-  const [classCode, setClassCode] = useState("")
-  const [isDisable, setIsDisable] = useState(false)
+  const [modalVisible, setModalVisible] = useState(false);
+  const [classCode, setClassCode] = useState("");
+  const [isDisable, setIsDisable] = useState(false);
 
   useEffect(() => {
-    axios.get("/student/get-student-fullname/" + studentId).then((response) => {
-      setStudentName(response.data)
-        console.log(response.data)
-      }).catch(() => {
-        message.error("Could not fetch the data in the server!")
+    axios
+      .get("/api/student/get-student-fullname/" + studentId)
+      .then((response) => {
+        setStudentName(response.data);
+        console.log(response.data);
+      })
+      .catch(() => {
+        message.error("Could not fetch the data in the server!");
       });
-  }
-  , []);
+  }, []);
 
-  const closeModal = () =>{
-    setModalVisible(false)
-  }
+  const closeModal = () => {
+    setModalVisible(false);
+  };
 
   async function handleLogout() {
     setError("");
@@ -60,36 +62,41 @@ export const NavProfile = () => {
     }
   }
   async function JoinClassRoomButton() {
-    setIsDisable(false)
-    setModalVisible(true)
+    setIsDisable(false);
+    setModalVisible(true);
   }
 
   const joinClassroom = () => {
-    setIsDisable(true)
-    console.log("classCode: " ,classCode)
-    console.log("Student id", studentId)
-    setModalVisible(false)
-    message.loading(`Joining "${classCode}" classroom...`, 0)
+    setIsDisable(true);
+    console.log("classCode: ", classCode);
+    console.log("Student id", studentId);
+    setModalVisible(false);
+    message.loading(`Joining "${classCode}" classroom...`, 0);
 
-    const data = {"student_id": studentId,"class_code": classCode, "student_name": studentName}
+    const data = {
+      student_id: studentId,
+      class_code: classCode,
+      student_name: studentName,
+    };
 
-    axios.post("/student/join-classroom", data).then((response) => {
-      if(response.data == "Error"){
-        message.destroy()
-        message.error("Couldn't find classroom please try again")
-      }
-      else{
-        message.destroy()
-        message.success(response.data)
-        if(response.data == "Successfully join the classroom"){
-          location.reload()
+    axios
+      .post("/api/student/join-classroom", data)
+      .then((response) => {
+        if (response.data == "Error") {
+          message.destroy();
+          message.error("Couldn't find classroom please try again");
+        } else {
+          message.destroy();
+          message.success(response.data);
+          if (response.data == "Successfully join the classroom") {
+            location.reload();
+          }
         }
-      }
-      }).catch(() => {
-        message.error("Could not fetch the data in the server!")
+      })
+      .catch(() => {
+        message.error("Could not fetch the data in the server!");
       });
-
-  }
+  };
   const profileMenu = (
     <div className="pt-2 pl-5 pr-5 nav-profile nav-dropdown white-avatar hover-underline-animation ">
       <div className="nav-profile-header">
@@ -148,17 +155,32 @@ export const NavProfile = () => {
   );
   return (
     <>
-      <Modal title="Enter the code provided by your teacher" visible={modalVisible} onCancel={closeModal}
-      footer={
-        [<Button key={1} type="primary" 
-        style={{backgroundColor: "green", borderColor: "green"}} 
-        onClick={() => joinClassroom()}
-        disabled={isDisable}>Join</Button>]
-      }>
-        <Input placeholder="Example: abcmopxyz" onChange={e => setClassCode(e.target.value)}></Input>
-        
+      <Modal
+        title="Enter the code provided by your teacher"
+        visible={modalVisible}
+        onCancel={closeModal}
+        footer={[
+          <Button
+            key={1}
+            type="primary"
+            style={{ backgroundColor: "green", borderColor: "green" }}
+            onClick={() => joinClassroom()}
+            disabled={isDisable}
+          >
+            Join
+          </Button>,
+        ]}
+      >
+        <Input
+          placeholder="Example: abcmopxyz"
+          onChange={(e) => setClassCode(e.target.value)}
+        ></Input>
       </Modal>
-      <Dropdown placement="bottomRight" overlay={profileMenu} trigger={["click"]}>
+      <Dropdown
+        placement="bottomRight"
+        overlay={profileMenu}
+        trigger={["click"]}
+      >
         <Menu
           className="d-flex align-item-center hover-underline-animation "
           mode="horizontal"

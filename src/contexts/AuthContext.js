@@ -22,26 +22,24 @@ export function AuthProvider({ children }) {
         const user = result.user;
         const avatar = user.photoURL;
 
-        Axios.post("/api/admin/google-login", { user }).then(
-          (response) => {
-            const currentUserUUID = response.data;
-            console.log("response from controller");
-            console.log(currentUserUUID);
+        Axios.post("/api/admin/google-login", { user }).then((response) => {
+          const currentUserUUID = response.data;
+          console.log("response from controller");
+          console.log(currentUserUUID);
 
-            Axios.get("/api/admin/login/" + currentUserUUID)
-              .then((res) => {
-                console.log(res.data);
-                localStorage.setItem("mid", res.data[0]?.auth_id);
-                localStorage.setItem("role", res.data[0]?.role);
-                localStorage.setItem("tid", res.data[0]?.teacher);
-                localStorage.setItem("avatar", avatar);
-                localData(res.data[0].uuid, res.data[0]?.role);
-              })
-              .then((_) => {
-                history.push("admin/dashboard");
-              });
-          }
-        );
+          Axios.get("/api/admin/login/" + currentUserUUID)
+            .then((res) => {
+              console.log(res.data);
+              localStorage.setItem("mid", res.data[0]?.auth_id);
+              localStorage.setItem("role", res.data[0]?.role);
+              localStorage.setItem("tid", res.data[0]?.teacher);
+              localStorage.setItem("avatar", avatar);
+              localData(res.data[0].uuid, res.data[0]?.role);
+            })
+            .then((_) => {
+              history.push("/admin/dashboard");
+            });
+        });
       })
       .catch((error) => {
         console.log(error);

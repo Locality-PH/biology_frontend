@@ -48,7 +48,7 @@ function ClientLogin() {
                   localData(res.data[0].uuid, res.data[0]?.role);
                 })
                 .then((_) => {
-                  history.push("/");
+                  history.push("/home");
                 });
             } else {
               // User is signed out
