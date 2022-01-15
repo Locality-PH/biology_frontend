@@ -19,7 +19,7 @@ const CreateClassroom = () => {
   const [classCode, setClassCode] = useState("")
 
   useEffect(() => {
-    axios.get("api/teacher/get-teacher-fullname/" + teacherId).then((response) => {
+    axios.get("/api/teacher/get-teacher-fullname/" + teacherId).then((response) => {
       setTeacherName(response.data)
         console.log(response.data)
       }).catch(() => {
@@ -29,9 +29,9 @@ const CreateClassroom = () => {
   , []);
 
   const createClassroom = (data) => {
-    axios.post("api/teacher/create-classroom", data).then((response) => {
+    axios.post("/api/teacher/create-classroom", data).then((response) => {
       console.log(response.data)
-      axios.get("api/teacher/get-classroom-code/" + response.data).then((response) => {
+      axios.get("/api/teacher/get-classroom-code/" + response.data).then((response) => {
         message.destroy()
         setModalVisible(true)
         setClassCode(response.data)

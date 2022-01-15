@@ -35,7 +35,7 @@ const Classroom = () => {
     }
 
     useEffect(() => {
-        axios.get("api/teacher/get-classrooms/" + teacherId).then((response) => {
+        axios.get("/api/teacher/get-classrooms/" + teacherId).then((response) => {
             setClassrooms(response.data)
             setClassroomsList(response.data)
             setIsLoading(false);
@@ -50,7 +50,7 @@ const Classroom = () => {
     const deleteClassroom = (classroomId, classroomName) => {
       message.loading("Deleting " + classroomName + "...", 0)
       
-      axios.post("api/teacher/delete-classroom", {"teacher_id": teacherId, "classroom_id": classroomId}).then((response) => {
+      axios.post("/api/teacher/delete-classroom", {"teacher_id": teacherId, "classroom_id": classroomId}).then((response) => {
         if(response.data == "Deleted"){
           message.destroy()
           setClassroomsList(
