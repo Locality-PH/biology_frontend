@@ -23,7 +23,10 @@ function App() {
   return (
     <div>
       <Switch>
-        {/* ADMINSIDE */}
+        {/* ADMINSIDE */}{" "}
+        <Route exact path="/">
+          <Redirect to="/client/login" />
+        </Route>
         <Route path="/admin/login">
           <Login />{" "}
         </Route>
