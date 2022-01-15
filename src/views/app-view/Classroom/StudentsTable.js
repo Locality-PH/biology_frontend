@@ -31,7 +31,6 @@ const StudentsTable = ({classCode}) => {
             setStudentsList(response.data)
             setIsLoading(false);
             setError(null);
-            console.log(response.data)
           }).catch(() => {
             setIsLoading(false);
             message.error("Could not fetch the data in the server!")
