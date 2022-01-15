@@ -34,7 +34,7 @@ const Signup = () => {
                 };
                 console.log(data);
                 axios
-                  .post("api/admin/register", data)
+                  .post("/api/admin/register", data)
                   .then((res) => {
                     console.log(res.data);
                     console.log(res.data.role);
