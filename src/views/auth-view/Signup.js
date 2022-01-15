@@ -59,7 +59,7 @@ const Login = () => {
 
                 console.log(data);
                 axios
-                  .post("/admin/register", data)
+                  .post("/api/admin/register", data)
                   .then((res) => {
                     console.log(res.data);
                     console.log(res.data.role);
