@@ -18,7 +18,7 @@ const ViewModule = ({match}) => {
 
     useEffect(() => {
       message.loading("Loading module...", 0)
-      axios.get("api/teacher/get-module/" + moduleId).then((response) => {
+      axios.get("/api/teacher/get-module/" + moduleId).then((response) => {
         setModulePDF(response.data)
       }).catch(() => {
         message.error("The action can't be completed, please try again.")

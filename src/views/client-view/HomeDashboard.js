@@ -28,7 +28,7 @@ const HomeDashboard = () => {
   const getClassrooms = () => {
     message.loading("Loading classrooms...", 0)
 
-    axios.get("api/student/get-classrooms/" + studentId).then((response) => {
+    axios.get("/api/student/get-classrooms/" + studentId).then((response) => {
         message.destroy()
         setClassrooms(response.data)
         setIsLoading(false);
