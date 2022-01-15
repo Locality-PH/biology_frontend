@@ -34,7 +34,7 @@ const Login = () => {
                 console.log("user is signed in");
                 console.log(user?.uid);
                 axios
-                  .get("/admin/login/" + user.uid)
+                  .get("api/admin/login/" + user.uid)
                   .then((res) => {
                     console.log(res.data);
                     localStorage.setItem("mid", res.data[0]?.auth_id);

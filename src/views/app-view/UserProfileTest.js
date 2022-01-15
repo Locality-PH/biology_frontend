@@ -45,7 +45,7 @@ function UserProfileTest() {
     setUserID(userID);
 
     (async () => {
-      await Axios.get("/admin/" + userID).then((response) => {
+      await Axios.get("api/admin/" + userID).then((response) => {
         const userData = response.data;
         setUser(userData);
       });
@@ -62,7 +62,7 @@ function UserProfileTest() {
   }, []);
 
   const updateTeacher = async (values) => {
-    await Axios.put("/teacher/update", {
+    await Axios.put("api/teacher/update", {
       values,
       teacherID,
       userID,

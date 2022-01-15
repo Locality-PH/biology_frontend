@@ -22,13 +22,13 @@ export function AuthProvider({ children }) {
         const user = result.user;
         const avatar = user.photoURL;
 
-        Axios.post("/admin/google-login", { user }).then(
+        Axios.post("api/admin/google-login", { user }).then(
           (response) => {
             const currentUserUUID = response.data;
             console.log("response from controller");
             console.log(currentUserUUID);
 
-            Axios.get("/admin/login/" + currentUserUUID)
+            Axios.get("api/admin/login/" + currentUserUUID)
               .then((res) => {
                 console.log(res.data);
                 localStorage.setItem("mid", res.data[0]?.auth_id);
@@ -38,7 +38,7 @@ export function AuthProvider({ children }) {
                 localData(res.data[0].uuid, res.data[0]?.role);
               })
               .then((_) => {
-                history.push("/admin/dashboard");
+                history.push("api/admin/dashboard");
               });
           }
         );
@@ -54,14 +54,14 @@ export function AuthProvider({ children }) {
       .then((result) => {
         const user = result.user;
 
-        Axios.post("/student/google-login", {
+        Axios.post("api/student/google-login", {
           user,
         }).then((response) => {
           const currentUserUUID = response.data;
           console.log("response from controller");
           console.log(currentUserUUID);
 
-          Axios.get("/admin/login/" + currentUserUUID)
+          Axios.get("api/admin/login/" + currentUserUUID)
             .then((res) => {
               console.log(res.data);
               localStorage.setItem("mid", res.data[0]?.auth_id);

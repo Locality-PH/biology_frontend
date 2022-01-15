@@ -62,7 +62,7 @@ function ClientRegister() {
               };
               console.log(data);
               axios
-                .post("/student/register", data)
+                .post("api/student/register", data)
                 .then((res) => {
                   console.log(res.data);
                   console.log(res.data.role);

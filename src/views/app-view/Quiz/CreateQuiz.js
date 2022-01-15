@@ -24,7 +24,7 @@ const CreateQuiz = () => {
                 answer:
                     ["Test"]
                 ,
-                option: "Test Answer"
+                option: ["Test Answer"]
             },
             {
                 string: "This is a test question 2",
@@ -58,6 +58,7 @@ const CreateQuiz = () => {
     const [question, setQuestion] = useState(tempQuiz.question)
 
     useEffect(() => {
+        console.log("Question:", question)
         form.resetFields();
     }, [question])
 
@@ -73,20 +74,24 @@ const CreateQuiz = () => {
         if (question.option != undefined) {
 
             if (typeof question.option == 'string') {
-                tempInitialVal.push({["question" + [i + 1] + "_options"]:question.option})
+                tempInitialVal.push({ ["question" + [i + 1] + "_options"]: question.option })
             }
 
             else {
-                let optionArray = []
 
-                question.option.map(
-                    (option) => {
-                        if (option != null) {
-                            optionArray.push(option)
-                        }
-                    })
+                if (typeof question.option == 'object') {
+                    let optionArray = []
 
-                tempInitialVal.push({ ["question" + [i + 1] + "_options"]: optionArray })
+                    question.option.map(
+                        (option) => {
+                            if (option != null) {
+                                optionArray.push(option)
+                            }
+                        })
+
+                    tempInitialVal.push({ ["question" + [i + 1] + "_options"]: optionArray })
+                }
+
             }
         }
 
@@ -470,10 +475,10 @@ const CreateQuiz = () => {
             newQuiz["question"].push(newQuestion)
         }
 
-        
+
         (async () => {
             console.log(newQuiz)
-            await Axios.post("/quiz/create-quiz", { newQuiz }).then((response) => {
+            await Axios.post("api/quiz/create-quiz", { newQuiz }).then((response) => {
                 console.log(response.data)
             });
 
