@@ -22,13 +22,13 @@ export function AuthProvider({ children }) {
         const user = result.user;
         const avatar = user.photoURL;
 
-        Axios.post("http://localhost:5000/admin/google-login", { user }).then(
+        Axios.post("/admin/google-login", { user }).then(
           (response) => {
             const currentUserUUID = response.data;
             console.log("response from controller");
             console.log(currentUserUUID);
 
-            Axios.get("http://localhost:5000/admin/login/" + currentUserUUID)
+            Axios.get("/admin/login/" + currentUserUUID)
               .then((res) => {
                 console.log(res.data);
                 localStorage.setItem("mid", res.data[0]?.auth_id);
@@ -54,14 +54,14 @@ export function AuthProvider({ children }) {
       .then((result) => {
         const user = result.user;
 
-        Axios.post("http://localhost:5000/student/google-login", {
+        Axios.post("/student/google-login", {
           user,
         }).then((response) => {
           const currentUserUUID = response.data;
           console.log("response from controller");
           console.log(currentUserUUID);
 
-          Axios.get("http://localhost:5000/admin/login/" + currentUserUUID)
+          Axios.get("/admin/login/" + currentUserUUID)
             .then((res) => {
               console.log(res.data);
               localStorage.setItem("mid", res.data[0]?.auth_id);

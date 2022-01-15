@@ -45,12 +45,12 @@ function UserProfileTest() {
     setUserID(userID);
 
     (async () => {
-      await Axios.get("http://localhost:5000/admin/" + userID).then((response) => {
+      await Axios.get("/admin/" + userID).then((response) => {
         const userData = response.data;
         setUser(userData);
       });
   
-      // await Axios.get("http://localhost:5000/teacher/get/" + teacherID).then(
+      // await Axios.get("/teacher/get/" + teacherID).then(
       //   (response) => {
       //     const teacherData = response.data;
       //     setTeacher(teacherData);
@@ -62,7 +62,7 @@ function UserProfileTest() {
   }, []);
 
   const updateTeacher = async (values) => {
-    await Axios.put("http://localhost:5000/teacher/update", {
+    await Axios.put("/teacher/update", {
       values,
       teacherID,
       userID,

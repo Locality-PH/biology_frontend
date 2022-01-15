@@ -45,7 +45,7 @@ const Login = () => {
                 console.log("user is signed in");
                 console.log(user?.uid);
                 axios
-                  .get("/admin/login/" + user.uid)
+                  .get("/api/admin/login/" + user.uid)
                   .then((res) => {
                     console.log(res.data);
                     localStorage.setItem("mid", res.data[0]?.auth_id);
@@ -156,6 +156,7 @@ const Login = () => {
               className="text-center w-100 admin-login-custom-button-style"
               onClick={(e) => loginGoogleUser(e)}
               style={{ borderRadius: 30 }}
+              type="button"
             >
               <Space direction="horizontal" align="middle">
                 <FcGoogle style={{ marginTop: -2 }} />

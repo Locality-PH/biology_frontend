@@ -29,6 +29,11 @@ const Classroom = () => {
 
     const [deletedMessage, setDeletedMessage] = useState("");
 
+    const menu_icons_style = {
+      display: "inline-flex",
+      paddingRight: "5px"
+    }
+
     useEffect(() => {
         axios.get("/teacher/get-classrooms/" + teacherId).then((response) => {
             setClassrooms(response.data)
@@ -97,20 +102,20 @@ const Classroom = () => {
                 <Menu>
                     <Menu.Item key="0">
                         <Link to={`classroom/${result.class_code}`}>
-                            <EyeOutlined />
+                            <EyeOutlined style={menu_icons_style}/>
                             <span className="ml-2">View</span>
                         </Link>
                     </Menu.Item>
                     <Menu.Item key="1">
                         <Link to={`classroom/edit/${result.class_code}`}>
-                            <EditOutlined />
+                            <EditOutlined style={menu_icons_style}/>
                             <span className="ml-2">Edit</span>
                         </Link>
                     </Menu.Item>
                     <Menu.Divider/>
                     <Menu.Item key="2" onClick={() => deleteClassroom(result.teacher_id, result.name)}>
                         <>
-                            <DeleteOutlined />
+                            <DeleteOutlined style={menu_icons_style}/>
                             <span className="ml-2">Delete</span>
                         </>
                     </Menu.Item>

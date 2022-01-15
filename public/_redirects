@@ -1,0 +1,1 @@
+/api/*  https://biology-server.herokuapp.com/api/:splat  200
