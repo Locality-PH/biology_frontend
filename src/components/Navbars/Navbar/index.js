@@ -25,9 +25,9 @@ const NavBar = ({ toggle }) => {
           <NavLogo to="/">
             <h1 style={{ color: "white", marginTop: "8px" }}>Biology</h1>
           </NavLogo>
-          <MobileIcon onClick={toggle}>
+          {/* <MobileIcon onClick={toggle}>
             <FaBars />
-          </MobileIcon>
+          </MobileIcon> */}
           {currentUrl.match("/classroom") ? (
             <NavMenu>
               {" "}
