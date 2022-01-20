@@ -86,7 +86,7 @@ const ModulesTable = ({classCode}) => {
           title: 'Finished by',
           dataIndex: 'filename',
           render: (_, result) => (
-              <span>{result.finished} student</span>
+              <span>{result.finished.length} student</span>
           )
       },
         {
