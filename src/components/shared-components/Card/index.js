@@ -1,5 +1,9 @@
 import React from "react";
-import { FolderOutlined, UserOutlined } from "@ant-design/icons";
+import {
+  FolderOutlined,
+  UserOutlined,
+  ArrowLeftOutlined,
+} from "@ant-design/icons";
 import { Avatar } from "antd";
 import { Tooltip, Button } from "antd";
 import { Link } from "react-router-dom";
@@ -88,6 +92,16 @@ export default class Card extends React.Component {
           <footer>
             <div className="divide-bottom">
               <div className="stylefooter">
+                {" "}
+                <Link to={this.props.leave}>
+                  <Tooltip title="Leave">
+                    <Button
+                      size="large"
+                      shape="circle"
+                      icon={<ArrowLeftOutlined />}
+                    />
+                  </Tooltip>{" "}
+                </Link>
                 <Link to={this.props.modules}>
                   <Tooltip title="Modules">
                     <Button

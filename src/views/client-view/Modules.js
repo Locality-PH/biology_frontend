@@ -12,11 +12,8 @@ import {
   Divider,
 } from "antd";
 import ModulePages from "./Modules-pages";
-const { SubMenu } = Menu;
 const { Header, Content, Footer, Sider } = Layout;
-import { LoginLink, TextInput } from "../auth-view/LoginElement";
-import TextUnderScore from "components/shared-components/TextUnderScore";
-import { useLocation, Route, Switch } from "react-router-dom";
+
 import axios from "axios";
 
 const Modules = ({ match }) => {
