@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 import { 
 	EyeOutlined,
     SearchOutlined,
+    SolutionOutlined,
     DownloadOutlined,
 	DeleteOutlined
 } from '@ant-design/icons';
@@ -19,6 +20,11 @@ const ModulesTable = ({classCode}) => {
 
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
+
+    const menu_icons_style = {
+      display: "inline-flex",
+      paddingRight: "5px"
+    }
 
     useEffect(() => {
         axios.get("/api/teacher/get-classroom-modules/" + classCode).then((response) => {
@@ -40,7 +46,7 @@ const ModulesTable = ({classCode}) => {
 
     const downloadModule = (moduleId) => {
       console.log("Downloading")
-      window.open("/teacher/download-module/" + moduleId, "_blank")
+      window.open("https://biology-server.herokuapp.com/api/teacher/download-module/" + moduleId, "_blank")
     }
 
     const deleteModule = (moduleId, moduleName) => {
@@ -86,7 +92,7 @@ const ModulesTable = ({classCode}) => {
           title: 'Finished by',
           dataIndex: 'filename',
           render: (_, result) => (
-              <span>{result.finished.length} student</span>
+              <span>{result.finished} student</span>
           )
       },
         {
@@ -98,20 +104,26 @@ const ModulesTable = ({classCode}) => {
                 <Menu>
                     <Menu.Item key="0">
                         <Link to={`/admin/classroom/${classCode}/${result._id}`}>
-                            <EyeOutlined />
+                            <EyeOutlined style={menu_icons_style}/>
                             <span className="ml-2">View</span>
                         </Link>
                     </Menu.Item>
-                    <Menu.Item key="1" onClick={() => downloadModule(result._id)}>
+                    <Menu.Item key="1">
+                        <Link to={`/admin/classroom/${classCode}/module/${result._id}`}>
+                            <SolutionOutlined style={menu_icons_style}/>
+                            <span className="ml-2">Student Modules</span>
+                        </Link>
+                    </Menu.Item>
+                    <Menu.Item key="2" onClick={() => downloadModule(result._id)}>
                         <>
-                            <DownloadOutlined />
+                            <DownloadOutlined style={menu_icons_style}/>
                             <span className="ml-2">Download</span>
                         </>
                     </Menu.Item>
                     <Menu.Divider/>
-                    <Menu.Item key="2" onClick={() => deleteModule(result._id, result.module_name)}>
+                    <Menu.Item key="3" onClick={() => deleteModule(result._id, result.module_name)}>
                         <>
-                            <DeleteOutlined />
+                            <DeleteOutlined style={menu_icons_style}/>
                             <span className="ml-2">Delete</span>
                         </>
                     </Menu.Item>

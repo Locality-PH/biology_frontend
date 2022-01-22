@@ -198,9 +198,9 @@ return (
                         {...restField}
                         name={[name, 'quiz_link']}
                         fieldKey={[fieldKey, 'quiz_link']}
-                        rules={[{ required: true, message: 'Quiz Link is required' }]}
+                        rules={[{ required: true, message: 'Quiz Code is required' }]}
                       >
-                        <Input placeholder="Quiz Link" />
+                        <Input placeholder="Quiz Code" />
                       </Form.Item>
                       <MinusCircleOutlined onClick={() => remove(name)} />
                     </Space>

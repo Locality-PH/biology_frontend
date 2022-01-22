@@ -94,7 +94,8 @@ export const NavProfile = () => {
         }
       })
       .catch(() => {
-        message.error("Could not fetch the data in the server!");
+        message.destroy();
+        message.error("Error!");
       });
   };
   const profileMenu = (
