@@ -14,8 +14,33 @@ import {
 } from "antd";
 const { Header, Content, Footer, Sider } = Layout;
 import utils from "utils";
+import axios from "axios";
 
-const Student = () => {
+const Student = ({match}) => {
+  const classCode = match.params.class_code
+  const [classroomStudents, setClassroomStudents] = useState([]);
+  const [teaherName, setTeacherName] = useState("")
+
+  useEffect(() => {
+    message.loading("Loading students...", 0)
+    axios.get("/api/student/get-classroom-students/" + classCode).then((response) => {
+      message.destroy()
+      setClassroomStudents(response.data)
+      }).catch(() => {
+        message.destroy()
+        message.error("Could not fetch the data in the server!")
+      });
+
+      axios.get("/api/student/get-classroom-teacher-fullname/" + classCode).then((response) => {
+        message.destroy()
+        setTeacherName(response.data)
+        }).catch(() => {
+          message.destroy()
+          message.error("Could not fetch the data in the server!")
+        });
+}
+, []);
+
   const StudentSampleData = [
     {
       uid: 1,
@@ -30,15 +55,14 @@ const Student = () => {
       avatarColor: "04d182",
     },
   ];
-  const TeacherSampleData = [
+  const TeacherData = [
     {
       uid: 1,
-      member_name: "John Cena",
-      fullname: "ROJHON BUENAVENTYRA",
+      fullname: teaherName,
       avatarColor: "04d182",
     },
   ];
-  const masterListColumn = [
+  const teacherMasterListColumn = [
     {
       title: "Member Name",
       dataIndex: "email",
@@ -54,6 +78,27 @@ const Student = () => {
             {utils.getNameInitial(member.fullname)}
           </Avatar>
           <span className="ml-2">{member.fullname}</span>
+        </div>
+      ),
+    },
+  ];
+
+  const studentMasterListColumn = [
+    {
+      title: "Member Name",
+      dataIndex: "email",
+      key: "email",
+      render: (text, member) => (
+        <div className="text-center d-flex align-items-center">
+          <Avatar
+            size={40}
+            className="font-size-sm"
+            style={{ backgroundColor: "#" + "04d182"}}
+            src={member?.photURL}
+          >
+            {utils.getNameInitial(member.student_name)}
+          </Avatar>
+          <span className="ml-2">{member.student_name}</span>
         </div>
       ),
     },
@@ -93,11 +138,11 @@ const Student = () => {
                   <div className="content-data" style={{ textAlign: "center" }}>
                     {" "}
                     <div className="text-left border-bottom">
-                      <h3>Teachers</h3>
+                      <h3>Teacher</h3>
                       <div className="table-responsive">
                         <Table
-                          dataSource={TeacherSampleData}
-                          columns={masterListColumn}
+                          dataSource={TeacherData}
+                          columns={teacherMasterListColumn}
                           rowKey="uid"
                           scroll={{ x: "max-content" }}
                           pagination={false}
@@ -108,9 +153,9 @@ const Student = () => {
                     <div className="mt-5 text-left border-bottom">
                       <h3>Students</h3>{" "}
                       <Table
-                        dataSource={StudentSampleData}
-                        columns={masterListColumn}
-                        rowKey="uid"
+                        dataSource={classroomStudents}
+                        columns={studentMasterListColumn}
+                        rowKey="_id"
                         scroll={{ x: "max-content" }}
                         pagination={false}
                         showHeader={false}

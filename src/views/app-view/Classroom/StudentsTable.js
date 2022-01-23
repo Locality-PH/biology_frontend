@@ -25,6 +25,11 @@ const StudentsTable = ({classCode}) => {
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
 
+    const menu_icons_style = {
+      display: "inline-flex",
+      paddingRight: "5px"
+    }
+
     useEffect(() => {
         axios.get("/api/teacher/get-classroom-students/" + classCode).then((response) => {
             setStudents(response.data)
@@ -41,7 +46,7 @@ const StudentsTable = ({classCode}) => {
     const deleteStudent = (studentId, studentEnrolledId, studentName) => {
       message.loading("Removing " + studentName, 0)
 
-      axios.post("/api/teacher/delete-student", {"student_id": studentId, "student_enrolled_id": studentEnrolledId, "class_code": classCode}).then((response) => {
+      axios.post("/api/teacher/delete-student", {"student_id": studentId, "class_code": classCode}).then((response) => {
         if(response.data == "Deleted"){
           message.destroy()
           setStudentsList(
@@ -64,10 +69,10 @@ const StudentsTable = ({classCode}) => {
             )
         },
         {
-          title: 'Student Id',
-          dataIndex: 'id',
+          title: 'Finished Module',
+          dataIndex: 'module_finish',
           render: (_, result) => (
-            <span>{result.students}</span>
+            <span>{result.module_finish.length} Modules</span>
           )
         },
         {
@@ -78,15 +83,15 @@ const StudentsTable = ({classCode}) => {
             menu={
                 <Menu>
                     <Menu.Item key="0">
-                        <Link to={`${classCode}/student/${result.students}`}>
-                            <EyeOutlined />
+                        <Link to={`${classCode}/student/${result.teacher_id}`}>
+                            <EyeOutlined style={menu_icons_style}/>
                             <span className="ml-2">View</span>
                         </Link>
                     </Menu.Item>
                     <Menu.Divider/>
                     <Menu.Item key="2" onClick={() => deleteStudent(result.students, result.teacher_id, result.student_name)}>
                         <>
-                            <DeleteOutlined />
+                            <DeleteOutlined style={menu_icons_style}/>
                             <span className="ml-2">Remove</span>
                         </>
                     </Menu.Item>

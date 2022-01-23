@@ -1,4 +1,5 @@
 import React from "react";
+
 import { useAuth } from "contexts/AuthContext";
 import Login from "./views/auth-view/Login";
 import Signup from "./views/auth-view/Signup";
@@ -15,6 +16,9 @@ import { Route, Switch, Redirect } from "react-router-dom";
 import ClientLogin from "views/auth-view/client/Login";
 import ClientRegister from "views/auth-view/client/Register";
 
+//Global Page Component
+import ViewQuiz from "views/app-view/Quiz/ViewQuiz.js";
+
 function App() {
   const { localData, localrole } = useAuth(); // determine if authorized, from context or however you're doing it
 
@@ -25,7 +29,7 @@ function App() {
   return (
     <div>
       <Switch>
-        {/* ADMINSIDE */}{" "}
+        {/* ADMINSIDE START */}{" "}
         <Route exact path="/">
           <Redirect to="/home" />
         </Route>
