@@ -102,7 +102,7 @@ const dashboardRoutes = [
     isExact: true,
   },
   {
-    path: "/quiz/view/:Qid",
+    path: "/quiz/view/:quiz_code",
     name: "View Quiz",
     icon: "nc-icon nc-attach-87",
     component: ViewQuiz,
@@ -120,7 +120,7 @@ const dashboardRoutes = [
     isExact: false,
   },
   {
-    path: "/quiz/edit/:Qid",
+    path: "/quiz/edit/:quiz_code",
     name: "Edit Quiz",
     icon: "nc-icon nc-attach-87",
     component: EditQuiz,

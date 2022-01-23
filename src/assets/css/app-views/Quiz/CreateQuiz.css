@@ -1,48 +1,48 @@
-.create-quiz .card-box-shadow-style{
+.quiz-form .card-box-shadow-style{
   box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
   border-radius: 10px ;
   }
 
-.create-quiz .center-tag {
+.quiz-form .center-tag {
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.create-quiz .question-number{
+.quiz-form .question-number{
   margin-top: 10px;
   font-size: 14px;
   font-family: "poppins", sans-serif;
 }
 
-.create-quiz .center-div{
+.quiz-form .center-div{
   margin: auto;
 }
 
-.create-quiz .quiz-name-input {
+.quiz-form .quiz-name-input {
   font-size: 36px;
   font-weight: 300;
   font-family: "poppins", sans-serif;
 }
 
-.create-quiz .question-card{
+.quiz-form .question-card{
   width: 700px;
   margin-bottom: 40px;
 }
 
-.create-quiz .ant-card .ant-card-body{
+.quiz-form .ant-card .ant-card-body{
   width: 100% !important;
   padding: 20px !important;
 }
 
-.create-quiz .question-close-btn{
+.quiz-form .question-close-btn{
   height: 10px;
   float: right;
   margin-top: -6px;
   margin-right: -6px;
 }
 
-.create-quiz .underline-input {
+.quiz-form .underline-input {
   border: 0 !important;
   outline: 0 !important;
   width: 100% !important;
@@ -52,20 +52,30 @@
   margin-bottom: 10px;
 }
 
-.create-quiz .ant-form-item-has-error .underline-input,
-.create-quiz .ant-form-item-has-error .underline-input:hover,
-.create-quiz .ant-form-item-has-error .underline-input:focus{
+.quiz-form .ant-form-item-has-error .underline-input,
+.quiz-form .ant-form-item-has-error .underline-input:hover,
+.quiz-form .ant-form-item-has-error .underline-input:focus{
   border-bottom: 3px solid red !important;
   margin-bottom: 0px;
 }
 
-.create-quiz .ant-form-item-explain-error{
+.quiz-form .ant-form-item-explain-error{
   margin-bottom: 10px;
 }
 
-.create-quiz .underline-input:hover, .underline-input:focus {
+.quiz-form .underline-input:hover, .underline-input:focus {
   border-bottom: 3px solid green !important;
   font-weight: bold;
+}
+
+.quiz-form .load-icon{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-top: -50px;
+  margin-left: -50px;
+  width: 100px;
+  height: 100px;
 }
 
 
