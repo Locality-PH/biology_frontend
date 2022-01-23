@@ -391,6 +391,7 @@ body {
   /* background-image: url("../img/bghome.png"); */
   background-repeat: no-repeat;
   background-position: center top;
+  height: 100%;
 }
 dl,
 ol,

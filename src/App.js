@@ -8,6 +8,8 @@ import ClientLayout from "layouts/Client.js";
 // import TestRegister from "./views/auth-view/TestRegister";
 
 import PrivateRouteAdmin from "components/Private/PrivateRouteAdmin";
+import PrivateRouteClient from "components/Private/PrivateRouteClient";
+
 import AdminLayout from "layouts/Admin.js";
 import { Route, Switch, Redirect } from "react-router-dom";
 import ClientLogin from "views/auth-view/client/Login";
@@ -25,35 +27,22 @@ function App() {
       <Switch>
         {/* ADMINSIDE */}{" "}
         <Route exact path="/">
-          <Redirect to="/client/login" />
+          <Redirect to="/home" />
         </Route>
-        <Route path="/admin/login">
-          <Login />{" "}
-        </Route>
-        {/* <Route path="/admin/testlogin">
-          <TestLogin />{" "}
-        </Route> */}
-        {/* <Route path="/admin/testregister">
-          <TestRegister />{" "}
-        </Route>
-        */}
-        <Route path="/admin/signup">
-          <Signup />{" "}
-        </Route>
+        <Route path="/admin/login" component={Login} />
+        <Route path="/admin/signup" component={Signup} />
         <PrivateRouteAdmin path="/admin">
           <Route path="/admin" render={(props) => <AdminLayout {...props} />} />
         </PrivateRouteAdmin>
         {/* ADMINSIDE */}
         {/* CLIENTSIDE */}
-        <Route path="/client/login">
-          <ClientLogin />{" "}
-        </Route>
-        <Route path="/client/register">
-          <ClientRegister />{" "}
-        </Route>
-        {/* CLIENTSIDE */}
+        <Route path="/client/login" component={ClientLogin} />{" "}
+        <Route path="/client/register" component={ClientRegister} />
+        <PrivateRouteClient path="/">
+          <ClientLayout />
+        </PrivateRouteClient>{" "}
         {/* <Redirect from="/" to="/client/login" /> */}
-        <ClientLayout />
+        {/* CLIENTSIDE */}
       </Switch>
     </div>
   );
