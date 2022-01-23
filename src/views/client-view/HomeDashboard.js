@@ -26,23 +26,25 @@ const HomeDashboard = () => {
   const [error, setError] = useState(null);
 
   const getClassrooms = () => {
-    message.loading("Loading classrooms...", 0)
+    message.loading("Loading classrooms...", 0);
 
-    axios.get("/api/student/get-classrooms/" + studentId).then((response) => {
-        message.destroy()
-        setClassrooms(response.data)
+    axios
+      .get("/api/student/get-classrooms/" + studentId)
+      .then((response) => {
+        message.destroy();
+        setClassrooms(response.data);
         setIsLoading(false);
         setError(null);
-      }).catch(() => {
-        message.destroy()
+      })
+      .catch(() => {
+        message.destroy();
         setIsLoading(false);
-        message.error("Could not fetch the data in the server!")
+        message.error("Could not fetch the data in the server!");
       });
+  };
 
-  }
-  
   useEffect(() => {
-    getClassrooms()
+    getClassrooms();
   }, []);
   // const [history, setHistory] = useState();
   const { currentUser } = useAuth();
@@ -95,7 +97,7 @@ const HomeDashboard = () => {
                   />
                 </Card>{" "} */}{" "}
                 <Row justify="center" gutter={40}>
-                  {classrooms.map((result, i)=>
+                  {classrooms.map((result, i) => (
                     <Col
                       key={i}
                       justify="center"
@@ -116,10 +118,10 @@ const HomeDashboard = () => {
                         currentPhoto="https://joeschmoe.io/api/v1/random"
                         modules={`/classroom/${result.class_code}/modules`}
                         students={`/classroom/${result.class_code}/students`}
+                        leave={`/classroom/${result.class_code}/leave`}
                       />
                     </Col>
-                  )}
-                  
+                  ))}
                 </Row>
               </Col>
             </Row>

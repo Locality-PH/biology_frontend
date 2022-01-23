@@ -6,6 +6,8 @@ import {
   PlusOutlined,
   QuestionCircleOutlined,
   LogoutOutlined,
+  FolderOutlined,
+  UserOutlined,
 } from "@ant-design/icons";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
@@ -22,15 +24,13 @@ const menuItem = [
     path: "/",
   },
 ];
-
 export const NavProfile = () => {
+  const currentUrl = window.location.pathname;
   const studentId = localStorage.getItem("sid");
   const [studentName, setStudentName] = useState("");
-
   const [error, setError] = useState("");
   const history = useHistory();
   const { currentUser, logout } = useAuth();
-
   const [modalVisible, setModalVisible] = useState(false);
   const [classCode, setClassCode] = useState("");
   const [isDisable, setIsDisable] = useState(false);
@@ -94,7 +94,8 @@ export const NavProfile = () => {
         }
       })
       .catch(() => {
-        message.error("Could not fetch the data in the server!");
+        message.destroy();
+        message.error("Error!");
       });
   };
   const profileMenu = (
@@ -126,20 +127,51 @@ export const NavProfile = () => {
               </Menu.Item>
             );
           })}
+          {currentUrl.match("/classroom") ? (
+            <>
+              {" "}
+              <Menu.Item
+                key={menuItem.length + 2}
+                onClick={() => {
+                  // Module();
+                }}
+              >
+                {" "}
+                <a href="#/">
+                  <FolderOutlined className="mr-3" />
+                  <span className="font-weight-normal">Module</span>
+                </a>
+              </Menu.Item>{" "}
+              <Menu.Item
+                key={menuItem.length + 3}
+                onClick={() => {
+                  // Module();
+                }}
+              >
+                {" "}
+                <a href="#/">
+                  <UserOutlined className="mr-3" />
+                  <span className="font-weight-normal">Student</span>
+                </a>
+              </Menu.Item>
+            </>
+          ) : (
+            <Menu.Item
+              key={menuItem.length + 4}
+              onClick={() => {
+                JoinClassRoomButton();
+              }}
+            >
+              {" "}
+              <a href="#/">
+                <PlusOutlined className="mr-3" />
+                <span className="font-weight-normal">Join Classroom</span>
+              </a>
+            </Menu.Item>
+          )}
+
           <Menu.Item
-            key={menuItem.length + 2}
-            onClick={() => {
-              JoinClassRoomButton();
-            }}
-          >
-            {" "}
-            <a href="#/">
-              <PlusOutlined className="mr-3" />
-              <span className="font-weight-normal">Join Classroom</span>
-            </a>
-          </Menu.Item>
-          <Menu.Item
-            key={menuItem.length + 1}
+            key={menuItem.length + 5}
             onClick={() => {
               handleLogout();
             }}

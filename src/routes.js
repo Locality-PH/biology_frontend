@@ -13,6 +13,7 @@ import EditQuiz from "views/app-view/Quiz/EditQuiz";
 import AssignQuiz from "views/app-view/Quiz/AssignQuiz";
 
 import ViewModule from "views/app-view/Classroom/ViewModule"
+import ModuleStudents from "views/app-view/Classroom/ModuleStudents";
 
 import TableList from "views/app-view/TableList.js";
 import TestAntDesign from "./views/app-view/TestAntDesign";
@@ -75,7 +76,7 @@ const dashboardRoutes = [
     isExact: false,
   },
   {
-    path: "/classroom/:class_code/student/:student_id",
+    path: "/classroom/:class_code/student/:student_enrolled_id",
     name: "View Student",
     icon: "",
     component: ViewStudent,
@@ -88,6 +89,15 @@ const dashboardRoutes = [
     name: "View Module",
     icon: "",
     component: ViewModule,
+    layout: "/admin",
+    renderSidebar: false,
+    isExact: true,
+  },
+  {
+    path: "/classroom/:class_code/module/:module_id",
+    name: "View Module Student",
+    icon: "",
+    component: ModuleStudents,
     layout: "/admin",
     renderSidebar: false,
     isExact: true,
