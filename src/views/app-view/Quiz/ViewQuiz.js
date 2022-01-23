@@ -21,7 +21,6 @@ const ViewQuiz = (props) => {
     const [showQuestion, setShowQuestion] = useState(true)
 
     useEffect(() => {
-
         (async () => {
             await Axios.post("/api/quiz/get/code/" + quiz_code, { tid }).then((response) => {
                 const quizData = response.data;
@@ -29,7 +28,7 @@ const ViewQuiz = (props) => {
                 if (response.data != "failed") {
                     setQuiz(quizData)
                     setQuestion(quizData.question)
-    
+
                     setTimeout(() => {
                         setShowQuestion(false)
                     }, 300);
@@ -162,25 +161,7 @@ const ViewQuiz = (props) => {
                         return (
                             <Card className='card-box-shadow-style question-card center-div' key={QTNkey}>
 
-                                <Form.Item
-                                    name={"question" + key + "_type"}
-                                    initialValue={"Identification"}
-                                    hidden={true}
-                                >
-                                    <Input placeholder='Question here....' className='underline-input' />
-                                </Form.Item>
-
-                                <Form.Item
-                                    className='mb-0'
-                                    name={"question" + key}
-                                    colon={false}
-                                    label={key + "."}
-                                    rules={[{ required: true, message: "Question can't be blank!" }]}
-                                    required={false}
-                                >
-                                    <Input placeholder='Question here....' className='underline-input' />
-                                </Form.Item>
-
+                                <p>{QTNkey}. {question.string}</p>
 
                                 <Form.Item
                                     name={"question" + key + "_options"}
@@ -195,160 +176,58 @@ const ViewQuiz = (props) => {
                         return (
                             <Card className='card-box-shadow-style question-card center-div' key={QTNkey}>
 
-                                <Form.Item
-                                    name={"question" + key + "_type"}
-                                    initialValue={"Multiple Choice"}
-                                    hidden={true}
-                                >
-                                    <Input placeholder='Question here....' className='underline-input' />
-                                </Form.Item>
+                                <p>{QTNkey}. {question.string}</p>
+                                {console.log(question.option)}
 
                                 <Form.Item
                                     className='mb-0'
-                                    name={"question" + QTNkey}
-                                    colon={false}
-                                    label={key + "."}
+                                    name={"question" + QTNkey + "_options"}
                                     rules={[{ required: true, message: "Question can't be blank!" }]}
                                     required={false}
                                 >
-                                    <Input placeholder='Question here....' className='underline-input' />
+                                    <Radio.Group >
+                                        <Space direction="vertical">
+
+                                            {question.option.map(
+                                                (option, QTNkey) => {
+                                                    return (
+                                                        <Radio key={QTNkey} value={option.value}><p className='m-0'>{option.value}</p></Radio>
+                                                    )
+                                                }
+                                            )}
+                                        </Space>
+                                    </Radio.Group>
                                 </Form.Item>
 
-                                <Form.List
-                                    name={"question" + QTNkey + "_options"}
-                                >
 
-                                    {(fields, { add, remove }) => (
-
-                                        <>
-                                            {fields.map(({ key, name, ...restField }) => (
-
-                                                <Space key={key} style={{ width: "100%", marginBottom: 8 }} align='middle'>
-
-                                                    <Form.Item
-                                                        {...restField}
-                                                        name={[name, "isAnswer"]}
-                                                        className='mb-0'
-                                                        valuePropName="checked"
-                                                    // initialValue={false}
-                                                    >
-                                                        <Radio onChange={() =>
-                                                            setIsAnswer(key, QTNkey)
-                                                        } />
-                                                    </Form.Item>
-
-                                                    <Form.Item
-                                                        {...restField}
-                                                        name={[name, "value"]}
-                                                        rules={[{ required: true, message: 'Put option here!' }]}
-                                                        className='mb-0'
-                                                    >
-                                                        <Input placeholder="Option here" />
-                                                    </Form.Item>
-
-                                                    <MinusCircleOutlined
-                                                        onClick={
-                                                            () => {
-                                                                remove(name)
-                                                                // console.log("removing" + name)
-                                                            }} />
-                                                </Space>
-
-
-                                            ))}
-
-                                            <Form.Item className='mb-0 center-div'>
-                                                <Button type="dashed" block onClick={() => { add() }} >
-                                                    <Space size={4} align='middle'>
-                                                        <AiOutlinePlus /> <p>Add Option</p>
-                                                    </Space>
-                                                </Button>
-
-                                            </Form.Item>
-                                        </>
-                                    )}
-
-
-                                </Form.List>
                             </Card>
                         )
                     } else if (question.type == "Checkbox") {
                         return (
                             <Card className='card-box-shadow-style question-card center-div' key={QTNkey}>
 
-
-                                <Form.Item
-                                    name={"question" + key + "_type"}
-                                    initialValue={"Checkbox"}
-                                    hidden={true}
-                                >
-                                    <Input placeholder='Question here....' className='underline-input' />
-                                </Form.Item>
-
+                                <p>{QTNkey}. {question.string}</p>
 
                                 <Form.Item
                                     className='mb-0'
-                                    name={"question" + QTNkey}
-                                    colon={false}
-                                    label={key + "."}
+                                    name={"question" + QTNkey + "_options"}
                                     rules={[{ required: true, message: "Question can't be blank!" }]}
                                     required={false}
                                 >
-                                    <Input placeholder='Question here....' className='underline-input' />
+                                    <Checkbox.Group >
+                                        <Space direction="vertical">
+
+                                            {question.option.map(
+                                                (option, QTNkey) => {
+                                                    return (
+                                                        <Checkbox key={QTNkey} value={option.value}>{option.value}</Checkbox>
+                                                    )
+                                                }
+                                            )}
+                                        </Space>
+                                    </Checkbox.Group>
                                 </Form.Item>
 
-                                <Form.List
-                                    name={"question" + QTNkey + "_options"}
-                                >
-
-                                    {(fields, { add, remove }) => (
-
-                                        <>
-                                            {fields.map(({ key, name, ...restField }) => (
-
-                                                <Space key={key} style={{ width: "100%", marginBottom: 8 }} align='middle'>
-
-                                                    <Form.Item
-                                                        {...restField}
-                                                        name={[name, "isAnswer"]}
-                                                        className='mb-0'
-                                                        valuePropName="checked"
-                                                    // initialValue={false}
-                                                    >
-                                                        <Checkbox />
-                                                    </Form.Item>
-
-                                                    <Form.Item
-                                                        {...restField}
-                                                        name={[name, "value"]}
-                                                        rules={[{ required: true, message: 'Need option here!' }]}
-                                                        className='mb-0'
-                                                    >
-                                                        <Input placeholder="Option here" />
-                                                    </Form.Item>
-
-                                                    <MinusCircleOutlined
-                                                        onClick={
-                                                            () => {
-                                                                remove(name)
-                                                            }} />
-                                                </Space>
-
-
-                                            ))}
-
-                                            <Form.Item className='mb-0'>
-                                                <Button type="dashed" block onClick={() => add()} >
-                                                    <Space size={4} align='middle'>
-                                                        <AiOutlinePlus /> <p>Add Option</p>
-                                                    </Space>
-                                                </Button>
-                                            </Form.Item>
-                                        </>
-                                    )}
-
-
-                                </Form.List>
                             </Card>
                         )
                     }
@@ -366,7 +245,6 @@ const ViewQuiz = (props) => {
                 <Form
                     name="quiz-form"
                     onFinish={onTempFinish}
-                    initialValues={initialVal}
                     ref={formRef}
                     form={form}
                     scrollToFirstError={true}
