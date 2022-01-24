@@ -94,6 +94,13 @@ const Classroom = () => {
             )
         },
         {
+          title: 'Student Enrolled',
+          dataIndex: 'student',
+          render: (_, result) => (
+              <span>{result.student.length} Student</span>
+          )
+      },
+        {
             title: 'Actions',
             dataIndex: 'actions',
             render: (_, result) => (
