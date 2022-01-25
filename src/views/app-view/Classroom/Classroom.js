@@ -41,7 +41,6 @@ const Classroom = () => {
             setIsLoading(false);
             setError(null);
           }).catch(() => {
-            setIsLoading(false);
             message.error("Could not fetch the data in the server!")
           });
     }

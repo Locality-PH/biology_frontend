@@ -21,7 +21,6 @@ const ViewStudent = ({match}) => {
             setIsLoading(false);
             setError(null);
           }).catch(() => {
-            setIsLoading(false);
             message.error("Could not fetch the data in the server!")
           });
     }
@@ -33,6 +32,13 @@ const ViewStudent = ({match}) => {
             dataIndex: 'name',
             render: (_, result) => (
                 <span>{result.module_name}</span>
+            )
+        },
+        {
+            title: 'Finished at',
+            dataIndex: 'finished_at',
+            render: (_, result) => (
+                <span>{result.finished_at}</span>
             )
         },
         {
