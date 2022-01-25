@@ -17,6 +17,7 @@ import {
 	DeleteOutlined
 } from '@ant-design/icons';
 import axios from "axios";
+import {CSVLink} from "react-csv"
 
 const FinishedStudentTable = ({moduleId, classCode}) => {
     const [finishedStudent, setFinishedStudent] = useState([]);
@@ -27,6 +28,9 @@ const FinishedStudentTable = ({moduleId, classCode}) => {
 
     const [deletedMessage, setDeletedMessage] = useState("");
 
+    const [csvData, setCsvData] = useState([])
+    const [fileName, setFileName] = useState("")
+
     const menu_icons_style = {
       display: "inline-flex",
       paddingRight: "5px"
@@ -34,12 +38,12 @@ const FinishedStudentTable = ({moduleId, classCode}) => {
 
     useEffect(() => {
         axios.get("/api/teacher/finished-students/" + moduleId).then((response) => {
-            setFinishedStudent(response.data)
-            setFinishedStudentList(response.data)
+            setFinishedStudent(response.data.finished_student)
+            setFinishedStudentList(response.data.finished_student)
+            setFileName(response.data.module_name + ".csv")
             setIsLoading(false);
             setError(null);
           }).catch(() => {
-            setIsLoading(false);
             message.error("Could not fetch the data in the server!")
           });
     }
@@ -51,6 +55,13 @@ const FinishedStudentTable = ({moduleId, classCode}) => {
             dataIndex: 'student_name',
             render: (_, result) => (
                 <span>{result.student_name}</span>
+            )
+        },
+        {
+            title: 'Finished at',
+            dataIndex: 'finished_at',
+            render: (_, result) => (
+                <span>{result.finished_at}</span>
             )
         },
         {
@@ -68,13 +79,32 @@ const FinishedStudentTable = ({moduleId, classCode}) => {
         const data = utils.wildCardSearch(searchArray, value);
         setFinishedStudentList(data);
     };
+
+    const headers = [{
+      label: "Student Name", key: "student_name"
+    },
+    {
+      label: "Finished at", key: "finished_at"
+    },
+    {
+      label: "Quiz Score", key: "quiz_score"
+    }]
     
   return (
     <>
       <Container fluid>
+        <Row hidden={isLoading}>
+          <CSVLink data={finishedStudentList} headers={headers} filename={fileName}>
+            <Button type="primary" style={{backgroundColor: "green", borderColor: "green"}}>Download {fileName}</Button>
+          </CSVLink>
+        </Row>
+        <br></br>
         <Row>
           <Col md="12">
-            <Card title="Finished Student" extra={<><Link to={`/admin/classroom/${classCode}`}><Button type="primary" style={{backgroundColor: "green", borderColor: "green"}}>Back</Button></Link></>}>
+            <Card title="Finished Student" extra={<>
+            <Link to={`/admin/classroom/${classCode}`}>
+              <Button type="primary" style={{backgroundColor: "green", borderColor: "green"}}>Back</Button>
+            </Link></>}>
               <Flex
                 alignItems="center"
                 className=""

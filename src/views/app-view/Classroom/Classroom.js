@@ -41,7 +41,6 @@ const Classroom = () => {
             setIsLoading(false);
             setError(null);
           }).catch(() => {
-            setIsLoading(false);
             message.error("Could not fetch the data in the server!")
           });
     }
@@ -93,6 +92,13 @@ const Classroom = () => {
                 <span>{result.section_name}</span>
             )
         },
+        {
+          title: 'Student Enrolled',
+          dataIndex: 'student',
+          render: (_, result) => (
+              <span>{result.student.length} Student</span>
+          )
+      },
         {
             title: 'Actions',
             dataIndex: 'actions',

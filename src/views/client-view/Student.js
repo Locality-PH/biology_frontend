@@ -21,21 +21,21 @@ const Student = ({match}) => {
   const [classroomStudents, setClassroomStudents] = useState([]);
   const [teaherName, setTeacherName] = useState("")
 
+  const [isSLoading, setSIsLoading] = useState(true);
+  const [isTLoading, setTIsLoading] = useState(true);
+
   useEffect(() => {
-    message.loading("Loading students...", 0)
     axios.get("/api/student/get-classroom-students/" + classCode).then((response) => {
-      message.destroy()
       setClassroomStudents(response.data)
+      setSIsLoading(false)
       }).catch(() => {
-        message.destroy()
         message.error("Could not fetch the data in the server!")
       });
 
       axios.get("/api/student/get-classroom-teacher-fullname/" + classCode).then((response) => {
-        message.destroy()
         setTeacherName(response.data)
+        setTIsLoading(false)
         }).catch(() => {
-          message.destroy()
           message.error("Could not fetch the data in the server!")
         });
 }
@@ -141,6 +141,7 @@ const Student = ({match}) => {
                       <h3>Teacher</h3>
                       <div className="table-responsive">
                         <Table
+                          loading={isTLoading}
                           dataSource={TeacherData}
                           columns={teacherMasterListColumn}
                           rowKey="uid"
@@ -153,6 +154,7 @@ const Student = ({match}) => {
                     <div className="mt-5 text-left border-bottom">
                       <h3>Students</h3>{" "}
                       <Table
+                        loading={isSLoading}
                         dataSource={classroomStudents}
                         columns={studentMasterListColumn}
                         rowKey="_id"
