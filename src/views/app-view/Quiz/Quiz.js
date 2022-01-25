@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react"
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { Table, Card, Row, Col, Button, Input, Menu, message } from "antd";
 import Axios from 'axios'
 import utils from 'utils'
@@ -16,6 +16,7 @@ import EllipsisDropdown from 'components/shared-components/EllipsisDropdown'
 import "assets/css/app-views/Quiz/Quiz.css"
 
 const Quiz = () => {
+    let history = useHistory();
     
     const [isLoading, setIsLoading] = useState(true)
     const [quiz, setQuiz] = useState([])

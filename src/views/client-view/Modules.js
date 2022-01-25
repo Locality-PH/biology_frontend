@@ -109,7 +109,8 @@ const Modules = ({ match }) => {
   }
 
   const goToQuiz = (quizLink) => {
-    window.open(quizLink, "_blank");
+    console.log("/" + quizLink)
+    window.open("/client/" + classCode + "/quiz/" + quizLink);
   };
 
   const ModuleContent = () => {
