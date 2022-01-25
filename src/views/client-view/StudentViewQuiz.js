@@ -8,10 +8,11 @@ import Axios from 'axios'
 //css
 import "assets/css/app-views/Quiz/ViewQuiz.css"
 
-const ViewQuiz = (props) => {
+const StudentViewQuiz = (props) => {
     let history = useHistory();
     const quiz_code = props.match.params.quiz_code
-    const tid = localStorage.getItem("tid");
+    const class_code = props.match.params.class_code
+    const sid = localStorage.getItem("sid");
 
     const [form] = Form.useForm();
     const formRef = React.createRef();
@@ -24,7 +25,7 @@ const ViewQuiz = (props) => {
 
     useEffect(() => {
         (async () => {
-            await Axios.post("/api/quiz/get/code/" + quiz_code, { tid }).then((response) => {
+            await Axios.post("/api/quiz/student/get/code/" + quiz_code, { sid, class_code }).then((response) => {
                 const quizData = response.data;
 
                 if (response.data != "failed") {
@@ -120,7 +121,7 @@ const ViewQuiz = (props) => {
 
     }
 
-    const onTempFinish = (values) => {
+    const onFinish = (values) => {
         console.log("Values from quiz form:", values)
 
         const quiz_length = Object.keys(values).length
@@ -157,7 +158,7 @@ const ViewQuiz = (props) => {
         console.log(score)
 
         const tempValues = {
-            student_id: "61ee4308545ddd8a3f4cd7fc",
+            student_id: sid,
             quiz_id: quiz.quiz_id,
             max_score: quiz_length,
             score,
@@ -167,51 +168,11 @@ const ViewQuiz = (props) => {
         setScoreboard(tempValues)
         setScoreModal(true)
 
-        // Axios.post("/api/scoreboard/create", {tempValues}).then((response) => {
-        //             console.log(response.data)
-        // });
+        Axios.post("/api/scoreboard/create", {tempValues}).then((response) => {
+                    console.log(response.data)
+        });
     }
 
-    const onFinish = (values) => {
-        let quiz_length = (Object.keys(values).length - 2) / 3;
-        let newQuiz = {}
-
-        console.log('Received values of form:', values);
-
-        newQuiz["name"] = values["quiz_name"]
-        newQuiz["description"] = values["quiz_description"]
-        newQuiz["question"] = []
-
-        for (let i = 1; i < quiz_length + 1; i++) {
-            let newQuestion = {}
-            let newOptions = values["question" + i + "_options"]
-
-            newQuestion["option"] = newOptions
-            newQuestion["type"] = values["question" + i + "_type"]
-            newQuestion["string"] = values["question" + i]
-            newQuestion["answer"] = []
-
-            if (newOptions.length == 1) {
-                newQuestion["answer"].push(newOptions[0])
-                // console.log("Answer: " + newOptions)
-            }
-
-            else {
-
-                for (let x = 0; x < newOptions.length; x++) {
-                    if (newOptions[x].isAnswer == true) {
-                        newQuestion["answer"].push(newOptions[x].value)
-                        // console.log("Answer: " + newOptions[x].value)
-                    }
-                }
-
-            }
-
-            newQuiz["question"].push(newQuestion)
-        }
-
-        console.log("Quiz done:", newQuiz)
-    };
 
     const PrintQuestion = () => {
         if (question.length != undefined) {
@@ -325,7 +286,7 @@ const ViewQuiz = (props) => {
 
                 <Form
                     name="quiz-form"
-                    onFinish={onTempFinish}
+                    onFinish={onFinish}
                     ref={formRef}
                     form={form}
                     scrollToFirstError={true}
@@ -358,4 +319,4 @@ const ViewQuiz = (props) => {
     )
 }
 
-export default ViewQuiz
+export default StudentViewQuiz

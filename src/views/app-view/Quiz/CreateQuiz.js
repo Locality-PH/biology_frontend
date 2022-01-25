@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Card, Row, Col, Form, Input, Space, Button, Checkbox, Radio, Select, message, Spin } from 'antd'
+import { Link, useHistory } from "react-router-dom";
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { AiOutlinePlus } from "react-icons/ai"
 
@@ -11,6 +12,8 @@ const { Option } = Select;
 const CreateQuiz = () => {
     const [form] = Form.useForm();
     const formRef = React.createRef();
+    let history = useHistory();
+
     const [newQuizType, SetNewQuizType] = useState("Identification")
     const tid = localStorage.getItem("tid");
 
@@ -457,17 +460,26 @@ const CreateQuiz = () => {
         }
 
 
-        (async () => {
-            console.log(newQuiz)
-            await Axios.post("/api/quiz/create-quiz", { newQuiz, tid }).then((response) => {
-                console.log(response.data)
-            });
+        try {
+            (async () => {
+                console.log(newQuiz)
+                await Axios.post("/api/quiz/create-quiz", { newQuiz, tid }).then((response) => {
+                    console.log(response.data)
+                });
+    
+            })()
+    
+            message.success('Quiz has been created successfully.');
+            setQuestion({})
+            initialVal = {}
+            
+            setTimeout(() => {
+                history.push("/admin/quiz")
+            }, 500);
+        } catch (error) {
+            message.error('Error!! Failed to update quiz.');
+        }
 
-        })()
-
-        message.success('Quiz has been created successfully.');
-        setQuestion({})
-        initialVal = {}
     };
 
     return (

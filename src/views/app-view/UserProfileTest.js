@@ -41,7 +41,6 @@ function UserProfileTest() {
     console.log("Teacher ID: " + teacherID);
     console.log("user ID: " + userID);
 
-    setTeacherID(teacherID);
     setUserID(userID);
 
     (async () => {
@@ -50,12 +49,6 @@ function UserProfileTest() {
         setUser(userData);
       });
   
-      // await Axios.get("/teacher/get/" + teacherID).then(
-      //   (response) => {
-      //     const teacherData = response.data;
-      //     setTeacher(teacherData);
-      //   }
-      // );
     })()
 
 
@@ -74,10 +67,6 @@ function UserProfileTest() {
   };
 
   useEffect(() => {
-    setInitialVal({ ...initialVal, ...teacher });
-  }, [teacher]);
-
-  useEffect(() => {
     setInitialVal({ ...initialVal, ...user });
   }, [user]);
 
@@ -89,83 +78,8 @@ function UserProfileTest() {
   // console.log(initialVal);
 
   return (
-    <Row gutter={30} className="user-profile">
-      <Col span={16}>
-        <Card className="card-box-shadow-style">
-          <div className="">
-            <h4>Personal Information</h4>
-            <hr />
-            <Form
-              name="basicInformation"
-              layout="vertical"
-              onFinish={updateTeacher}
-              initialValues={initialVal}
-              form={form}
-            >
-              <Row>
-                <Col xs={24} sm={24} md={24} lg={24}>
-                  <Row gutter={10} className="form-row-style">
-                    <Col xs={24} sm={24} md={12}>
-                      <Form.Item
-                        label={<p className="label-form-style">First Name: </p>}
-                        name="first_name"
-                        required={false}
-                        rules={[
-                          {
-                            required: true,
-                            message: "Please input your name!",
-                          },
-                        ]}
-                      >
-                        <Input className="custom-input" />
-                      </Form.Item>
-                    </Col>
-                    <Col xs={24} sm={24} md={12}>
-                      <Form.Item
-                        label={<p className="label-form-style">Last Name: </p>}
-                        name="last_name"
-                        required={false}
-                        rules={[
-                          {
-                            required: true,
-                            message: "Please input your lastname!",
-                          },
-                        ]}
-                      >
-                        <Input className="custom-input" />
-                      </Form.Item>
-                    </Col>
-                    <Col xs={24} sm={24} md={12}>
-                      <Form.Item
-                        label={<p className="label-form-style">Email: </p>}
-                        name="email"
-                        required={false}
-                        rules={[
-                          {
-                            required: true,
-                            type: "email",
-                            message: "Please enter a valid email!",
-                          },
-                        ]}
-                      >
-                        <Input className="custom-input" />
-                      </Form.Item>
-                    </Col>
-                  </Row>
-                  <button
-                    type="submit"
-                    className="form-submit-btn-style custom-button-green"
-                  >
-                    Save Change
-                  </button>
-                </Col>
-              </Row>
-            </Form>
-          </div>
-        </Card>
-      </Col>
-
-      <Col span={8}>
+    <Row gutter={[30,30]} className="user-profile">
+       <Col xxl={{span: 8, order: 1}} xl={{span: 8, order: 1}} lg={{span: 8, order: 1}} md={24} sm={24} xs={24}>
         <Card
           className="card-box-shadow-style"
           cover={
@@ -189,9 +103,69 @@ function UserProfileTest() {
             {utils.getNameInitial(currentUser?.displayName)}{" "}
           </Avatar>
           <h4 className="text-center">{currentUser?.displayName}</h4>
-          <p className="text-center">michael24</p>
         </Card>
       </Col>
+
+      <Col xxl={16} xl={16} lg={16} md={24} sm={24} xs={24}>
+        <Card className="card-box-shadow-style">
+          <div className="">
+            <h4>Personal Information</h4>
+            <hr />
+            <Form
+              name="basicInformation"
+              layout="vertical"
+              onFinish={updateTeacher}
+              initialValues={initialVal}
+              form={form}
+            >
+              <Row>
+                <Col span={24}>
+                  <Row gutter={10} className="form-row-style">
+                    <Col span={24} xl={12}>
+                      <Form.Item
+                        label={<p className="label-form-style">Full Name: </p>}
+                        name="full_name"
+                        required={false}
+                        rules={[
+                          {
+                            required: true,
+                            message: "Full name can't be empty!",
+                          },
+                        ]}
+                      >
+                        <Input className="custom-input" />
+                      </Form.Item>
+                    </Col>
+                    <Col span={24} xl={12}>
+                      <Form.Item
+                        label={<p className="label-form-style">Email: </p>}
+                        name="email"
+                        required={false}
+                        rules={[
+                          {
+                            required: true,
+                            type: "email",
+                            message: "Please enter a valid email!",
+                          },
+                        ]}
+                      >
+                        <Input className="custom-input" disabled/>
+                      </Form.Item>
+                    </Col>
+                  </Row>
+                  <button
+                    type="submit"
+                    className="form-submit-btn-style custom-button-green"
+                  >
+                    Save Change
+                  </button>
+                </Col>
+              </Row>
+            </Form>
+          </div>
+        </Card>
+      </Col>
+
     </Row>
   );
 }
