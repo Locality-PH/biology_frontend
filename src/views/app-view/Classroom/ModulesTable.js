@@ -44,8 +44,11 @@ const ModulesTable = ({classCode}) => {
     }
 
     const downloadModule = (moduleId) => {
-      console.log("Downloading")
-      window.open("https://biology-server.herokuapp.com/api/teacher/download-module/" + moduleId, "_blank")
+      console.log("Downloading");
+      window.location.assign(
+        "https://biology-server.herokuapp.com/api/teacher/download-module/" + moduleId,
+        "_blank"
+      );
     }
 
     const deleteModule = (moduleId, moduleName) => {

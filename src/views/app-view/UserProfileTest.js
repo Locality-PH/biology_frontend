@@ -22,7 +22,7 @@ import AvatarProfile from "components/shared-components/AvatarProfile/AvatarProf
 
 function UserProfileTest() {
   const { currentUser } = useAuth();
-  const [teacherID, setTeacherID] = useState("");
+  const teacherID = localStorage.getItem("tid");
   const [userID, setUserID] = useState("");
   const [user, setUser] = useState([]);
   const [teacher, setTeacher] = useState([]);
@@ -31,7 +31,6 @@ function UserProfileTest() {
   const [form] = Form.useForm();
 
   useEffect(() => {
-    const teacherID = localStorage.getItem("tid");
     const userID = localStorage.getItem("mid");
     // const userID = "61c287d146f87f872634f860";
 
