@@ -121,7 +121,28 @@ const HomeDashboard = () => {
                         leave={`/classroom/${result.class_code}/leave`}
                       />
                     </Col>
-                  ))}
+                  ))}{" "}
+                  <Col
+                    justify="center"
+                    xxs={1}
+                    xs={24}
+                    sm={12}
+                    md={12}
+                    lg={11}
+                    xl={7}
+                  >
+                    {" "}
+                    <div className="no_data">
+                      {" "}
+                      <div class="vertical-center">
+                        <h3>𝗝𝗼𝗶𝗻 𝗡𝗼𝘄</h3>
+                        <p>
+                          Navigate to the profile to join a classroom and start
+                          doing modules
+                        </p>
+                      </div>
+                    </div>
+                  </Col>
                 </Row>
               </Col>
             </Row>
