@@ -1,6 +1,6 @@
 import React from "react";
 import { FaBars } from "react-icons/fa";
-
+import Logo from "assets/img/logo.png";
 import {
   Nav,
   NavLogo,
@@ -23,7 +23,11 @@ const NavBar = ({ toggle }) => {
       <Nav>
         <NavbarContainer>
           <NavLogo to="/">
-            <h1 style={{ color: "white", marginTop: "8px" }}>Biology</h1>
+            {/* <h1 style={{ color: "white", marginTop: "8px" }}>Biology</h1> */}
+            <div
+              className="logo_client"
+              style={{ color: "white", marginTop: "8px" }}
+            ></div>
           </NavLogo>
           {/* <MobileIcon onClick={toggle}>
             <FaBars />

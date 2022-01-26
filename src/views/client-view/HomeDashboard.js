@@ -52,7 +52,7 @@ const HomeDashboard = () => {
   return (
     <>
       <Layout className="scrollable-container layout layout-background shadow-box ">
-        <Content style={{ padding: "0 50px", overflow: "auto" }}>
+        <Content style={{ padding: "0 10px", overflow: "auto" }}>
           <div className="background-images site-layout-content-home shadow-box ">
             <Row justify="center">
               <Col
