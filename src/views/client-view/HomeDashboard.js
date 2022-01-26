@@ -100,37 +100,11 @@ const HomeDashboard = () => {
                     description="This is the description"
                   />
                 </Card>{" "} */}{" "}
-                <Row style={{ height: "800px" }} justify="center" gutter={40}>
-                  {" "}
-                  <Col
-                    justify="center"
-                    style={{ height: "100px" }}
-                    xxs={1}
-                    xs={24}
-                    sm={12}
-                    md={12}
-                    lg={11}
-                    xl={7}
-                  >
-                    {" "}
-                    <div>
-                      {" "}
-                      <div className="no_data">
-                        {" "}
-                        <div class="vertical-center">
-                          <h3>
-                            <b>Join Now</b>
-                          </h3>
-                          <p>
-                            Navigate to the profile to join a classroom and
-                            start doing modules
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </Col>
-                </Row>
-                <Row justify="center" gutter={40}>
+                
+
+                {
+                (classrooms.length != 0) ? (
+                  <Row justify="center" gutter={40}>
                   {classrooms.map((result, i) => (
                     <Col
                       key={i}
@@ -157,6 +131,40 @@ const HomeDashboard = () => {
                     </Col>
                   ))}{" "}
                 </Row>
+                ) : 
+                (
+                  <Row style={{ height: "800px" }} justify="center" gutter={40}>
+                  {" "}
+                  <Col
+                    justify="center"
+                    style={{ height: "100px" }}
+                    xxs={1}
+                    xs={24}
+                    sm={12}
+                    md={12}
+                    lg={11}
+                    xl={7}
+                  >
+                    {" "}
+                    <div>
+                      {" "}
+                      <div className="no_data">
+                        {" "}
+                        <div className="vertical-center">
+                          <h3>
+                            <b>Join Now</b>
+                          </h3>
+                          <p>
+                            Navigate to the profile to join a classroom and
+                            start doing modules
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </Col>
+                </Row>
+                )
+              }
               </Col>
             </Row>
           </div>
