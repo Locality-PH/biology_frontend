@@ -21,7 +21,7 @@ import AvatarProfile from "components/shared-components/AvatarProfile/AvatarProf
 
 
 function UserProfileTest() {
-  const { currentUser } = useAuth();
+  const { currentUser, updateProfile} = useAuth();
   const [teacherID, setTeacherID] = useState("");
   const [userID, setUserID] = useState("");
   const [user, setUser] = useState([]);
@@ -29,6 +29,9 @@ function UserProfileTest() {
   const [initialVal, setInitialVal] = useState([]);
 
   const [form] = Form.useForm();
+
+  console.log("current user:", currentUser)
+
 
   useEffect(() => {
     const teacherID = localStorage.getItem("tid");
@@ -55,6 +58,8 @@ function UserProfileTest() {
   }, []);
 
   const updateTeacher = async (values) => {
+    updateProfile({displayName: values.full_name})
+
     await Axios.put("/api/teacher/update", {
       values,
       teacherID,
@@ -63,7 +68,7 @@ function UserProfileTest() {
       console.log(response.data);
     });
 
-    alert("Teacher updated");
+    message.success("Teacher updated.");
   };
 
   useEffect(() => {

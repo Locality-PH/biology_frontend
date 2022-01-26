@@ -96,6 +96,10 @@ export function AuthProvider({ children }) {
   function updatePassword(password) {
     return auth.updatePassword(password);
   }
+
+  function updateProfile(profile) {
+    return currentUser.updateProfile(profile);
+  }
   function logout() {
     localStorage.removeItem("auth_id");
     localStorage.removeItem("role");
@@ -129,6 +133,7 @@ export function AuthProvider({ children }) {
     resetPassword,
     updateEmail,
     updatePassword,
+    updateProfile,
     SignInWithGoogle,
     SignInWithGoogleStudent,
   };

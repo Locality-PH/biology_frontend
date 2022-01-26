@@ -22,6 +22,7 @@ const StudentViewQuiz = (props) => {
     const [showQuestion, setShowQuestion] = useState(true)
     const [scoreModal, setScoreModal] = useState(false);
     const [scoreboard, setScoreboard] = useState({});
+    let isScoreboardEmpty = Object.keys(scoreboard).length <= 0
 
     useEffect(() => {
         (async () => {
@@ -35,11 +36,23 @@ const StudentViewQuiz = (props) => {
                     setTimeout(() => {
                         setShowQuestion(false)
                     }, 300);
+
+
                 } else {
                     message.error("Quiz not found!!")
                     setTimeout(() => {
                         history.goBack()
                     }, 500);
+                }
+            });
+
+            await Axios.post("/api/scoreboard/validate/student", { sid, qc: quiz_code }).then((response) => {
+                const scoreData = response.data
+
+                if (scoreData != null) {
+                    setScoreboard(scoreData)
+                } else {
+                    console.log(response.data)
                 }
             });
 
@@ -49,54 +62,12 @@ const StudentViewQuiz = (props) => {
 
     useEffect(() => {
         form.resetFields();
-    }, [question])
+    }, [question, scoreboard])
 
     console.log("This is quiz array:", quiz)
+    console.log("This is scoreboard array:", scoreboard.answer_list)
 
-    //Initialize default value here
-    const tempInitialVal = [
-        { quiz_name: quiz.name },
-        { quiz_description: quiz.description }
-    ]
-
-    //Setting up of initialVal for form
-    let initialVal = []
-    if (question.length != undefined) {
-        question.map((question, i) => {
-            tempInitialVal.push({ ["question" + [i + 1]]: question.string })
-
-            if (question.option != undefined) {
-
-                if (typeof question.option == 'string') {
-                    tempInitialVal.push({ ["question" + [i + 1] + "_options"]: question.option })
-                }
-
-                else {
-
-                    if (typeof question.option == 'object') {
-                        let optionArray = []
-
-                        question.option.map(
-                            (option) => {
-                                if (option != null) {
-                                    optionArray.push(option)
-                                }
-                            })
-
-                        tempInitialVal.push({ ["question" + [i + 1] + "_options"]: optionArray })
-                    }
-
-                }
-            }
-
-        })
-
-        initialVal = tempInitialVal.reduce(((r, c) => Object.assign(r, c)), {})
-
-        console.log("Initial values: ", initialVal)
-
-        // form.resetFields();
-    }
+    const initialVal = scoreboard.answer_list
 
     //Functions
     const compareArray = (arr1, arr2) => {
@@ -122,10 +93,10 @@ const StudentViewQuiz = (props) => {
     }
 
     const onFinish = (values) => {
-        console.log("Values from quiz form:", values)
+        // console.log("Values from quiz form:", values)
 
         const quiz_length = Object.keys(values).length
-        let answer_list = []
+        let score_list = []
         let score = 0
 
         for (let i = 1; i < quiz_length + 1; i++) {
@@ -146,7 +117,7 @@ const StudentViewQuiz = (props) => {
                 am = (sa == qa)
             }
 
-            answer_list.push(am)
+            score_list.push(am)
 
             if (am == true) {
                 score++;
@@ -154,22 +125,24 @@ const StudentViewQuiz = (props) => {
 
         }
 
-        console.log(answer_list)
+        console.log(score_list)
         console.log(score)
 
         const tempValues = {
             student_id: sid,
+            score_list,
+            answer_list: values,
             quiz_id: quiz.quiz_id,
             max_score: quiz_length,
             score,
         }
 
-        console.log("Scoreboard:", tempValues)
+        // console.log("Scoreboard:", tempValues)
         setScoreboard(tempValues)
         setScoreModal(true)
 
-        Axios.post("/api/scoreboard/create", {tempValues}).then((response) => {
-                    console.log(response.data)
+        Axios.post("/api/scoreboard/create", { tempValues }).then((response) => {
+            console.log(response.data)
         });
     }
 
@@ -192,7 +165,7 @@ const StudentViewQuiz = (props) => {
                                     rules={[{ required: true, message: "Need answer for this question!" }]}
                                     required={false}
                                 >
-                                    <Input prefix={<b>Answer:</b>} />
+                                    <Input prefix={<b>Answer:</b>} disabled={!isScoreboardEmpty}/>
                                 </Form.Item>
                             </Card>
                         )
@@ -201,15 +174,14 @@ const StudentViewQuiz = (props) => {
                             <Card className='card-box-shadow-style question-card center-div' key={QTNkey}>
 
                                 <p>{QTNkey}. {question.string}</p>
-                                {console.log(question.option)}
-
+                                
                                 <Form.Item
                                     className='mb-0'
                                     name={"question" + QTNkey + "_answer"}
                                     rules={[{ required: true, message: "Question can't be blank!" }]}
                                     required={false}
                                 >
-                                    <Radio.Group >
+                                    <Radio.Group disabled={!isScoreboardEmpty}>
                                         <Space direction="vertical">
 
                                             {question.option.map(
@@ -238,7 +210,7 @@ const StudentViewQuiz = (props) => {
                                     rules={[{ required: true, message: "Question can't be blank!" }]}
                                     required={false}
                                 >
-                                    <Checkbox.Group >
+                                    <Checkbox.Group disabled={!isScoreboardEmpty}>
                                         <Space direction="vertical">
 
                                             {question.option.map(
@@ -265,19 +237,19 @@ const StudentViewQuiz = (props) => {
     const PrintScoreModal = () => {
         const handleOk = () => {
             setScoreModal(false);
-          };
-        
-          const handleCancel = () => {
-            setScoreModal(false);
-          };
+        };
 
-          if (Object.keys(scoreboard).length > 0) {
+        const handleCancel = () => {
+            setScoreModal(false);
+        };
+
+        if (!isScoreboardEmpty) {
             return (
                 <Modal title={quiz.name} visible={scoreModal} onOk={handleOk} onCancel={handleCancel}>
                     <h2>Your Score: {scoreboard.score} / {scoreboard.max_score}</h2>
                 </Modal>
             )
-          }
+        }
     }
 
     return (
@@ -290,6 +262,8 @@ const StudentViewQuiz = (props) => {
                     ref={formRef}
                     form={form}
                     scrollToFirstError={true}
+                    initialValues={initialVal}
+
                 >
                     {showQuestion != true &&
                         <div>
@@ -305,8 +279,12 @@ const StudentViewQuiz = (props) => {
                             {PrintQuestion()}
 
                             <div className='center-div mb-4'>
-                                <Button type="primary" htmlType="submit">
+                                <Button type="primary" htmlType="submit" disabled={!isScoreboardEmpty}>
                                     Submit
+                                </Button>
+
+                                <Button type="primary" className='ml-2' onClick={() => setScoreModal(true)}>
+                                    View Score
                                 </Button>
                             </div>
                         </div>
