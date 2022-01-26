@@ -4,7 +4,7 @@ import { Link as LinkScroll } from "react-scroll";
 import NavProfile from "components/Navbars/NavProfile";
 
 export const Nav = styled.nav`
-  background: #2fbf8b;
+  background: #e0efe1;
   height: 80px;
   /* margin-top: -80px; */
   display: flex;
@@ -14,6 +14,7 @@ export const Nav = styled.nav`
   font-size: 1rem;
   top: 0;
   z-index: 10;
+  border-bottom: 1px solid #c7c7c7;
   @media screen and (max-width: 960px) {
     transition: 0.8s all ease;
   }
@@ -29,6 +30,7 @@ export const NavLogo = styled(LinkRouter)`
   font-weight: bold;
   margin-bottom: auto;
   text-decoration: none;
+  height: 75px;
 `;
 export const MobileIcon = styled.div`
   display: none;
@@ -60,7 +62,7 @@ export const NavItem = styled.li`
   height: 80px;
 `;
 export const NavLinks = styled(LinkRouter)`
-  color: #fff;
+  color: #3ca285;
   display: flex;
   align-items: center;
   text-decoration: none;
@@ -75,7 +77,7 @@ export const NavLinks = styled(LinkRouter)`
   font-size: 1rem;
   text-transform: uppercase;
   transition: color 0.1s, background-color 0.1s;
-  color: #fff;
+  color: #3ca285;
 
   &.active {
     border-bottom: 3px solid #01bf71;
@@ -127,6 +129,7 @@ export const NavbarContainer = styled.div`
   z-index: 1;
   width: 100%;
   padding: 0 24px;
+  border-bottom: 1px solid #c7c7c7;
   max-width: 1100px;
 `;
 export const NavBtn = styled.nav`

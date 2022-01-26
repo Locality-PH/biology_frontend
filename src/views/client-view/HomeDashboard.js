@@ -54,7 +54,9 @@ const HomeDashboard = () => {
   return (
     <>
       <Layout className="scrollable-container layout layout-background shadow-box ">
-        <Content style={{ padding: "0 50px", overflow: "auto" }}>
+        <Content
+          style={{ padding: "0 10px", overflow: "auto", height: "800px" }}
+        >
           <div className="background-images site-layout-content-home shadow-box ">
             <Row justify="center">
               <Col
@@ -98,6 +100,36 @@ const HomeDashboard = () => {
                     description="This is the description"
                   />
                 </Card>{" "} */}{" "}
+                <Row style={{ height: "800px" }} justify="center" gutter={40}>
+                  {" "}
+                  <Col
+                    justify="center"
+                    style={{ height: "100px" }}
+                    xxs={1}
+                    xs={24}
+                    sm={12}
+                    md={12}
+                    lg={11}
+                    xl={7}
+                  >
+                    {" "}
+                    <div>
+                      {" "}
+                      <div className="no_data">
+                        {" "}
+                        <div class="vertical-center">
+                          <h3>
+                            <b>Join Now</b>
+                          </h3>
+                          <p>
+                            Navigate to the profile to join a classroom and
+                            start doing modules
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </Col>
+                </Row>
                 <Row justify="center" gutter={40}>
                   {classrooms.map((result, i) => (
                     <Col
@@ -123,7 +155,7 @@ const HomeDashboard = () => {
                         leave={`/client/classroom/${result.class_code}/leave`}
                       />
                     </Col>
-                  ))}
+                  ))}{" "}
                 </Row>
               </Col>
             </Row>
