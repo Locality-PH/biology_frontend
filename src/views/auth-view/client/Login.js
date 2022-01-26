@@ -40,16 +40,29 @@ function ClientLogin() {
               axios
                 .get("/api/student/login/" + user.uid)
                 .then((res) => {
-                  console.log(res.data);
+                  console.log("resdata:", res.data);
+                  console.log( res.data[0].full_name)
                   localStorage.setItem("mid", res.data[0]?.auth_id);
                   localStorage.setItem("role", "Student");
                   localStorage.setItem("sid", res.data[0]?.student);
 
                   localData(res.data[0].uuid, res.data[0]?.role);
+
+                  user
+                  .updateProfile({
+                    displayName: res.data[0].full_name,
+                  })
+                  .then(() => {
+                    console.log("Update successful");
+                    history.push("/client/home");
+                  })
+                  .catch((error) => {
+                    console.log("displayName failed");
+                  });
                 })
-                .then((_) => {
-                  history.push("/client/home");
-                });
+                // .then((_) => {
+                //   history.push("/client/home");
+                // });
             } else {
               // User is signed out
               // ...
