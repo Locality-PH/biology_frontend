@@ -10,7 +10,7 @@ const ModulePages = ({ moduleId, fileName }) => {
 
   const downloadModule = () => {
     console.log("Downloading");
-    window.open(
+    window.location.assign(
       "https://biology-server.herokuapp.com/api/student/download-module/" + moduleId,
       "_blank"
     );

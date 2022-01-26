@@ -22,8 +22,8 @@ import AvatarProfile from "components/shared-components/AvatarProfile/AvatarProf
 
 function UserProfileTest() {
   const { currentUser, updateProfile} = useAuth();
-  const [teacherID, setTeacherID] = useState("");
-  const [userID, setUserID] = useState("");
+  const teacherID = localStorage.getItem("tid");
+  const userID = localStorage.getItem("mid");
   const [user, setUser] = useState([]);
   const [teacher, setTeacher] = useState([]);
   const [initialVal, setInitialVal] = useState([]);
@@ -34,17 +34,6 @@ function UserProfileTest() {
 
 
   useEffect(() => {
-    const teacherID = localStorage.getItem("tid");
-    const userID = localStorage.getItem("mid");
-    // const userID = "61c287d146f87f872634f860";
-
-    console.log("current user:")
-    console.log(currentUser)
-
-    console.log("Teacher ID: " + teacherID);
-    console.log("user ID: " + userID);
-
-    setUserID(userID);
 
     (async () => {
       await Axios.get("/api/admin/" + userID).then((response) => {

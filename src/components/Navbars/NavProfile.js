@@ -26,6 +26,9 @@ const menuItem = [
 ];
 export const NavProfile = () => {
   const currentUrl = window.location.pathname;
+
+  const currentClassroomCode = currentUrl.split("/")[2]
+
   const studentId = localStorage.getItem("sid");
   const [studentName, setStudentName] = useState("");
   const [error, setError] = useState("");
@@ -137,7 +140,7 @@ export const NavProfile = () => {
                 }}
               >
                 {" "}
-                <a href="#/">
+                <a href={`/classroom/${currentClassroomCode}/modules`}>
                   <FolderOutlined className="mr-3" />
                   <span className="font-weight-normal">Module</span>
                 </a>
@@ -149,7 +152,7 @@ export const NavProfile = () => {
                 }}
               >
                 {" "}
-                <a href="#/">
+                <a href={`/classroom/${currentClassroomCode}/students`}>
                   <UserOutlined className="mr-3" />
                   <span className="font-weight-normal">Student</span>
                 </a>
