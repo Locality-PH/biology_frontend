@@ -84,7 +84,7 @@ export const NavLinks = styled(LinkRouter)`
   }
 
   &:hover {
-    color: white;
+    color: #177d09;
   }
   &:focus,
   &:active {
@@ -98,7 +98,7 @@ export const NavLinks = styled(LinkRouter)`
     top: 100%;
     height: 3px;
     width: 100%;
-    background-color: #177d09;
+    background-color: #01bf71;
     -webkit-transform-origin: center top;
     transform-origin: center top;
     -webkit-transform: scale(0, 1);
