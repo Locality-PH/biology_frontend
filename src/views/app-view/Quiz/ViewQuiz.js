@@ -283,7 +283,7 @@ const ViewQuiz = (props) => {
                                             {question.option.map(
                                                 (option, QTNkey) => {
                                                     return (
-                                                        <Checkbox key={QTNkey} value={option.value}>{option.value}</Checkbox>
+                                                        <Checkbox key={QTNkey} value={option.value}><p className='m-0'>{option.value}</p></Checkbox>
                                                     )
                                                 }
                                             )}
@@ -304,53 +304,59 @@ const ViewQuiz = (props) => {
     const PrintScoreModal = () => {
         const handleOk = () => {
             setScoreModal(false);
-          };
-        
-          const handleCancel = () => {
-            setScoreModal(false);
-          };
+        };
 
-          if (Object.keys(scoreboard).length > 0) {
+        const handleCancel = () => {
+            setScoreModal(false);
+        };
+
+        if (Object.keys(scoreboard).length > 0) {
             return (
                 <Modal title={quiz.name} visible={scoreModal} onOk={handleOk} onCancel={handleCancel}>
                     <h2>Your Score: {scoreboard.score} / {scoreboard.max_score}</h2>
                 </Modal>
             )
-          }
+        }
     }
 
     return (
         <div className='view-quiz'>
             <Spin spinning={showQuestion} wrapperClassName={({ "load-icon": showQuestion })}>
 
-                <Form
-                    name="quiz-form"
-                    onFinish={onTempFinish}
-                    ref={formRef}
-                    form={form}
-                    scrollToFirstError={true}
-                >
-                    {showQuestion != true &&
-                        <div>
-                            <Card className='card-box-shadow-style question-card center-div'>
-                                <p className='quiz-name' >
-                                    {quiz.name}
-                                </p>
-                                <p className='m-0'>
-                                    {quiz.description}
-                                </p>
-                            </Card>
+                <Row justify='center'>
+                    <Col xxl={12} xl={16} lg={16} md={18} sm={24} xs={24}>
+                        <Form
+                            name="quiz-form"
+                            onFinish={onTempFinish}
+                            ref={formRef}
+                            form={form}
+                            scrollToFirstError={true}
+                        >
+                            {showQuestion != true &&
+                                <div>
+                                    <Card className='card-box-shadow-style question-card center-div'>
+                                        <p className='quiz-name' >
+                                            {quiz.name}
+                                        </p>
+                                        <p className='m-0'>
+                                            {quiz.description}
+                                        </p>
+                                    </Card>
 
-                            {PrintQuestion()}
+                                    {PrintQuestion()}
 
-                            <div className='center-div mb-4'>
-                                <Button type="primary" htmlType="submit">
-                                    Submit
-                                </Button>
-                            </div>
-                        </div>
-                    }
-                </Form>
+                                    <div className='center-div mb-4'>
+                                        <Button type="primary" htmlType="submit">
+                                            Submit
+                                        </Button>
+                                    </div>
+                                </div>
+                            }
+                        </Form>
+                    </Col>
+                </Row>
+
+
             </Spin>
 
             {PrintScoreModal()}

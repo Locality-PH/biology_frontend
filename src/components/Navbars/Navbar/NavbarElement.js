@@ -4,7 +4,7 @@ import { Link as LinkScroll } from "react-scroll";
 import NavProfile from "components/Navbars/NavProfile";
 
 export const Nav = styled.nav`
-  background: #5f5f60;
+  background: #2fbf8b;
   height: 80px;
   /* margin-top: -80px; */
   display: flex;
@@ -59,7 +59,7 @@ export const NavMenu = styled.ul`
 export const NavItem = styled.li`
   height: 80px;
 `;
-export const NavLinks = styled(LinkScroll)`
+export const NavLinks = styled(LinkRouter)`
   color: #fff;
   display: flex;
   align-items: center;
@@ -82,7 +82,7 @@ export const NavLinks = styled(LinkScroll)`
   }
 
   &:hover {
-    color: #4dd0e1;
+    color: white;
   }
   &:focus,
   &:active {
@@ -96,7 +96,7 @@ export const NavLinks = styled(LinkScroll)`
     top: 100%;
     height: 3px;
     width: 100%;
-    background-color: #01bf71;
+    background-color: #177d09;
     -webkit-transform-origin: center top;
     transform-origin: center top;
     -webkit-transform: scale(0, 1);

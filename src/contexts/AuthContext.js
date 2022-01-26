@@ -69,7 +69,7 @@ export function AuthProvider({ children }) {
               localData(res.data[0].uuid, res.data[0]?.role);
             })
             .then((_) => {
-              history.push("/home");
+              history.push("/client/home");
             });
         });
       })

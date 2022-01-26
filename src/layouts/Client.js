@@ -10,6 +10,7 @@ import StudentViewQuiz from "views/client-view/StudentViewQuiz";
 
 import Particles from "react-tsparticles";
 import particlesConfig from "./ParticlesConfig";
+import StudentProfile from "views/client-view/StudentProfile";
 
 function Admin() {
   return (
@@ -26,13 +27,14 @@ function Admin() {
           />{" "}
         </div>
         <Switch>
-          <Route path="/home">
+          <Route path="/client/home">
             <HomeDashboard />
           </Route>
-          <Route path="/classroom/:class_code/modules" component={Modules} />
-          <Route path="/classroom/:class_code/leave" component={LeaveClassroom}/>
-          <Route path="/classroom/:class_code/students" component={Student} />
+          <Route path="/client/classroom/:class_code/modules" component={Modules} />
+          <Route path="/client/classroom/:class_code/leave" component={LeaveClassroom}/>
+          <Route path="/client/classroom/:class_code/students" component={Student} />
           <Route path="/client/:class_code/quiz/:quiz_code" component={StudentViewQuiz} />
+          <Route path="/client/user" component={StudentProfile} />
         </Switch>
       </Layout>
     </>

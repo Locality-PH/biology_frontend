@@ -1,217 +1,166 @@
-import React from "react";
-
-// react-bootstrap components
+import React, { useEffect, useState } from "react";
 import {
-  Badge,
-  Button,
-  Card,
   Form,
-  Navbar,
-  Nav,
-  Container,
+  Avatar,
+  Button,
+  Input,
+  DatePicker,
   Row,
   Col,
-} from "react-bootstrap";
+  message,
+  Upload,
+  Card,
+} from "antd";
+import Axios from "axios";
+import utils from "utils";
+import { useAuth } from "contexts/AuthContext";
+
+import "assets/css/app-views/UserProfile.css"
+import "assets/css/custom-design.css"
+import AvatarProfile from "components/shared-components/AvatarProfile/AvatarProfile";
+
 
 function UserProfile() {
+  const { currentUser, updateProfile} = useAuth();
+  const teacherID = localStorage.getItem("tid");
+  const userID = localStorage.getItem("mid");
+  const [user, setUser] = useState([]);
+  const [teacher, setTeacher] = useState([]);
+  const [initialVal, setInitialVal] = useState([]);
+
+  const [form] = Form.useForm();
+
+  console.log("current user:", currentUser)
+
+
+  useEffect(() => {
+
+    (async () => {
+      await Axios.get("/api/admin/" + userID).then((response) => {
+        const userData = response.data;
+        setUser(userData);
+      });
+  
+    })()
+
+
+  }, []);
+
+  const updateTeacher = async (values) => {
+    updateProfile({displayName: values.full_name})
+
+    await Axios.put("/api/teacher/update", {
+      values,
+      teacherID,
+      userID,
+    }).then((response) => {
+      console.log(response.data);
+    });
+
+    message.success("Teacher updated.");
+  };
+
+  useEffect(() => {
+    setInitialVal({ ...initialVal, ...user });
+  }, [user]);
+
+  useEffect(() => {
+    form.resetFields();
+    console.log(initialVal)
+  }, [initialVal]);
+
+  // console.log(initialVal);
+
   return (
-    <>
-      <Container fluid>
-        <Row>
-          <Col md="8">
-            <Card>
-              <Card.Header>
-                <Card.Title as="h4">Edit Profile</Card.Title>
-              </Card.Header>
-              <Card.Body>
-                <Form>
-                  <Row>
-                    <Col className="pr-1" md="5">
-                      <Form.Group>
-                        <label>Company (disabled)</label>
-                        <Form.Control
-                          defaultValue="Creative Code Inc."
-                          disabled
-                          placeholder="Company"
-                          type="text"
-                        ></Form.Control>
-                      </Form.Group>
+    <Row gutter={[30,30]} className="user-profile">
+       <Col xxl={{span: 8, order: 1}} xl={{span: 8, order: 1}} lg={{span: 8, order: 1}} md={24} sm={24} xs={24}>
+        <Card
+          className="card-box-shadow-style"
+          cover={
+            <img
+              alt="example"
+              src={
+                require("assets/img/photo-1431578500526-4d9613015464.jpeg")
+                  .default
+              }
+              style={{ height: "150px", objectFit: "cover" }}
+            />
+          }
+        >
+
+          <Avatar
+            className="profile-picture-style"
+            size={70}
+            src={currentUser?.photoURL}
+            style={{ backgroundColor: "green", fontSize: "1.4rem"}}
+          >
+            {utils.getNameInitial(currentUser?.displayName)}{" "}
+          </Avatar>
+          <h4 className="text-center">{currentUser?.displayName}</h4>
+        </Card>
+      </Col>
+
+      <Col xxl={16} xl={16} lg={16} md={24} sm={24} xs={24}>
+        <Card className="card-box-shadow-style">
+          <div className="">
+            <h4>Personal Information</h4>
+            <hr />
+            <Form
+              name="basicInformation"
+              layout="vertical"
+              onFinish={updateTeacher}
+              initialValues={initialVal}
+              form={form}
+            >
+              <Row>
+                <Col span={24}>
+                  <Row gutter={10} className="form-row-style">
+                    <Col span={24} xl={12}>
+                      <Form.Item
+                        label={<p className="label-form-style">Full Name: </p>}
+                        name="full_name"
+                        required={false}
+                        rules={[
+                          {
+                            required: true,
+                            message: "Full name can't be empty!",
+                          },
+                        ]}
+                      >
+                        <Input className="custom-input" />
+                      </Form.Item>
                     </Col>
-                    <Col className="px-1" md="3">
-                      <Form.Group>
-                        <label>Username</label>
-                        <Form.Control
-                          defaultValue="michael23"
-                          placeholder="Username"
-                          type="text"
-                        ></Form.Control>
-                      </Form.Group>
-                    </Col>
-                    <Col className="pl-1" md="4">
-                      <Form.Group>
-                        <label htmlFor="exampleInputEmail1">
-                          Email address
-                        </label>
-                        <Form.Control
-                          placeholder="Email"
-                          type="email"
-                        ></Form.Control>
-                      </Form.Group>
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Col className="pr-1" md="6">
-                      <Form.Group>
-                        <label>First Name</label>
-                        <Form.Control
-                          defaultValue="Mike"
-                          placeholder="Company"
-                          type="text"
-                        ></Form.Control>
-                      </Form.Group>
-                    </Col>
-                    <Col className="pl-1" md="6">
-                      <Form.Group>
-                        <label>Last Name</label>
-                        <Form.Control
-                          defaultValue="Andrew"
-                          placeholder="Last Name"
-                          type="text"
-                        ></Form.Control>
-                      </Form.Group>
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Col md="12">
-                      <Form.Group>
-                        <label>Address</label>
-                        <Form.Control
-                          defaultValue="Bld Mihail Kogalniceanu, nr. 8 Bl 1, Sc 1, Ap 09"
-                          placeholder="Home Address"
-                          type="text"
-                        ></Form.Control>
-                      </Form.Group>
+                    <Col span={24} xl={12}>
+                      <Form.Item
+                        label={<p className="label-form-style">Email: </p>}
+                        name="email"
+                        required={false}
+                        rules={[
+                          {
+                            required: true,
+                            type: "email",
+                            message: "Please enter a valid email!",
+                          },
+                        ]}
+                      >
+                        <Input className="custom-input" disabled/>
+                      </Form.Item>
                     </Col>
                   </Row>
-                  <Row>
-                    <Col className="pr-1" md="4">
-                      <Form.Group>
-                        <label>City</label>
-                        <Form.Control
-                          defaultValue="Mike"
-                          placeholder="City"
-                          type="text"
-                        ></Form.Control>
-                      </Form.Group>
-                    </Col>
-                    <Col className="px-1" md="4">
-                      <Form.Group>
-                        <label>Country</label>
-                        <Form.Control
-                          defaultValue="Andrew"
-                          placeholder="Country"
-                          type="text"
-                        ></Form.Control>
-                      </Form.Group>
-                    </Col>
-                    <Col className="pl-1" md="4">
-                      <Form.Group>
-                        <label>Postal Code</label>
-                        <Form.Control
-                          placeholder="ZIP Code"
-                          type="number"
-                        ></Form.Control>
-                      </Form.Group>
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Col md="12">
-                      <Form.Group>
-                        <label>About Me</label>
-                        <Form.Control
-                          cols="80"
-                          defaultValue="Lamborghini Mercy, Your chick she so thirsty, I'm in
-                          that two seat Lambo."
-                          placeholder="Here can be your description"
-                          rows="4"
-                          as="textarea"
-                        ></Form.Control>
-                      </Form.Group>
-                    </Col>
-                  </Row>
-                  <Button
-                    className="btn-fill pull-right"
+                  <button
                     type="submit"
-                    variant="info"
+                    className="form-submit-btn-style custom-button-green"
                   >
-                    Update Profile
-                  </Button>
-                  <div className="clearfix"></div>
-                </Form>
-              </Card.Body>
-            </Card>
-          </Col>
-          <Col md="4">
-            <Card className="card-user">
-              <div className="card-image">
-                <img
-                  alt="..."
-                  src={
-                    require("assets/img/photo-1431578500526-4d9613015464.jpeg")
-                      .default
-                  }
-                ></img>
-              </div>
-              <Card.Body>
-                <div className="author">
-                  <a href="#pablo" onClick={(e) => e.preventDefault()}>
-                    <img
-                      alt="..."
-                      className="avatar border-gray"
-                      src={require("assets/img/faces/face-3.jpg").default}
-                    ></img>
-                    <h5 className="title">Mike Andrew</h5>
-                  </a>
-                  <p className="description">michael24</p>
-                </div>
-                <p className="description text-center">
-                  "Lamborghini Mercy <br></br>
-                  Your chick she so thirsty <br></br>
-                  I'm in that two seat Lambo"
-                </p>
-              </Card.Body>
-              <hr></hr>
-              <div className="button-container mr-auto ml-auto">
-                <Button
-                  className="btn-simple btn-icon"
-                  href="#pablo"
-                  onClick={(e) => e.preventDefault()}
-                  variant="link"
-                >
-                  <i className="fab fa-facebook-square"></i>
-                </Button>
-                <Button
-                  className="btn-simple btn-icon"
-                  href="#pablo"
-                  onClick={(e) => e.preventDefault()}
-                  variant="link"
-                >
-                  <i className="fab fa-twitter"></i>
-                </Button>
-                <Button
-                  className="btn-simple btn-icon"
-                  href="#pablo"
-                  onClick={(e) => e.preventDefault()}
-                  variant="link"
-                >
-                  <i className="fab fa-google-plus-square"></i>
-                </Button>
-              </div>
-            </Card>
-          </Col>
-        </Row>
-      </Container>
-    </>
+                    Save Change
+                  </button>
+                </Col>
+              </Row>
+            </Form>
+          </div>
+        </Card>
+      </Col>
+
+    </Row>
   );
 }
 

@@ -165,7 +165,7 @@ const StudentViewQuiz = (props) => {
                                     rules={[{ required: true, message: "Need answer for this question!" }]}
                                     required={false}
                                 >
-                                    <Input prefix={<b>Answer:</b>} disabled={!isScoreboardEmpty}/>
+                                    <Input prefix={<b>Answer:</b>} disabled={!isScoreboardEmpty} />
                                 </Form.Item>
                             </Card>
                         )
@@ -174,7 +174,7 @@ const StudentViewQuiz = (props) => {
                             <Card className='card-box-shadow-style question-card center-div' key={QTNkey}>
 
                                 <p>{QTNkey}. {question.string}</p>
-                                
+
                                 <Form.Item
                                     className='mb-0'
                                     name={"question" + QTNkey + "_answer"}
@@ -256,40 +256,46 @@ const StudentViewQuiz = (props) => {
         <div className='view-quiz'>
             <Spin spinning={showQuestion} wrapperClassName={({ "load-icon": showQuestion })}>
 
-                <Form
-                    name="quiz-form"
-                    onFinish={onFinish}
-                    ref={formRef}
-                    form={form}
-                    scrollToFirstError={true}
-                    initialValues={initialVal}
+                <Row justify='center'>
+                    <Col xxl={12} xl={16} lg={16} md={18} sm={24} xs={24}>
+                        <Form
+                            name="quiz-form"
+                            onFinish={onFinish}
+                            ref={formRef}
+                            form={form}
+                            scrollToFirstError={true}
+                            initialValues={initialVal}
 
-                >
-                    {showQuestion != true &&
-                        <div>
-                            <Card className='card-box-shadow-style question-card center-div'>
-                                <p className='quiz-name' >
-                                    {quiz.name}
-                                </p>
-                                <p className='m-0'>
-                                    {quiz.description}
-                                </p>
-                            </Card>
+                        >
+                            {showQuestion != true &&
+                                <div>
+                                    <Card className='card-box-shadow-style question-card center-div'>
+                                        <p className='quiz-name' >
+                                            {quiz.name}
+                                        </p>
+                                        <p className='m-0'>
+                                            {quiz.description}
+                                        </p>
+                                    </Card>
 
-                            {PrintQuestion()}
+                                    {PrintQuestion()}
 
-                            <div className='center-div mb-4'>
-                                <Button type="primary" htmlType="submit" disabled={!isScoreboardEmpty}>
-                                    Submit
-                                </Button>
+                                    <div className='center-div mb-4'>
+                                        <Button type="primary" htmlType="submit" disabled={!isScoreboardEmpty}>
+                                            Submit
+                                        </Button>
 
-                                <Button type="primary" className='ml-2' onClick={() => setScoreModal(true)}>
-                                    View Score
-                                </Button>
-                            </div>
-                        </div>
-                    }
-                </Form>
+                                        <Button type="primary" className='ml-2' onClick={() => setScoreModal(true)}>
+                                            View Score
+                                        </Button>
+                                    </div>
+                                </div>
+                            }
+                        </Form>
+                    </Col>
+                </Row>
+
+
             </Spin>
 
             {PrintScoreModal()}

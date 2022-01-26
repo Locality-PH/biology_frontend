@@ -49,6 +49,8 @@ const HomeDashboard = () => {
   // const [history, setHistory] = useState();
   const { currentUser } = useAuth();
 
+  console.log("current user:", currentUser)
+
   return (
     <>
       <Layout className="scrollable-container layout layout-background shadow-box ">
@@ -116,9 +118,9 @@ const HomeDashboard = () => {
                         section={result.section_name}
                         color="green"
                         currentPhoto="https://joeschmoe.io/api/v1/random"
-                        modules={`/classroom/${result.class_code}/modules`}
-                        students={`/classroom/${result.class_code}/students`}
-                        leave={`/classroom/${result.class_code}/leave`}
+                        modules={`/client/classroom/${result.class_code}/modules`}
+                        students={`/client/classroom/${result.class_code}/students`}
+                        leave={`/client/classroom/${result.class_code}/leave`}
                       />
                     </Col>
                   ))}

@@ -21,7 +21,6 @@
 
 
 .view-quiz .question-card{
-  width: 700px;
   margin-bottom: 40px;
 }
 
@@ -33,7 +32,7 @@
 }
 
 .view-quiz .ant-checkbox-wrapper {
-  /* align-items: stretch !important; */
+  align-items: flex-start;
 }
 
 .view-quiz .ant-card .ant-card-body{

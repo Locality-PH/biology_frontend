@@ -49,12 +49,12 @@ const Login = () => {
                   .then(() => {
                     // Update successful
                     // ...
-                    console.log("update successful");
+                    console.log("Update successful");
                   })
                   .catch((error) => {
                     // An error occurred
                     // ...
-                    console.log("task failed successful hehehe");
+                    console.log("displayName failed");
                   });
 
                 console.log(data);

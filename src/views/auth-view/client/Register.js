@@ -71,9 +71,26 @@ function ClientRegister() {
                   localStorage.setItem("sid", res.data.sid);
 
                   localData(res.data.mid, res.data.role);
+
+                  user
+                  .updateProfile({
+                    displayName: values.fullname,
+
+                    // photoURL: "https://example.com/jane-q-user/profile.jpg",
+                  })
+                  .then(() => {
+                    // Update successful
+                    // ...
+                    console.log("Update successful");
+                  })
+                  .catch((error) => {
+                    // An error occurred
+                    // ...
+                    console.log("displayName failed");
+                  });
                 })
                 .then((_) => {
-                  history.push("/home");
+                  history.push("/client/home");
                   setLoading(false);
                 });
             } else {
