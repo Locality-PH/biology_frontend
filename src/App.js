@@ -25,7 +25,8 @@ function App() {
   React.useEffect(() => {
     localData(localStorage.getItem("mid"), localStorage.getItem("role"));
   });
-  console.log(localrole);
+  console.log(process.env.REACT_APP_FIREBASE_AUTH_DOMAIN);
+
   return (
     <div>
       <Switch>
