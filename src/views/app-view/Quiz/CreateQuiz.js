@@ -436,17 +436,16 @@ const CreateQuiz = () => {
             let newOptions = values["question" + i + "_options"]
 
             newQuestion["option"] = newOptions
-
             newQuestion["type"] = values["question" + i + "_type"]
             newQuestion["string"] = values["question" + i]
             newQuestion["answer"] = []
 
-            if (newOptions.length == 1) {
-                newQuestion["answer"].push(newOptions[0])
+            if (newQuestion.type == "Identification") {
+                newQuestion["answer"].push(newOptions)
                 // console.log("Answer: " + newOptions)
             }
 
-            else {
+            else if (newQuestion.type == "Multiple Choice" || newQuestion.type == "Checkbox") {
 
                 for (let x = 0; x < newOptions.length; x++) {
                     if (newOptions[x].isAnswer == true) {

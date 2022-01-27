@@ -71,13 +71,13 @@ const EditQuiz = (props) => {
 
             if (question.option != undefined) {
 
-                if (typeof question.option == 'string') {
-                    tempInitialVal.push({ ["question" + [i + 1] + "_options"]: question.option })
+                if (question.type == 'Identification') {
+                    tempInitialVal.push({ ["question" + [i + 1] + "_options"]: question.option[0] })
                 }
 
                 else {
 
-                    if (typeof question.option == 'object') {
+                    if (question.type == 'Multiple Choice' || question.type == 'Checkbox') {
                         let optionArray = []
 
                         question.option.map(
@@ -461,12 +461,12 @@ const EditQuiz = (props) => {
             newQuestion["string"] = values["question" + i]
             newQuestion["answer"] = []
 
-            if (newOptions.length == 1) {
-                newQuestion["answer"].push(newOptions[0])
+            if (newQuestion.type == "Identification") {
+                newQuestion["answer"].push(newOptions)
                 // console.log("Answer: " + newOptions)
             }
 
-            else {
+            else if (newQuestion.type == "Multiple Choice" || newQuestion.type == "Checkbox") {
 
                 for (let x = 0; x < newOptions.length; x++) {
                     if (newOptions[x].isAnswer == true) {
@@ -484,11 +484,11 @@ const EditQuiz = (props) => {
             newQuiz["question"].push(newQuestion)
         }
 
-        console.log(newQuiz)
+        console.log("newQuiz:", newQuiz)
 
         try {
-            await Axios.put("/api/quiz/update", { newQuiz, quiz_id: quiz.quiz_id, tid }).then((response) => {
-                console.log(response.data)
+            await Axios.post("/api/quiz/update", { newQuiz, quiz_id: quiz.quiz_id, tid }).then(async (response) => {
+                await console.log(response.data)
             }).then(
                 message.success("Changes has been saved.")
             )
