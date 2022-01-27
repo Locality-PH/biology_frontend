@@ -15,6 +15,7 @@ import ModulePages from "./Modules-pages";
 const { Header, Content, Footer, Sider } = Layout;
 
 import axios from "axios";
+import { ConsoleSqlOutlined } from "@ant-design/icons";
 
 const Modules = ({ match }) => {
   const classCode = match.params.class_code;
@@ -26,7 +27,6 @@ const Modules = ({ match }) => {
   const [error, setError] = useState(null);
 
   const [moduleId, setModuleId] = useState();
-
 
   const getClassroomModules = () =>{
     message.loading("Loading modules...", 0);
@@ -110,7 +110,7 @@ const Modules = ({ match }) => {
 
   const goToQuiz = (quizLink) => {
     console.log("/" + quizLink)
-    window.open("/client/" + classCode + "/quiz/" + quizLink);
+    window.open("/client/" + `${classCode}/${moduleId}` + "/quiz/" + quizLink);
   };
 
   const ModuleContent = () => {

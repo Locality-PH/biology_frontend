@@ -12,6 +12,7 @@ const StudentViewQuiz = (props) => {
     let history = useHistory();
     const quiz_code = props.match.params.quiz_code
     const class_code = props.match.params.class_code
+    const mid = props.match.params.module_id
     const sid = localStorage.getItem("sid");
 
     const [form] = Form.useForm();
@@ -26,7 +27,7 @@ const StudentViewQuiz = (props) => {
 
     useEffect(() => {
         (async () => {
-            await Axios.post("/api/quiz/student/get/code/" + quiz_code, { sid, class_code }).then((response) => {
+            await Axios.post("/api/quiz/student/get/code/" + quiz_code, { sid, class_code, mid }).then((response) => {
                 const quizData = response.data;
 
                 if (response.data != "failed") {
@@ -41,7 +42,7 @@ const StudentViewQuiz = (props) => {
                 } else {
                     message.error("Quiz not found!!")
                     setTimeout(() => {
-                        history.goBack()
+                        window.location.assign("/client/home")
                     }, 500);
                 }
             });
@@ -253,7 +254,7 @@ const StudentViewQuiz = (props) => {
     }
 
     return (
-        <div className='view-quiz'>
+        <div className='view-quiz' style={{marginTop: 50}}>
             <Spin spinning={showQuestion} wrapperClassName={({ "load-icon": showQuestion })}>
 
                 <Row justify='center'>
