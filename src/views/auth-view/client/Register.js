@@ -79,15 +79,14 @@ function ClientRegister() {
                   })
                   .then(() => {
                     console.log("Update successful");
+                    history.push("/client/home");
+                    setLoading(false);
                   })
                   .catch((error) => {
                     console.log("displayName failed");
                   });
                 })
-                .then((_) => {
-                  history.push("/client/home");
-                  setLoading(false);
-                });
+
             } else {
               // User is signed out
               // ...

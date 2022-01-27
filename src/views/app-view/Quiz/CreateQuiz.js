@@ -436,12 +436,13 @@ const CreateQuiz = () => {
             let newOptions = values["question" + i + "_options"]
 
             newQuestion["option"] = newOptions
+
             newQuestion["type"] = values["question" + i + "_type"]
             newQuestion["string"] = values["question" + i]
             newQuestion["answer"] = []
 
-            if (typeof newOptions == 'string') {
-                newQuestion["answer"].push(newOptions)
+            if (newOptions.length == 1) {
+                newQuestion["answer"].push(newOptions[0])
                 // console.log("Answer: " + newOptions)
             }
 
@@ -452,6 +453,10 @@ const CreateQuiz = () => {
                         newQuestion["answer"].push(newOptions[x].value)
                         // console.log("Answer: " + newOptions[x].value)
                     }
+                }
+
+                if (newQuestion["answer"].length == 0) {
+                    return message.error("Failed to upload quiz, question " + i + " need answer!!")
                 }
 
             }
