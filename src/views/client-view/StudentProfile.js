@@ -17,15 +17,12 @@ import { useAuth } from "contexts/AuthContext";
 
 import "assets/css/app-views/UserProfile.css"
 import "assets/css/custom-design.css"
-import AvatarProfile from "components/shared-components/AvatarProfile/AvatarProfile";
 
-
-function UserProfile() {
+function StudentProfile() {
   const { currentUser, updateProfile} = useAuth();
-  const teacherID = localStorage.getItem("tid");
-  const userID = localStorage.getItem("mid");
+  const sid = localStorage.getItem("sid");
+  const uid = localStorage.getItem("mid");
   const [user, setUser] = useState([]);
-  const [teacher, setTeacher] = useState([]);
   const [initialVal, setInitialVal] = useState([]);
 
   const [form] = Form.useForm();
@@ -36,8 +33,9 @@ function UserProfile() {
   useEffect(() => {
 
     (async () => {
-      await Axios.get("/api/admin/" + userID).then((response) => {
+      await Axios.get("/api/student/get/" + uid).then((response) => {
         const userData = response.data;
+        console.log("student data:", userData)
         setUser(userData);
       });
   
@@ -46,18 +44,18 @@ function UserProfile() {
 
   }, []);
 
-  const updateTeacher = async (values) => {
+  const updateStudentName = async (values) => {
     updateProfile({displayName: values.full_name})
 
-    await Axios.put("/api/teacher/update", {
+    await Axios.put("/api/student/update", {
       values,
-      teacherID,
-      userID,
+      sid,
+      uid,
     }).then((response) => {
       console.log(response.data);
     });
 
-    message.success("Teacher updated.");
+    message.success("Student updated.");
   };
 
   useEffect(() => {
@@ -108,7 +106,7 @@ function UserProfile() {
             <Form
               name="basicInformation"
               layout="vertical"
-              onFinish={updateTeacher}
+              onFinish={updateStudentName}
               initialValues={initialVal}
               form={form}
             >
@@ -164,4 +162,4 @@ function UserProfile() {
   );
 }
 
-export default UserProfile;
+export default StudentProfile;

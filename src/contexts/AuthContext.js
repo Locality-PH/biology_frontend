@@ -69,7 +69,7 @@ export function AuthProvider({ children }) {
               localData(res.data[0].uuid, res.data[0]?.role);
             })
             .then((_) => {
-              history.push("/home");
+              history.push("/client/home");
             });
         });
       })
@@ -95,6 +95,10 @@ export function AuthProvider({ children }) {
   }
   function updatePassword(password) {
     return auth.updatePassword(password);
+  }
+
+  function updateProfile(profile) {
+    return currentUser.updateProfile(profile);
   }
   function logout() {
     localStorage.removeItem("auth_id");
@@ -129,6 +133,7 @@ export function AuthProvider({ children }) {
     resetPassword,
     updateEmail,
     updatePassword,
+    updateProfile,
     SignInWithGoogle,
     SignInWithGoogleStudent,
   };

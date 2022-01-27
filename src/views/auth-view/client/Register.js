@@ -71,11 +71,22 @@ function ClientRegister() {
                   localStorage.setItem("sid", res.data.sid);
 
                   localData(res.data.mid, res.data.role);
+
+                  user
+                  .updateProfile({
+                    displayName: values.fullname,
+
+                  })
+                  .then(() => {
+                    console.log("Update successful");
+                    history.push("/client/home");
+                    setLoading(false);
+                  })
+                  .catch((error) => {
+                    console.log("displayName failed");
+                  });
                 })
-                .then((_) => {
-                  history.push("/home");
-                  setLoading(false);
-                });
+
             } else {
               // User is signed out
               // ...

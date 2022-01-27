@@ -4,7 +4,7 @@ import NavProfile from "components/Navbars/NavProfile";
 
 const ClientNavbar = () => {
   return (
-    <Navbar expand="lg" bg="white" variant="white">
+    <Navbar expand="lg" bg="white" variant="white" >
       <Nav className="container-fluid">
         <Navbar.Brand
           className="ml-2"

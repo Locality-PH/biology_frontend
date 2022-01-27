@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Card, Row, Col, Form, Input, Space, Button, Checkbox, Radio, Select, message, Spin } from 'antd'
+import { Link, useHistory } from "react-router-dom";
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { AiOutlinePlus } from "react-icons/ai"
 
@@ -11,6 +12,8 @@ const { Option } = Select;
 const CreateQuiz = () => {
     const [form] = Form.useForm();
     const formRef = React.createRef();
+    let history = useHistory();
+
     const [newQuizType, SetNewQuizType] = useState("Identification")
     const tid = localStorage.getItem("tid");
 
@@ -222,7 +225,7 @@ const CreateQuiz = () => {
                                     className='mb-0'
                                     name={"question" + key}
                                     colon={false}
-                                    label={key + "."}
+                                    label={<b>{key + "."}</b>}
                                     rules={[{ required: true, message: "Question can't be blank!" }]}
                                     required={false}
                                 >
@@ -433,12 +436,13 @@ const CreateQuiz = () => {
             let newOptions = values["question" + i + "_options"]
 
             newQuestion["option"] = newOptions
+
             newQuestion["type"] = values["question" + i + "_type"]
             newQuestion["string"] = values["question" + i]
             newQuestion["answer"] = []
 
-            if (typeof newOptions == 'string') {
-                newQuestion["answer"].push(newOptions)
+            if (newOptions.length == 1) {
+                newQuestion["answer"].push(newOptions[0])
                 // console.log("Answer: " + newOptions)
             }
 
@@ -451,92 +455,109 @@ const CreateQuiz = () => {
                     }
                 }
 
+                if (newQuestion["answer"].length == 0) {
+                    return message.error("Failed to upload quiz, question " + i + " need answer!!")
+                }
+
             }
 
             newQuiz["question"].push(newQuestion)
         }
 
 
-        (async () => {
-            console.log(newQuiz)
-            await Axios.post("/api/quiz/create-quiz", { newQuiz, tid }).then((response) => {
-                console.log(response.data)
-            });
+        try {
+            (async () => {
+                console.log(newQuiz)
+                await Axios.post("/api/quiz/create-quiz", { newQuiz, tid }).then((response) => {
+                    console.log(response.data)
+                });
 
-        })()
+            })()
 
-        message.success('Quiz has been created successfully.');
-        setQuestion({})
-        initialVal = {}
+            message.success('Quiz has been created successfully.');
+            setQuestion({})
+            initialVal = {}
+
+            setTimeout(() => {
+                history.push("/admin/quiz")
+            }, 500);
+        } catch (error) {
+            message.error('Error!! Failed to update quiz.');
+        }
+
     };
 
     return (
         <div className='quiz-form'>
             <Spin spinning={showQuestion} wrapperClassName={({ "load-icon": showQuestion })}>
 
-                <Form
-                    name="quiz-form"
-                    onFinish={onFinish}
-                    initialValues={initialVal}
-                    ref={formRef}
-                    form={form}
-                    scrollToFirstError={true}
-                >
-                    {showQuestion != true &&
-                        <div>
-                            <Card className='card-box-shadow-style question-card center-div'>
-                                <Form.Item
-                                    className='mb-0'
-                                    name="quiz_name"
-                                    colon={false}
-                                    rules={[{ required: true, message: "Quiz Name can't be blank!" }]}
-                                    required={false}
+                <Row justify='center'>
+                    <Col xxl={12} xl={16} lg={16} md={18} sm={24} xs={24}>
+                        <Form
+                            name="quiz-form"
+                            onFinish={onFinish}
+                            initialValues={initialVal}
+                            ref={formRef}
+                            form={form}
+                            scrollToFirstError={true}
+                        >
+                            {showQuestion != true &&
+                                <div>
+                                    <Card className='card-box-shadow-style question-card center-div'>
+                                        <Form.Item
+                                            className='mb-0'
+                                            name="quiz_name"
+                                            colon={false}
+                                            rules={[{ required: true, message: "Quiz Name can't be blank!" }]}
+                                            required={false}
 
-                                >
-                                    <Input placeholder='Quiz Name' className='underline-input quiz-name-input' onChange={(e) => { setQuizName(e.target.value) }} />
-                                </Form.Item>
-
-
-                                <Form.Item
-                                    name="quiz_description"
-                                    // rules={[{ required: true, message: "Need answer for this question!" }]}
-                                    required={false}
-
-                                >
-                                    <Input.TextArea placeholder="Description..." autoSize={{ minRows: 1, maxRows: 4 }} onChange={(e) => { setQuizDescription(e.target.value) }} />
-                                </Form.Item>
-                            </Card>
+                                        >
+                                            <Input placeholder='Quiz Name' className='underline-input quiz-name-input' onChange={(e) => { setQuizName(e.target.value) }} />
+                                        </Form.Item>
 
 
-                            {PrintQuestion()}
+                                        <Form.Item
+                                            name="quiz_description"
+                                            // rules={[{ required: true, message: "Need answer for this question!" }]}
+                                            required={false}
+
+                                        >
+                                            <Input.TextArea placeholder="Description..." autoSize={{ minRows: 1, maxRows: 4 }} onChange={(e) => { setQuizDescription(e.target.value) }} />
+                                        </Form.Item>
+                                    </Card>
 
 
-                            <div className="center-div mb-4" style={{ marginTop: "20px" }}>
-                                <Button onClick={(e) => addQuestion()}>Add Question</Button>
-
-                                <Select
-                                    style={{ width: 150, marginLeft: 10 }}
-                                    onChange={(value) => { changeQuizType(value) }}
-                                    defaultValue={newQuizType}
-                                >
-
-                                    <Option value="Identification">Identification</Option>
-                                    <Option value="Multiple Choice">Multiple Choice</Option>
-                                    <Option value="Checkbox">Checkbox</Option>
-                                </Select>
+                                    {PrintQuestion()}
 
 
-                            </div>
+                                    <div className="center-div mb-4" style={{ marginTop: "20px" }}>
+                                        <Button onClick={(e) => addQuestion()}>Add Question</Button>
 
-                            <div className='center-div mb-4'>
-                                <Button type="primary" htmlType="submit">
-                                    Submit
-                                </Button>
-                            </div>
-                        </div>
-                    }
-                </Form>
+                                        <Select
+                                            style={{ width: 150, marginLeft: 10 }}
+                                            onChange={(value) => { changeQuizType(value) }}
+                                            defaultValue={newQuizType}
+                                        >
 
+                                            <Option value="Identification">Identification</Option>
+                                            <Option value="Multiple Choice">Multiple Choice</Option>
+                                            <Option value="Checkbox">Checkbox</Option>
+                                        </Select>
+
+
+                                    </div>
+
+                                    <div className='center-div mb-4'>
+                                        <Button type="primary" htmlType="submit">
+                                            Submit
+                                        </Button>
+                                    </div>
+                                </div>
+                            }
+                        </Form>
+
+                    </Col>
+                </Row>
             </Spin>
         </div>
     )

@@ -61,7 +61,7 @@ export const NavMenu = styled.ul`
 export const NavItem = styled.li`
   height: 80px;
 `;
-export const NavLinks = styled(LinkScroll)`
+export const NavLinks = styled(LinkRouter)`
   color: #3ca285;
   display: flex;
   align-items: center;
@@ -84,7 +84,7 @@ export const NavLinks = styled(LinkScroll)`
   }
 
   &:hover {
-    color: #4dd0e1;
+    color: #177d09;
   }
   &:focus,
   &:active {

@@ -49,6 +49,8 @@ const HomeDashboard = () => {
   // const [history, setHistory] = useState();
   const { currentUser } = useAuth();
 
+  console.log("current user:", currentUser)
+
   return (
     <>
       <Layout className="scrollable-container layout layout-background shadow-box ">
@@ -98,37 +100,11 @@ const HomeDashboard = () => {
                     description="This is the description"
                   />
                 </Card>{" "} */}{" "}
-                <Row style={{ height: "800px" }} justify="center" gutter={40}>
-                  {" "}
-                  <Col
-                    justify="center"
-                    style={{ height: "100px" }}
-                    xxs={1}
-                    xs={24}
-                    sm={12}
-                    md={12}
-                    lg={11}
-                    xl={7}
-                  >
-                    {" "}
-                    <div>
-                      {" "}
-                      <div className="no_data">
-                        {" "}
-                        <div class="vertical-center">
-                          <h3>
-                            <b>Join Now</b>
-                          </h3>
-                          <p>
-                            Navigate to the profile to join a classroom and
-                            start doing modules
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </Col>
-                </Row>
-                <Row justify="center" gutter={40}>
+                
+
+                {
+                (classrooms.length != 0) ? (
+                  <Row justify="center" gutter={40}>
                   {classrooms.map((result, i) => (
                     <Col
                       key={i}
@@ -148,13 +124,47 @@ const HomeDashboard = () => {
                         section={result.section_name}
                         color="green"
                         currentPhoto="https://joeschmoe.io/api/v1/random"
-                        modules={`/classroom/${result.class_code}/modules`}
-                        students={`/classroom/${result.class_code}/students`}
-                        leave={`/classroom/${result.class_code}/leave`}
+                        modules={`/client/classroom/${result.class_code}/modules`}
+                        students={`/client/classroom/${result.class_code}/students`}
+                        leave={`/client/classroom/${result.class_code}/leave`}
                       />
                     </Col>
                   ))}{" "}
                 </Row>
+                ) : 
+                (
+                  <Row style={{ height: "800px" }} justify="center" gutter={40}>
+                  {" "}
+                  <Col
+                    justify="center"
+                    style={{ height: "100px" }}
+                    xxs={1}
+                    xs={24}
+                    sm={12}
+                    md={12}
+                    lg={11}
+                    xl={7}
+                  >
+                    {" "}
+                    <div>
+                      {" "}
+                      <div className="no_data">
+                        {" "}
+                        <div className="vertical-center">
+                          <h3>
+                            <b>Join Now</b>
+                          </h3>
+                          <p>
+                            Navigate to the profile to join a classroom and
+                            start doing modules
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </Col>
+                </Row>
+                )
+              }
               </Col>
             </Row>
           </div>

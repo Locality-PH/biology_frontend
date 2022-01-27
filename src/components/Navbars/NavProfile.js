@@ -21,11 +21,14 @@ const menuItem = [
   {
     title: "Account Setting",
     icon: SettingOutlined,
-    path: "/",
+    path: "/client/user",
   },
 ];
 export const NavProfile = () => {
   const currentUrl = window.location.pathname;
+
+  const currentClassroomCode = currentUrl.split("/")[3]
+
   const studentId = localStorage.getItem("sid");
   const [studentName, setStudentName] = useState("");
   const [error, setError] = useState("");
@@ -34,6 +37,12 @@ export const NavProfile = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [classCode, setClassCode] = useState("");
   const [isDisable, setIsDisable] = useState(false);
+
+  const menuItemStyle = {
+    display: "inline-flex",
+    paddingRight: 5,
+    alignItems: "baseline"
+  }
 
   useEffect(() => {
     axios
@@ -110,7 +119,7 @@ export const NavProfile = () => {
             {} {utils.getNameInitial("von.aralar@gmail.com")}
           </Avatar> */}
           <div className="text-center ">
-            <h4 className="mb-0">VON MANIQUIS</h4>
+            <h4 className="mb-0">{currentUser?.displayName}</h4>
             <span className="text-muted">Student</span>
           </div>
         </div>
@@ -120,14 +129,14 @@ export const NavProfile = () => {
           {menuItem.map((el, i) => {
             return (
               <Menu.Item key={i}>
-                <a href={el.path}>
+                <a href={el.path} style={menuItemStyle}>
                   <Icon className="mr-3" type={el.icon} />
                   <span className="font-weight-normal">{el.title}</span>
                 </a>
               </Menu.Item>
             );
           })}
-          {currentUrl.match("/classroom") ? (
+          {currentUrl.match("/client/classroom") ? (
             <>
               {" "}
               <Menu.Item
@@ -137,7 +146,7 @@ export const NavProfile = () => {
                 }}
               >
                 {" "}
-                <a href="#/">
+                <a href={`/client/classroom/${currentClassroomCode}/modules`} style={menuItemStyle} >
                   <FolderOutlined className="mr-3" />
                   <span className="font-weight-normal">Module</span>
                 </a>
@@ -149,7 +158,7 @@ export const NavProfile = () => {
                 }}
               >
                 {" "}
-                <a href="#/">
+                <a href={`/client/classroom/${currentClassroomCode}/students`} style={menuItemStyle}> 
                   <UserOutlined className="mr-3" />
                   <span className="font-weight-normal">Student</span>
                 </a>
@@ -223,7 +232,7 @@ export const NavProfile = () => {
               src={currentUser?.photoURL}
               style={{ backgroundColor: "green" }}
             >
-              {utils.getNameInitial("von.aralar@gmail.com")}{" "}
+              {utils.getNameInitial(currentUser?.displayName)}{" "}
             </Avatar>
           </Menu.Item>
         </Menu>

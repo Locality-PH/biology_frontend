@@ -17,8 +17,7 @@ import ModuleStudents from "views/app-view/Classroom/ModuleStudents";
 
 import TableList from "views/app-view/TableList.js";
 import TestAntDesign from "./views/app-view/TestAntDesign";
-import UserProfileTest from "views/app-view/UserProfileTest";
-import UserProfile from "views/app-view/UserProfileTest";
+import UserProfile from "views/app-view/UserProfile";
 
 const dashboardRoutes = [
   {
@@ -151,7 +150,7 @@ const dashboardRoutes = [
     path: "/user",
     name: "User Profile",
     icon: null,
-    component: UserProfileTest,
+    component: UserProfile,
     layout: "/admin",
     renderSidebar: false,
     isExact: true,

@@ -10,7 +10,7 @@ const LeaveClassroom = ({match}) => {
 
   const closeModal = () => {
     setModalVisible(false);
-    window.location.assign("/home")
+    window.location.assign("/client/home")
   };
 
   const leaveClassroom = () => {
@@ -21,12 +21,12 @@ const LeaveClassroom = ({match}) => {
         if (response.data == "Error") {
           message.destroy();
           message.error("Error, please try again later.");
-          window.location.assign("/home")
+          window.location.assign("/client/home")
         } else if(response.data == "Unenrol"){
           message.destroy();
           message.success("Successfully Unenrol!");
           setModalVisible(false);
-          window.location.assign("/home")
+          window.location.assign("/client/home")
         }
       })
       .catch(() => {

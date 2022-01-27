@@ -33,7 +33,6 @@ const ModulesTable = ({classCode}) => {
             setIsLoading(false);
             setError(null);
           }).catch(() => {
-            setIsLoading(false);
             message.error("Could not fetch the data in the server!")
           });
     }
@@ -45,8 +44,11 @@ const ModulesTable = ({classCode}) => {
     }
 
     const downloadModule = (moduleId) => {
-      console.log("Downloading")
-      window.open("https://biology-server.herokuapp.com/api/teacher/download-module/" + moduleId, "_blank")
+      console.log("Downloading");
+      window.location.assign(
+        "https://biology-server.herokuapp.com/api/teacher/download-module/" + moduleId,
+        "_blank"
+      );
     }
 
     const deleteModule = (moduleId, moduleName) => {
@@ -111,13 +113,13 @@ const ModulesTable = ({classCode}) => {
                     <Menu.Item key="1">
                         <Link to={`/admin/classroom/${classCode}/module/${result._id}`}>
                             <SolutionOutlined style={menu_icons_style}/>
-                            <span className="ml-2">Student Modules</span>
+                            <span className="ml-2">Finished Students</span>
                         </Link>
                     </Menu.Item>
                     <Menu.Item key="2" onClick={() => downloadModule(result._id)}>
                         <>
                             <DownloadOutlined style={menu_icons_style}/>
-                            <span className="ml-2">Download</span>
+                            <span className="ml-2">Download PDF</span>
                         </>
                     </Menu.Item>
                     <Menu.Divider/>
