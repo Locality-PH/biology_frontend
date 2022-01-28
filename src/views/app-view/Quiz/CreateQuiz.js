@@ -112,7 +112,7 @@ const CreateQuiz = () => {
             option: [null]
         }
 
-        let currentFormData = form.getFieldsValue(true)
+        let currentFormData = formRef.current.getFieldsValue("true")
         currentFormData = updateForm(currentFormData)
         newQuestion = currentFormData.question.concat(newQuestion)
 

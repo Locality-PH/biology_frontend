@@ -23,19 +23,19 @@ const EditQuiz = (props) => {
     useEffect(() => {
 
         (async () => {
-            await Axios.post("/api/quiz/get/code/" + quiz_code, { tid }).then((response) => {
+            await Axios.post("/api/quiz/get/code/" + quiz_code, { tid }).then(async (response) => {
                 const quizData = response.data;
 
                 if (response.data != "failed") {
                     setQuiz(quizData)
                     setQuestion(quizData.question)
 
-                    setTimeout(() => {
+                    await setTimeout(() => {
                         setShowQuestion(false)
                     }, 300);
                 } else {
                     message.error("Quiz not found!!")
-                    setTimeout(() => {
+                    await setTimeout(() => {
                         history.goBack()
                     }, 500);
                 }
@@ -46,14 +46,16 @@ const EditQuiz = (props) => {
     }, [])
 
     useEffect(() => {
-        if (question.length != undefined && showQuestion == true) {
-            setTimeout(() => {
-                setShowQuestion(false)
-            }, 300);
-        }
+        (async () => {
+            if (question.length != undefined && showQuestion == true) {
+                await setTimeout(() => {
+                    setShowQuestion(false)
+                }, 300);
+            }
 
-        console.log("Question:", question)
-        form.resetFields();
+            console.log("Question:", question)
+            form.resetFields();
+        })()
     }, [question])
 
     //Initialize default value here
@@ -131,15 +133,14 @@ const EditQuiz = (props) => {
             answer: [null],
             option: [null]
         }
-
-        let currentFormData = form.getFieldsValue(true)
+        
+        // form.getFieldsValue(true) 
+        let currentFormData = formRef.current.getFieldsValue("true")
         currentFormData = updateForm(currentFormData)
+        console.log("currentFormData", currentFormData)
         newQuestion = currentFormData.question.concat(newQuestion)
 
-        // console.log("newQuestion")
-        // console.log(newQuestion)
         setQuestion(newQuestion)
-
     }
 
     const removeQuestion = (QTNkey) => {
@@ -167,6 +168,9 @@ const EditQuiz = (props) => {
         let quiz_length = (Object.keys(values).length - 2) / 3;
         let newQuiz = {}
 
+        console.log("values for update form", values)
+        console.log("quiz_length", quiz_length)
+
         newQuiz["name"] = values["quiz_name"]
         newQuiz["description"] = values["quiz_description"]
         newQuiz["question"] = []
@@ -184,23 +188,23 @@ const EditQuiz = (props) => {
             newQuestion["answer"] = []
 
             if (newOptions != undefined) {
-                if (newOptions.length == 1) {
+                if (newQuestion.type == "Identification") {
                     if (newOptions[0] != undefined) {
                         newQuestion["answer"].push(newOptions[0])
                     }
                 }
 
                 else {
-
-                    for (let x = 0; x < newOptions.length; x++) {
-                        if (newOptions[x] != undefined) {
-                            if (newOptions[x].isAnswer == true) {
-                                newQuestion["answer"].push(newOptions[x].value)
+                    if (newQuestion.type == "Multiple Choice" || newQuestion.type == "Checkbox") {
+                        for (let x = 0; x < newOptions.length; x++) {
+                            if (newOptions[x] != undefined) {
+                                if (newOptions[x].isAnswer == true) {
+                                    newQuestion["answer"].push(newOptions[x].value)
+                                }
                             }
+
                         }
-
                     }
-
                 }
             }
 
@@ -208,7 +212,7 @@ const EditQuiz = (props) => {
 
         }
         // console.log("updateForm")
-        // console.log(newQuiz)
+        console.log("newQuiz", newQuiz)
 
         return newQuiz
     };
@@ -445,8 +449,10 @@ const EditQuiz = (props) => {
     const onFinish = async (values) => {
         let quiz_length = (Object.keys(values).length - 2) / 3;
         let newQuiz = {}
+        let hasError = false;
 
         console.log('Received values of form:', values);
+        console.log('Length:', quiz_length);
 
         newQuiz["name"] = values["quiz_name"]
         newQuiz["description"] = values["quiz_description"]
@@ -476,26 +482,28 @@ const EditQuiz = (props) => {
                 }
 
                 if (newQuestion["answer"].length == 0) {
-                    return message.error("Failed to upload quiz, question " + i + " need answer!!")
+                    message.error("Failed to upload quiz, question " + i + " need answer!!")
+                    hasError = true
                 }
 
             }
 
             newQuiz["question"].push(newQuestion)
         }
-
         console.log("newQuiz:", newQuiz)
 
-        try {
-            await Axios.post("/api/quiz/update", { newQuiz, quiz_id: quiz.quiz_id, tid }).then(async (response) => {
-                await console.log(response.data)
-            }).then(
-                message.success("Changes has been saved.")
-            )
+        if (!hasError) {
+            try {
+                await Axios.put("/api/quiz/update", { newQuiz, quiz_id: quiz.quiz_id, tid }).then((response) => {
+                    console.log(response.data)
+                }).then(
+                    message.success("Changes has been saved.", 10)
+                )
 
-        } catch (error) {
-            console.log(error)
-            message.error('Error!! Please try again later.');
+            } catch (error) {
+                console.log(error)
+                message.error('Error!! Please try again later.');
+            }
         }
 
     };
