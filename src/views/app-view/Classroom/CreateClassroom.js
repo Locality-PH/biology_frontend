@@ -4,9 +4,11 @@ import {
   Row,
   Col,
 } from "react-bootstrap";
-import { Form, Input, Button, Card, Upload, Space,  message, Modal} from 'antd';
-import { UploadOutlined, MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
+import { Form, Input, Button, Card, Upload, Space,  message, Modal, Checkbox, Table} from 'antd';
+import { UploadOutlined, MinusCircleOutlined, PlusOutlined, SearchOutlined} from '@ant-design/icons';
 import { Link } from "react-router-dom";
+import Flex from 'components/shared-components/Flex'
+import utils from 'utils'
 import axios from "axios";
 
 const CreateClassroom = () => {
@@ -18,6 +20,16 @@ const CreateClassroom = () => {
   const [modalVisible, setModalVisible] = useState(false)
   const [classCode, setClassCode] = useState("")
 
+  const [modules, setModules] = []
+
+  const [myModules, setMyModules] = useState([]);
+  const [myModulesList, setMyModulesList] = useState([]);
+  const [isMyModuleLoading, setIsMyModuleLoading] = useState(true);
+
+  const [presetModules, setPresetModules] = useState([]);
+  const [presetModulesList, setPresetModulesList] = useState([]);
+  const [isPresetModuleLoading, setIsPresetModuleLoading] = useState(true);
+
   useEffect(() => {
     axios.get("/api/teacher/get-teacher-fullname/" + teacherId).then((response) => {
       setTeacherName(response.data)
@@ -25,8 +37,103 @@ const CreateClassroom = () => {
       }).catch(() => {
         message.error("Could not fetch the data in the server!")
       });
+
+      getMyModules()
+      getPresetModules()
   }
   , []);
+
+  const getMyModules = () => {
+    axios.get("/api/module/get-my-modules/" + teacherId).then((response) => {
+        setMyModules(response.data)
+        setMyModulesList(response.data)
+        setIsMyModuleLoading(false);
+      }).catch(() => {
+        message.error("Could not fetch the data in the server!")
+      });
+  }
+
+  const getPresetModules = () => {
+    axios.get("/api/module/get-preset-modules").then((response) => {
+        setPresetModules(response.data)
+        setPresetModulesList(response.data)
+        setIsPresetModuleLoading(false);
+      }).catch(() => {
+        message.error("Could not fetch the data in the server!")
+      });
+  }
+
+  const checkboxMyModule = (e, moduleId) => {
+    if(e.target.checked == true){
+      setModules([...modules, {_id: moduleId, type: "MyModule"}])
+    }else if(e.target.checked == false){
+      console.log(moduleId, " MyModule False")
+    }
+
+    console.log(modules)
+  }
+
+  const checkboxPresetModule = (e, moduleId) => {
+    if(e.target.checked == true){
+      setModules([...modules, {_id: moduleId, type: "PresetModule"}])
+    }else if(e.target.checked == false){
+      console.log(moduleId, " MyModule False")
+    }
+
+    console.log(modules)
+  }
+
+  const myModuleTableColumns = [
+    {
+        title: 'Module Name',
+        dataIndex: 'module_name',
+        render: (_, result) => (
+            <span>
+              <Checkbox onChange={e => checkboxMyModule(e, result._id)}>{result.module_name}</Checkbox>
+            </span>
+        )
+    },
+    {
+      title: 'Topic',
+      dataIndex: 'topic',
+      render: (_, result) => (
+          <span>{result.topic}</span>
+      )
+    },
+    {
+      title: 'Lesson Count',
+      dataIndex: 'lesson_count',
+      render: (_, result) => (
+          <span>{result.lesson_count}</span>
+      )
+    }
+  ]
+
+  const presetModuleTableColumns = [
+    {
+        title: 'Module Name',
+        dataIndex: 'module_name',
+        render: (_, result) => (
+          <span>
+          <Checkbox onChange={e => checkboxPresetModule(e, result._id)}>{result.module_name}</Checkbox>
+        </span>
+        )
+    },
+    {
+      title: 'Topic',
+      dataIndex: 'topic',
+      render: (_, result) => (
+          <span>{result.topic}</span>
+      )
+    },
+    {
+      title: 'Lesson Count',
+      dataIndex: 'lesson_count',
+      render: (_, result) => (
+          <span>{result.lesson_count}</span>
+      )
+    }
+  ]
 
   const createClassroom = (data) => {
     axios.post("/api/teacher/create-classroom", data).then((response) => {
@@ -52,41 +159,16 @@ const CreateClassroom = () => {
   }
 
   const onFinish = values => {
-    message.loading("Creating " + values.name + "...", 0)
-    setIsDisable(true)
-
-    const fmData = new FormData()
-    const moduleNames = []
-    const quizLinks = []
-
-    console.log(values["modules_data"])
-    
-    if(values["modules_data"] != null){
-        values["modules_data"].map(result => {
-          moduleNames.push(result.module_name)
-          quizLinks.push(result.quiz_link)
-          fmData.append("file", result.module.file)
-      })
-
-      delete values["modules_data"]
-    }
-    else if(Array.isArray(values["modules_data"])){
-      if(values["modules_data"].length ===0){
-        console.log("Empty Arrayy")
-      }
-    }else{
-      console.log("Modules is empty!")
-    }
+    // message.loading("Creating " + values.name + "...", 0)
+    // setIsDisable(true)
 
     values["teacher_id"] = teacherId;
     values["teacher_name"] = teacherName;
-    values["modules_name"] = moduleNames;
-    values["quizs_link"] = quizLinks;
+    values["modules"] = modules
 
     console.log(values)
 
-    fmData.append("values", JSON.stringify(values))
-    createClassroom(fmData)
+    // createClassroom(values)
   };
 
   const resetForm = () => {
@@ -117,6 +199,34 @@ const CreateClassroom = () => {
 
 return (
     <Container fluid>
+      <Row>
+      <Col md="12">
+      <Card title="My Modules">
+            <Table
+                pagination={true}
+                columns={myModuleTableColumns} 
+                dataSource={myModulesList} 
+                rowKey='_id'
+                loading={isMyModuleLoading}
+                scroll={{ x: "max-content" }}
+            />
+        </Card>
+      </Col>
+    </Row>
+    <Row>
+        <Col md="12">
+          <Card title="Preset Modules">
+          <Table
+                pagination={true}
+                columns={presetModuleTableColumns} 
+                dataSource={presetModulesList} 
+                rowKey='_id'
+                loading={isPresetModuleLoading}
+                scroll={{ x: "max-content" }}
+            />
+          </Card>
+        </Col>
+      </Row>
     <Row>
       <Col md="12">
       <Modal title="Class Code" visible={modalVisible} onCancel={closeModal}
@@ -161,59 +271,6 @@ return (
                 </Form.Item> 
             </Form.Item>
 
-            {/* <Form.Item>
-                <h4>Test Modules</h4>
-                <Form.Item> 
-                    <Upload {...props} maxCount={1}>
-                      <Button icon={<UploadOutlined />}>Upload pdf only</Button>
-                    </Upload>
-                </Form.Item> 
-            </Form.Item> */}
-
-            <Form.List name="modules_data">
-              {(fields, { add, remove }) => (
-                <>
-                  {fields.map(({ key, name, fieldKey, ...restField }) => (
-                    <Space key={key} style={{ display: 'flex', marginBottom: 8 }} align="baseline">
-                      <Form.Item
-                        {...restField}
-                        name={[name, 'module_name']}
-                        fieldKey={[fieldKey, 'module_name']}
-                        rules={[{ required: true, message: 'Module name is required' }]}
-                      >
-                        <Input placeholder="Enter Module Name" />
-                      </Form.Item>
-                      <Form.Item
-                        {...restField}
-                        valuePropName={[name, 'module']}
-                        name={[name, 'module']}
-                        fieldKey={[fieldKey, 'module']}
-                        rules={[{ required: true, message: 'Module is required' }]}
-                      >
-                        <Upload {...props} maxCount={1}>
-                          <Button icon={<UploadOutlined />}>Upload pdf only</Button>
-                        </Upload>
-                      </Form.Item>
-                      <Form.Item
-                        {...restField}
-                        name={[name, 'quiz_link']}
-                        fieldKey={[fieldKey, 'quiz_link']}
-                        rules={[{ required: true, message: 'Quiz Code is required' }]}
-                      >
-                        <Input placeholder="Quiz Code" />
-                      </Form.Item>
-                      <MinusCircleOutlined onClick={() => remove(name)} />
-                    </Space>
-                  ))}
-                  <Form.Item>
-                    <Button type="dashed" onClick={() => add()} block icon={<PlusOutlined />}>
-                      Add Module
-                    </Button>
-                  </Form.Item>
-                </>
-              )}
-            </Form.List>
-
             <Form.Item>
                 <Button type="primary" htmlType="submit" className="mr-2" style={{backgroundColor: "green", borderColor: "green"}} disabled={isDisable}>Create</Button>
                 <Button htmlType="button" onClick={() => resetForm()}>Reset</Button>
@@ -222,6 +279,8 @@ return (
         </Card>
       </Col>
     </Row>
+    
+
   </Container>
 )
 }
