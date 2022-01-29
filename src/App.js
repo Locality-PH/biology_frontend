@@ -1,5 +1,5 @@
 import React from "react";
-
+import Cookies from "universal-cookie";
 import { useAuth } from "contexts/AuthContext";
 import Login from "./views/auth-view/Login";
 import Signup from "./views/auth-view/Signup";
@@ -24,7 +24,7 @@ function App() {
 
   React.useEffect(() => {
     const cookiestored = new Cookies();
-    console.log(`cookies ${cookiestored.get("teststorate")}`);
+    console.log(`cookies ${cookiestored.get("teststorage")}`);
     const cookies = new Cookies();
     cookies.set("teststorage", "hello world", { path: "/" });
     localData(localStorage.getItem("mid"), localStorage.getItem("role"));
