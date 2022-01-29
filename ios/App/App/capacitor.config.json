@@ -1,0 +1,8 @@
+{
+	"appId": "io.ionic.genbioscope",
+	"appName": "genbioscope",
+	"bundledWebRuntime": false,
+	"npmClient": "npm",
+	"webDir": "build",
+	"cordova": {}
+}

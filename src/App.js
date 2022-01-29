@@ -23,6 +23,10 @@ function App() {
   const { localData, localrole } = useAuth(); // determine if authorized, from context or however you're doing it
 
   React.useEffect(() => {
+    const cookiestored = new Cookies();
+    console.log(`cookies ${cookiestored.get("teststorate")}`);
+    const cookies = new Cookies();
+    cookies.set("teststorage", "hello world", { path: "/" });
     localData(localStorage.getItem("mid"), localStorage.getItem("role"));
   });
   console.log(process.env.REACT_APP_FIREBASE_AUTH_DOMAIN);

@@ -1,8 +1,11 @@
 {
-  "name": "biogenscope",
+  "name": "genbioscope",
   "version": "1.0.0",
   "dependencies": {
     "@ant-design/icons": "^4.7.0",
+    "@capacitor/android": "3.4.0",
+    "@capacitor/core": "^3.4.0",
+    "@capacitor/ios": "3.4.0",
     "@fortawesome/fontawesome-free": "5.15.2",
     "antd": "^4.17.3",
     "axios": "^0.24.0",
@@ -26,7 +29,8 @@
     "react-scripts": "4.0.1",
     "react-scroll": "^1.8.4",
     "react-tsparticles": "^1.39.0",
-    "styled-components": "^5.3.3"
+    "styled-components": "^5.3.3",
+    "universal-cookie": "^4.0.4"
   },
   "optionalDependencies": {
     "jquery": "3.5.1",
@@ -56,5 +60,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^3.4.0"
   }
 }
