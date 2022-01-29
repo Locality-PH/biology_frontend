@@ -45,16 +45,16 @@ const MyModule = () => {
     }
     , []);
 
-    const deleteClassroom = (classroomId, classroomName) => {
-      message.loading("Deleting " + classroomName + "...", 0)
+    const deleteMyModule = (myModuleId, moduleName) => {
+      message.loading("Deleting " + moduleName + "...", 0)
       
-      axios.post("/api/teacher/delete-classroom", {"teacher_id": teacherId, "classroom_id": classroomId}).then((response) => {
+      axios.post("/api/module/delete-my-module", {"teacher_id": teacherId, "_id": myModuleId}).then((response) => {
         if(response.data == "Deleted"){
           message.destroy()
           setMyModulesList(
-            myModulesList.filter((classroom) => classroom.teacher_id !== classroomId)
+            myModulesList.filter((myModule) => myModule._id !== myModuleId)
             )
-          message.success(classroomName + " has been successfully deleted")
+          message.success(moduleName + " has been successfully deleted")
         }else{
           message.destroy()
           message.error("The action can't be completed, please try again.")
@@ -116,7 +116,7 @@ const MyModule = () => {
                         </Link>
                     </Menu.Item>
                     <Menu.Divider/>
-                    <Menu.Item key="2" onClick={() => deleteClassroom(result._id, result.name)}>
+                    <Menu.Item key="2" onClick={() => deleteMyModule(result._id, result.module_name)}>
                         <>
                             <DeleteOutlined style={menu_icons_style}/>
                             <span className="ml-2">Delete</span>

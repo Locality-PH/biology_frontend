@@ -74,25 +74,30 @@ const ModulesTable = ({classCode}) => {
     }
 
     const tableColumns = [
-        {
-            title: 'Module Name',
-            dataIndex: 'name',
-            render: (_, result) => (
-                <Flex>
-                    <AvatarStatus src="/img/thumbs/thumb-5.jpg" size={30} name={result.module_name}/>
-                </Flex>
-            )
-        },
-        {
-            title: 'File Name',
-            dataIndex: 'filename',
-            render: (_, result) => (
-                <span>{result.module_file.filename}</span>
-            )
-        },
+      {
+        title: 'Module Name',
+        dataIndex: 'module_name',
+        render: (_, result) => (
+            <span>{result.module_name}</span>
+        )
+    },
+    {
+      title: 'Classwork Code',
+      dataIndex: 'classwork_code',
+      render: (_, result) => (
+          <span>{(result.classwork_code == "" ? "None": result.classwork_code)}</span>
+      )
+    },
+    {
+      title: 'Lesson Count',
+      dataIndex: 'lesson_count',
+      render: (_, result) => (
+          <span>{result.lesson_count}</span>
+      )
+    },
         {
           title: 'Finished by',
-          dataIndex: 'filename',
+          dataIndex: 'finished',
           render: (_, result) => (
               <span>{result.finished} student</span>
           )
