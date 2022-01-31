@@ -9,6 +9,7 @@ import {
 	EyeOutlined,
     SearchOutlined,
     SolutionOutlined,
+    EditOutlined,
     DownloadOutlined,
 	DeleteOutlined
 } from '@ant-design/icons';
@@ -94,6 +95,14 @@ const ModulesTable = ({classCode}) => {
       render: (_, result) => (
           <span>{result.lesson_count}</span>
       )
+    }
+    ,
+    {
+      title: 'Type',
+      dataIndex: 'type',
+      render: (_, result) => (
+          <span>{result.type}</span>
+      )
     },
         {
           title: 'Finished by',
@@ -115,20 +124,21 @@ const ModulesTable = ({classCode}) => {
                             <span className="ml-2">View</span>
                         </Link>
                     </Menu.Item>
-                    <Menu.Item key="1">
+                    {/* <Menu.Item key="1">
                         <Link to={`/admin/classroom/${classCode}/module/${result._id}`}>
                             <SolutionOutlined style={menu_icons_style}/>
                             <span className="ml-2">Finished Students</span>
                         </Link>
-                    </Menu.Item>
-                    <Menu.Item key="2" onClick={() => downloadModule(result._id)}>
-                        <>
-                            <DownloadOutlined style={menu_icons_style}/>
-                            <span className="ml-2">Download PDF</span>
-                        </>
+                    </Menu.Item> */}
+                     <Menu.Item key="1">
+                        <Link to={(result.type == "MyModule")?`/admin/module/edit-my-module/${result.module_id}`:
+                      `/admin/module/edit-preset-module/${result.module_id}`}>
+                            <EditOutlined style={menu_icons_style}/>
+                            <span className="ml-2">Edit</span>
+                        </Link>
                     </Menu.Item>
                     <Menu.Divider/>
-                    <Menu.Item key="3" onClick={() => deleteModule(result._id, result.module_name)}>
+                    <Menu.Item key="2" onClick={() => deleteModule(result._id, result.module_name)}>
                         <>
                             <DeleteOutlined style={menu_icons_style}/>
                             <span className="ml-2">Delete</span>

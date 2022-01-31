@@ -14,7 +14,8 @@ import {
 	EyeOutlined,
   SearchOutlined,
   EditOutlined,
-	DeleteOutlined
+	DeleteOutlined,
+  DownloadOutlined,
 } from '@ant-design/icons';
 import axios from "axios";
 
@@ -103,17 +104,23 @@ const PresetModule = () => {
                 <EllipsisDropdown 
             menu={
                 <Menu>
-                    <Menu.Item key="0">
+                    {/* <Menu.Item key="0">
                         <Link to={`classroom/${result._id}`}>
                             <EyeOutlined style={menu_icons_style}/>
                             <span className="ml-2">View</span>
                         </Link>
-                    </Menu.Item>
-                    <Menu.Item key="1">
-                        <Link to={`classroom/edit/${result._id}`}>
+                    </Menu.Item> */}
+                    <Menu.Item key="0">
+                        <Link to={`module/edit-preset-module/${result._id}`}>
                             <EditOutlined style={menu_icons_style}/>
                             <span className="ml-2">Edit</span>
                         </Link>
+                    </Menu.Item>
+                    <Menu.Item key="1" onClick={() => downloadModule(result._id)}>
+                        <>
+                            <DownloadOutlined style={menu_icons_style}/>
+                            <span className="ml-2">Download PDF</span>
+                        </>
                     </Menu.Item>
                     <Menu.Divider/>
                     <Menu.Item key="2" onClick={() => deletePresetModule(result._id, result.module_name)}>
@@ -135,6 +142,14 @@ const PresetModule = () => {
         const data = utils.wildCardSearch(searchArray, value);
         setPresetModulesList(data);
     };
+
+    const downloadModule = (presetModuleId) => {
+      console.log("Downloading");
+      window.location.assign(
+        "http://localhost:5000/api/module/download-preset-module/" + presetModuleId,
+        "_blank"
+      );
+    }
     
   return (
     <>

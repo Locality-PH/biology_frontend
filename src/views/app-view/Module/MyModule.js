@@ -103,20 +103,20 @@ const MyModule = () => {
                 <EllipsisDropdown 
             menu={
                 <Menu>
-                    <Menu.Item key="0">
+                    {/* <Menu.Item key="0">
                         <Link to={`classroom/${result._id}`}>
                             <EyeOutlined style={menu_icons_style}/>
                             <span className="ml-2">View</span>
                         </Link>
-                    </Menu.Item>
-                    <Menu.Item key="1">
-                        <Link to={`classroom/edit/${result._id}`}>
+                    </Menu.Item> */}
+                    <Menu.Item key="0">
+                        <Link to={`module/edit-my-module/${result._id}`}>
                             <EditOutlined style={menu_icons_style}/>
                             <span className="ml-2">Edit</span>
                         </Link>
                     </Menu.Item>
                     <Menu.Divider/>
-                    <Menu.Item key="2" onClick={() => deleteMyModule(result._id, result.module_name)}>
+                    <Menu.Item key="1" onClick={() => deleteMyModule(result._id, result.module_name)}>
                         <>
                             <DeleteOutlined style={menu_icons_style}/>
                             <span className="ml-2">Delete</span>
