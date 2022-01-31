@@ -21,13 +21,13 @@ import ViewQuiz from "views/app-view/Quiz/ViewQuiz.js";
 
 function App() {
   const { localData, localrole } = useAuth(); // determine if authorized, from context or however you're doing it
+  const cookiestored = new Cookies();
 
   React.useEffect(() => {
-    const cookiestored = new Cookies();
     console.log(`cookies ${cookiestored.get("teststorage")}`);
     const cookies = new Cookies();
     cookies.set("teststorage", "hello world", { path: "/" });
-    localData(localStorage.getItem("mid"), localStorage.getItem("role"));
+    localData(cookiestored.get("mid"), cookiestored.get("role"));
   });
   console.log(process.env.REACT_APP_FIREBASE_AUTH_DOMAIN);
 
@@ -44,11 +44,12 @@ function App() {
           <Route path="/admin" render={(props) => <AdminLayout {...props} />} />
         </PrivateRouteAdmin>
         {/* ADMINSIDE */}
-        {/* CLIENTSIDE */}
+        {/* CLIENTSIDE */}{" "}
         <Route path="/client/login" component={ClientLogin} />{" "}
         <Route path="/client/register" component={ClientRegister} />
         <PrivateRouteClient path="/">
-          <ClientLayout />
+          {" "}
+          <ClientLayout />{" "}
         </PrivateRouteClient>{" "}
         {/* <Redirect from="/" to="/client/login" /> */}
         {/* CLIENTSIDE */}

@@ -4,6 +4,7 @@ import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import Axios from "axios";
 const provider = new GoogleAuthProvider();
 const AuthContext = React.createContext();
+import Cookies from "universal-cookie";
 
 export function useAuth() {
   return useContext(AuthContext);
@@ -14,6 +15,7 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
   const [localMid, setLocalMid] = useState();
   const [localrole, setLocalRole] = useState();
+  const cookiestored = new Cookies();
 
   async function SignInWithGoogle(history) {
     return auth
@@ -47,35 +49,40 @@ export function AuthProvider({ children }) {
   }
 
   async function SignInWithGoogleStudent(history) {
-    return auth
-      .signInWithPopup(provider)
-      .then((result) => {
-        const user = result.user;
+    auth.signInWithRedirect(provider);
 
-        Axios.post("/api/student/google-login", {
-          user,
-        }).then((response) => {
-          const currentUserUUID = response.data;
-          console.log("response from controller");
-          console.log(currentUserUUID);
+    auth.onAuthStateChanged((user) => {
+      auth
+        .getRedirectResult()
+        .then((result) => {
+          console.log(result);
+          const user = result.user;
 
-          Axios.get("/api/admin/login/" + currentUserUUID)
-            .then((res) => {
-              console.log(res.data);
-              localStorage.setItem("mid", res.data[0]?.auth_id);
-              localStorage.setItem("role", res.data[0]?.role);
-              localStorage.setItem("sid", res.data[0]?.student);
+          Axios.post("/api/student/google-login", {
+            user,
+          }).then((response) => {
+            const currentUserUUID = response.data;
+            console.log("response from controller");
+            console.log(currentUserUUID);
 
-              localData(res.data[0].uuid, res.data[0]?.role);
-            })
-            .then((_) => {
-              history.push("/client/home");
-            });
+            Axios.get("/api/admin/login/" + currentUserUUID)
+              .then((res) => {
+                console.log(res.data);
+                localStorage.setItem("mid", res.data[0]?.auth_id);
+                localStorage.setItem("role", res.data[0]?.role);
+                localStorage.setItem("sid", res.data[0]?.student);
+
+                localData(res.data[0].uuid, res.data[0]?.role);
+              })
+              .then((_) => {
+                history.push("/client/home");
+              });
+          });
+        })
+        .catch((error) => {
+          console.log(error);
         });
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    });
   }
   function signup(email, password) {
     return auth.createUserWithEmailAndPassword(email, password);
@@ -110,6 +117,7 @@ export function AuthProvider({ children }) {
 
     return auth.signOut();
   }
+
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       setCurrentuser(user);

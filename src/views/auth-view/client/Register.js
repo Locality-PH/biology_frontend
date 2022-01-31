@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { useAuth } from "contexts/AuthContext";
 import { auth } from "firebase";
@@ -27,7 +27,36 @@ function ClientRegister() {
     backgroundSize: "cover",
     overflow: "auto",
   };
+  useEffect(() => {
+    auth.onAuthStateChanged((user) => {
+      axios
+        .post("/api/student/google-login", {
+          user,
+        })
+        .then((response) => {
+          const currentUserUUID = response.data;
+          console.log("response from controller");
+          console.log(currentUserUUID);
 
+          axios
+            .get("/api/admin/login/" + currentUserUUID)
+            .then((res) => {
+              console.log(res.data);
+              localStorage.setItem("mid", res.data[0]?.auth_id);
+              localStorage.setItem("role", res.data[0]?.role);
+              localStorage.setItem("sid", res.data[0]?.student);
+
+              localData(res.data[0].uuid, res.data[0]?.role);
+            })
+            .then((_) => {
+              history.push("/client/home");
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        });
+    });
+  }, []);
   const leftLoginDiv = {
     paddingRight: "20px",
     backgroundImage: "url('/img/others/Videocall_Isometric.svg')",
@@ -61,21 +90,18 @@ function ClientRegister() {
                 full_name: values.fullname,
               };
               console.log(data);
-              axios
-                .post("/api/student/register", data)
-                .then((res) => {
-                  console.log(res.data);
-                  console.log(res.data.role);
-                  localStorage.setItem("mid", res.data.mid);
-                  localStorage.setItem("role", res.data.role);
-                  localStorage.setItem("sid", res.data.sid);
+              axios.post("/api/student/register", data).then((res) => {
+                console.log(res.data);
+                console.log(res.data.role);
+                localStorage.setItem("mid", res.data.mid);
+                localStorage.setItem("role", res.data.role);
+                localStorage.setItem("sid", res.data.sid);
 
-                  localData(res.data.mid, res.data.role);
+                localData(res.data.mid, res.data.role);
 
-                  user
+                user
                   .updateProfile({
                     displayName: values.fullname,
-
                   })
                   .then(() => {
                     console.log("Update successful");
@@ -85,8 +111,7 @@ function ClientRegister() {
                   .catch((error) => {
                     console.log("displayName failed");
                   });
-                })
-
+              });
             } else {
               // User is signed out
               // ...

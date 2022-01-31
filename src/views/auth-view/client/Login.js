@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { useAuth } from "contexts/AuthContext";
 import { auth } from "firebase";
@@ -8,7 +8,6 @@ import { Row, Card, Col, Form, Input, Checkbox, Button, Space } from "antd";
 import { FaUserAlt } from "react-icons/fa";
 import { AiFillLock } from "react-icons/ai";
 import { FcGoogle } from "react-icons/fc";
-
 import "./Login.css";
 import "assets/css/custom-design.css";
 
@@ -18,6 +17,37 @@ function ClientLogin() {
   const [loading, setLoading] = useState(false);
   const history = useHistory();
   console.log(currentUser?.uid);
+
+  useEffect(() => {
+    auth.onAuthStateChanged((user) => {
+      axios
+        .post("/api/student/google-login", {
+          user,
+        })
+        .then((response) => {
+          const currentUserUUID = response.data;
+          console.log("response from controller");
+          console.log(currentUserUUID);
+
+          axios
+            .get("/api/admin/login/" + currentUserUUID)
+            .then((res) => {
+              console.log(res.data);
+              localStorage.setItem("mid", res.data[0]?.auth_id);
+              localStorage.setItem("role", res.data[0]?.role);
+              localStorage.setItem("sid", res.data[0]?.student);
+
+              localData(res.data[0].uuid, res.data[0]?.role);
+            })
+            .then((_) => {
+              history.push("/client/home");
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        });
+    });
+  }, []);
   async function loginGoogleUser(e) {
     SignInWithGoogleStudent(history);
   }
@@ -37,18 +67,16 @@ function ClientLogin() {
               var uid = user.uid;
               console.log("user is signed in");
               console.log(user?.uid);
-              axios
-                .get("/api/student/login/" + user.uid)
-                .then((res) => {
-                  console.log("resdata:", res.data);
-                  console.log( res.data[0].full_name)
-                  localStorage.setItem("mid", res.data[0]?.auth_id);
-                  localStorage.setItem("role", "Student");
-                  localStorage.setItem("sid", res.data[0]?.student);
+              axios.get("/api/student/login/" + user.uid).then((res) => {
+                console.log("resdata:", res.data);
+                console.log(res.data[0].full_name);
+                localStorage.setItem("mid", res.data[0]?.auth_id);
+                localStorage.setItem("role", "Student");
+                localStorage.setItem("sid", res.data[0]?.student);
 
-                  localData(res.data[0].uuid, res.data[0]?.role);
+                localData(res.data[0].uuid, res.data[0]?.role);
 
-                  user
+                user
                   .updateProfile({
                     displayName: res.data[0].full_name,
                   })
@@ -59,10 +87,10 @@ function ClientLogin() {
                   .catch((error) => {
                     console.log("displayName failed");
                   });
-                })
-                // .then((_) => {
-                //   history.push("/client/home");
-                // });
+              });
+              // .then((_) => {
+              //   history.push("/client/home");
+              // });
             } else {
               // User is signed out
               // ...
