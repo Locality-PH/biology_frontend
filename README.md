@@ -8,7 +8,8 @@
 [![BioGenScope](https://raw.githubusercontent.com/Locality-PH/biology_frontend/main/src/assets/img/screenshot.png)](https://www.genbioscope.com)
 
 
-A Web application that can calculate and generate data such as TurnAroundTime and WaitingTime to ganttchart and table with various algorithm.
+GenBioScope purpose is a project based Web Application alternative for learning Biology lesson with Modular Support
+
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
