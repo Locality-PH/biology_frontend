@@ -5,7 +5,7 @@
 
 ### BIOGENSCOPE (PROJECT)
 
-[![BioGenScope](https://raw.githubusercontent.com/Locality-PH/biology_frontend/main/src/assets/img/screenshot.jpg)](https://www.biogenscope.com)
+[![BioGenScope](https://raw.githubusercontent.com/Locality-PH/biology_frontend/main/src/assets/img/screenshot-removebg-preview.png)](https://www.genbioscope.com)
 
 
 A Web application that can calculate and generate data such as TurnAroundTime and WaitingTime to ganttchart and table with various algorithm.
