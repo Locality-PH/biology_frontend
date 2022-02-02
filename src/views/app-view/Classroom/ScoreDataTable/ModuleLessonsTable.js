@@ -15,12 +15,11 @@ import {
 } from '@ant-design/icons';
 import axios from "axios";
 
-const ModulesTable = ({classCode}) => {
+const ModuleLessonsTable = ({moduleId, classCode}) => {
     const [modules, setModules] = useState([]);
     const [modulesList, setModulesList] = useState([]);
 
     const [isLoading, setIsLoading] = useState(true);
-    const [error, setError] = useState(null);
 
     const menu_icons_style = {
       display: "inline-flex",
@@ -32,51 +31,15 @@ const ModulesTable = ({classCode}) => {
             setModules(response.data)
             setModulesList(response.data)
             setIsLoading(false);
-            setError(null);
           }).catch(() => {
             message.error("Could not fetch the data in the server!")
           });
     }
     , []);
 
-    const viewModule = (moduleId) => {
-      console.log("View")
-      window.open("/teacher/view-module/" + moduleId, "_blank")
-    }
-
-    const downloadModule = (moduleId) => {
-      console.log("Downloading");
-      window.location.assign(
-        "https://biology-server.herokuapp.com/api/teacher/download-module/" + moduleId,
-        "_blank"
-      );
-    }
-
-    const deleteModule = (moduleId, moduleName) => {
-      message.loading("Deleting " + moduleName + "...", 0)
-      
-      axios.post("/api/teacher/delete-module", {"class_code": classCode, "module_id": moduleId}).then((response) => {
-        if(response.data == "Deleted"){
-          message.destroy()
-          setModulesList(
-            modulesList.filter((module) => module._id !== moduleId)
-            )
-          message.success(moduleName + " has been successfully deleted")
-        }else{
-          message.destroy()
-          message.error("The action can't be completed, please try again.")
-        }
-      }).catch(error => {
-          console.log(error)
-          message.destroy()
-          message.error("The action can't be completed, please try again.")
-      });
-
-    }
-
     const tableColumns = [
       {
-        title: 'Module Name',
+        title: 'Lesson Name',
         dataIndex: 'module_name',
         render: (_, result) => (
             <span>{result.module_name}</span>
@@ -90,7 +53,7 @@ const ModulesTable = ({classCode}) => {
       )
     },
     {
-      title: 'Lesson Count',
+      title: 'File Name',
       dataIndex: 'lesson_count',
       render: (_, result) => (
           <span>{result.lesson_count}</span>
@@ -98,13 +61,6 @@ const ModulesTable = ({classCode}) => {
     }
     ,
     {
-      title: 'Type',
-      dataIndex: 'type',
-      render: (_, result) => (
-          <span>{result.type}</span>
-      )
-    },
-        {
           title: 'Finished by',
           dataIndex: 'finished',
           render: (_, result) => (
@@ -124,26 +80,6 @@ const ModulesTable = ({classCode}) => {
                             <span className="ml-2">View</span>
                         </Link>
                     </Menu.Item>
-                    {/* <Menu.Item key="1">
-                        <Link to={`/admin/classroom/${classCode}/module/${result._id}`}>
-                            <SolutionOutlined style={menu_icons_style}/>
-                            <span className="ml-2">Finished Students</span>
-                        </Link>
-                    </Menu.Item> */}
-                     <Menu.Item key="1">
-                        <Link to={(result.type == "MyModule")?`/admin/module/edit-my-module/${result.module_id}`:
-                      `/admin/module/edit-preset-module/${result.module_id}`}>
-                            <EditOutlined style={menu_icons_style}/>
-                            <span className="ml-2">Edit</span>
-                        </Link>
-                    </Menu.Item>
-                    <Menu.Divider/>
-                    <Menu.Item key="2" onClick={() => deleteModule(result._id, result.module_name)}>
-                        <>
-                            <DeleteOutlined style={menu_icons_style}/>
-                            <span className="ml-2">Delete</span>
-                        </>
-                    </Menu.Item>
                 </Menu>
             }
         />
@@ -160,7 +96,7 @@ const ModulesTable = ({classCode}) => {
     
   return (
     <>
-      <Card title="Modules">
+      <Card title="Lessons" extra={<><Link to={"/admin/classroom/" + classCode}><Button type="primary" style={{backgroundColor: "green", borderColor: "green"}}>Back</Button></Link></>}>
         <Flex
           alignItems="center"
           className=""
@@ -190,4 +126,4 @@ const ModulesTable = ({classCode}) => {
   )
 }
 
-export default ModulesTable;
+export default ModuleLessonsTable;

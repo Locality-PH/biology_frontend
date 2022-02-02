@@ -90,7 +90,7 @@ const dashboardRoutes = [
     isExact: true,
   },
   {
-    path: "/classroom/:class_code/:module_id",
+    path: "/classroom/:class_code/module/:module_id",
     name: "View Module",
     icon: "",
     component: ViewModule,

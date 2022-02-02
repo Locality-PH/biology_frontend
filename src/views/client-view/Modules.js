@@ -13,9 +13,11 @@ import {
 } from "antd";
 import ModulePages from "./Modules-pages";
 const { Header, Content, Footer, Sider } = Layout;
+const { SubMenu } = Menu;
+
 
 import axios from "axios";
-import { ConsoleSqlOutlined } from "@ant-design/icons";
+import { ConsoleSqlOutlined, AppstoreOutlined, MailOutlined, SettingOutlined} from "@ant-design/icons";
 
 const Modules = ({ match }) => {
   const classCode = match.params.class_code;
@@ -45,7 +47,7 @@ const Modules = ({ match }) => {
   }
 
   useEffect(() => {
-    getClassroomModules()
+    // getClassroomModules()
    
   }, []);
 
@@ -159,7 +161,7 @@ const Modules = ({ match }) => {
           console.log(collapsed, type);
         }}
       >
-        <Menu
+        {/* <Menu
           mode="inline"
           defaultSelectedKeys={["1"]}
           defaultOpenKeys={["sub1"]}
@@ -172,7 +174,36 @@ const Modules = ({ match }) => {
               <span className="checkbox-span" style={{cursor: (result.disabled == true)?"not-allowed": "pointer"}}>{result.module_name}</span>
             </Menu.Item>
           ))}
-        </Menu>{" "}
+        </Menu> */}
+
+        <Menu
+        mode="inline"
+        defaultSelectedKeys={["1"]}
+        defaultOpenKeys={["sub1"]}
+        style={{ height: "100%", borderRight: 0 }}
+        onClick={HandleModules}
+      >
+        <SubMenu key="sub1" icon={<MailOutlined />} title="Module 1">
+            <Menu.Item key="1">Transfort mechanism</Menu.Item>
+          <SubMenu key="g1" title="Lessons">
+            <Menu.Item key="2">Lesson 1</Menu.Item>
+            <Menu.Item key="3">Lesson 2</Menu.Item>
+            <Menu.Item key="4">Lesson 3</Menu.Item>
+          </SubMenu>
+          <Menu.Item key="5">Quiz</Menu.Item>
+        </SubMenu>
+
+        <SubMenu key="sub2" icon={<MailOutlined />} title="Module 2">
+            <Menu.Item key="6">Transfort mechanism</Menu.Item>
+          <SubMenu key="g1" title="Lessons">
+            <Menu.Item key="7">Lesson 1</Menu.Item>
+            <Menu.Item key="8">Lesson 2</Menu.Item>
+            <Menu.Item key="9">Lesson 3</Menu.Item>
+          </SubMenu>
+          <Menu.Item key="5">Quiz</Menu.Item>
+        </SubMenu>
+      </Menu>
+      
       </Sider>
       <Layout style={{ padding: "0 24px 24px" }}>
         <Breadcrumb style={{ margin: "16px 0" }}>

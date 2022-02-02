@@ -18,7 +18,7 @@ const ViewClassroom = ({match}) => {
                         <StudentsTable classCode={class_code}></StudentsTable>
                     </Col>
                 </Row>
-
+                <br></br>
                 <Row>
                     <Col md="12">
                         <ModulesTable classCode = {class_code}></ModulesTable>
