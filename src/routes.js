@@ -6,6 +6,12 @@ import ViewClassroom from "views/app-view/Classroom/ViewClassroom";
 import EditClassroom from "views/app-view/Classroom/EditClassroom";
 import ViewStudent from "views/app-view/Classroom/ViewStudent";
 
+import Module from "./views/app-view/Module/Module";
+import CreateMyModule from "./views/app-view/Module/CreateMyModule";
+import EditMyModule from "./views/app-view/Module/EditMyModule";
+import CreatePresetModule from "./views/app-view/Module/CreatePresetModule";
+import EditPresetModule from "./views/app-view/Module/EditPresetModule";
+
 import Quiz from "views/app-view/Quiz/Quiz.js";
 import ViewQuiz from "views/app-view/Quiz/ViewQuiz.js";
 import CreateQuiz from "views/app-view/Quiz/CreateQuiz.js";
@@ -84,7 +90,7 @@ const dashboardRoutes = [
     isExact: true,
   },
   {
-    path: "/classroom/:class_code/:module_id",
+    path: "/classroom/:class_code/module/:module_id",
     name: "View Module",
     icon: "",
     component: ViewModule,
@@ -97,6 +103,51 @@ const dashboardRoutes = [
     name: "View Module Student",
     icon: "",
     component: ModuleStudents,
+    layout: "/admin",
+    renderSidebar: false,
+    isExact: true,
+  },
+  {
+    path: "/module",
+    name: "Module",
+    icon: "nc-icon nc-paper-2",
+    component: Module,
+    layout: "/admin",
+    renderSidebar: true,
+    isExact: true,
+  },
+  {
+    path: "/module/create-my-module",
+    name: "My Module",
+    icon: "",
+    component: CreateMyModule,
+    layout: "/admin",
+    renderSidebar: false,
+    isExact: true,
+  },
+  {
+    path: "/module/edit-my-module/:module_id",
+    name: "Edit My Module",
+    icon: "",
+    component: EditMyModule,
+    layout: "/admin",
+    renderSidebar: false,
+    isExact: true,
+  },
+  {
+    path: "/module/create-preset-module",
+    name: "Preset Module",
+    icon: "",
+    component: CreatePresetModule,
+    layout: "/admin",
+    renderSidebar: false,
+    isExact: true,
+  },
+  {
+    path: "/module/edit-preset-module/:module_id",
+    name: "Edit Preset Module",
+    icon: "",
+    component: EditPresetModule,
     layout: "/admin",
     renderSidebar: false,
     isExact: true,

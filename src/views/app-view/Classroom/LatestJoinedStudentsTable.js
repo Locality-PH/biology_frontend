@@ -63,7 +63,6 @@ const LatestJoinedStudentsTable = () => {
           <Col md="12">
             <Card title="Latest Joined Student">
               <Table
-                  pagination={true}
                   columns={tableColumns} 
                   dataSource={latestJoinedStudentsList} 
                   rowKey='_id'
