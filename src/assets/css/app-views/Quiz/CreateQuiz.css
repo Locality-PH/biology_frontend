@@ -67,15 +67,23 @@
   font-weight: bold;
 }
 
-.quiz-form .load-icon{
-  position: absolute;
+/* .quiz-form .load-icon{
+  position: fixed;
   top: 50%;
   left: 50%;
   margin-top: -50px;
   margin-left: -50px;
   width: 100px;
   height: 100px;
+} */
+
+.quiz-form .upload-container .ant-upload.ant-upload-select{
+  width: 100% !important;
 }
+
+
+
+
 
 
 

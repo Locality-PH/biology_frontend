@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react'
-import { Card, Row, Col, Form, Input, Space, Button, Checkbox, Radio, Select, Spin, message } from 'antd'
-import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
+import React, { useState, useEffect, useRef } from 'react'
+import { Card, Row, Col, Form, Input, Space, Button, Checkbox, Radio, Select, Spin, Upload, message } from 'antd'
+import { MinusCircleOutlined, PlusOutlined, UploadOutlined, StarOutlined } from '@ant-design/icons';
 import { AiOutlinePlus } from "react-icons/ai"
 import { useHistory } from "react-router-dom";
 import Axios from 'axios';
@@ -12,13 +12,15 @@ const EditQuiz = (props) => {
     const [form] = Form.useForm();
     const formRef = React.createRef();
     const [newQuizType, SetNewQuizType] = useState("Identification")
+    const [newFile, SetNewFile] = useState({})
     const tid = localStorage.getItem("tid");
 
     const [quiz, setQuiz] = useState({})
     const [question, setQuestion] = useState({})
-    const [showQuestion, setShowQuestion] = useState(true)
-    const quiz_code = props.match.params.quiz_code
+    const [isQuestionLoading, setIsQuestionLoading] = useState(true)
+    const [initialVal, setInitialVal] = useState({})
 
+    const quiz_code = props.match.params.quiz_code
 
     useEffect(() => {
 
@@ -30,77 +32,89 @@ const EditQuiz = (props) => {
                     setQuiz(quizData)
                     setQuestion(quizData.question)
 
-                    await setTimeout(() => {
-                        setShowQuestion(false)
+                    setTimeout(() => {
+                        setIsQuestionLoading(false)
                     }, 300);
+
                 } else {
                     message.error("Quiz not found!!")
-                    await setTimeout(() => {
+                    setTimeout(() => {
                         history.goBack()
                     }, 500);
                 }
             });
+
 
         })()
 
     }, [])
 
     useEffect(() => {
-        (async () => {
-            if (question.length != undefined && showQuestion == true) {
-                await setTimeout(() => {
-                    setShowQuestion(false)
-                }, 300);
-            }
+        form.resetFields()
+    }, [initialVal]);
 
-            console.log("Question:", question)
-            form.resetFields();
-        })()
-    }, [question])
+    useEffect(() => {
+        // console.log("isNewFile empty:", Object.keys(newFile) > 0)
+        if (Object.keys(newFile).length > 0) {
+            console.log("newFile:", newFile)
+        }
+    }, [newFile]);
 
-    //Initialize default value here
-    const tempInitialVal = [
-        { quiz_name: quiz.name },
-        { quiz_description: quiz.description }
-    ]
+    useEffect(() => {
+        if (question.length != undefined) {
+            let tempInitialVal = [
+                { quiz_name: quiz.name },
+                { quiz_description: quiz.description }
+            ]
 
-    //Setting up of initialVal for form
-    let initialVal = []
+            let tempNewFile = {}
 
-    if (question.length != undefined) {
-        question.map((question, i) => {
-            tempInitialVal.push({ ["question" + [i + 1]]: question.string })
+            question.map((question, i) => {
+                tempInitialVal.push({ ["question" + [i + 1]]: question.string })
 
-            if (question.option != undefined) {
+                if (question.option != undefined) {
 
-                if (question.type == 'Identification') {
-                    tempInitialVal.push({ ["question" + [i + 1] + "_options"]: question.option[0] })
-                }
-
-                else {
-
-                    if (question.type == 'Multiple Choice' || question.type == 'Checkbox') {
-                        let optionArray = []
-
-                        question.option.map(
-                            (option) => {
-                                if (option != null) {
-                                    optionArray.push(option)
-                                }
-                            })
-
-                        tempInitialVal.push({ ["question" + [i + 1] + "_options"]: optionArray })
+                    if (question.type == 'Identification') {
+                        tempInitialVal.push({ ["question" + [i + 1] + "_options"]: question.option[0] })
                     }
 
+                    else {
+
+                        if (question.type == 'Multiple Choice' || question.type == 'Checkbox') {
+                            let optionArray = []
+
+                            question.option.map(
+                                (option) => {
+                                    if (option != null) {
+                                        optionArray.push(option)
+                                    }
+                                })
+
+                            tempInitialVal.push({ ["question" + [i + 1] + "_options"]: optionArray })
+                        }
+
+                    }
                 }
-            }
 
-        })
+                if (question.img != undefined) {
+                    console.log([`question${i + 1}_image`])
+                    tempNewFile[`question${i + 1}_image`] = { file: question.img.file, filename: question.img.filename, index: i + 1, isNewFile: true }
 
-        initialVal = tempInitialVal.reduce(((r, c) => Object.assign(r, c)), {})
-        console.log("Initial values: ", initialVal)
-        // form.resetFields();
-    }
+                    if (question._id != null) {
+                        tempNewFile[`question${i + 1}_image`] = { ...tempNewFile[`question${i + 1}_image`], isNewFile: false, id: question._id }
+                    }
+                }
+
+            })
+
+            tempInitialVal = (tempInitialVal.reduce(((r, c) => Object.assign(r, c)), {}))
+            setInitialVal(() => tempInitialVal)
+            SetNewFile({ ...tempNewFile })
+        }
+
+        console.log("question", question)
+    }, [question]);
+
 
     const setIsAnswer = (key, QTNkey) => {
         let temp_options = formRef.current.getFieldValue("question" + QTNkey + "_options");
@@ -123,7 +137,8 @@ const EditQuiz = (props) => {
     };
 
     const addQuestion = () => {
-        setShowQuestion(true)
+        var ql = question.length
+        setIsQuestionLoading(true)
 
         let quiz_type = newQuizType
 
@@ -133,43 +148,50 @@ const EditQuiz = (props) => {
             answer: [null],
             option: [null]
         }
-        
-        // form.getFieldsValue(true) 
+
+        // form.getFieldsValue(true)
         let currentFormData = formRef.current.getFieldsValue("true")
         currentFormData = updateForm(currentFormData)
-        console.log("currentFormData", currentFormData)
+        currentFormData = updateNewFile(currentFormData)
         newQuestion = currentFormData.question.concat(newQuestion)
 
         setQuestion(newQuestion)
+
+        setTimeout(() => {
+            setIsQuestionLoading(false)
+            form.scrollToField("question" + ql, scrollConfig)
+            message.success(`question ${ql + 1} has been added.`)
+        }, 300);
     }
 
     const removeQuestion = (QTNkey) => {
-        setShowQuestion(true)
+        setIsQuestionLoading(true)
+        var quiz_length = question.length
 
-        // minus 1 for array
-        QTNkey--
-
-        let currentFormData = form.getFieldsValue(true)
-
-        // console.log(QTNkey)
-        // console.log(currentFormData)
-
+        let currentFormData = formRef.current.getFieldsValue("true")
         currentFormData = updateForm(currentFormData)
-        // splice (remove this index, how many to remove)
-        currentFormData.question.splice(QTNkey, 1)
-        // console.log("From remove question")
-        // console.log(currentFormData)
+        currentFormData = updateNewFile(currentFormData)
 
+        // splice (remove this index, how many to remove)
+        currentFormData.question.splice(QTNkey - 1, 1)
+
+        console.log(currentFormData)
         setQuestion(currentFormData.question)
+
+        setTimeout(() => {
+            setIsQuestionLoading(false)
+
+            form.scrollToField(`question${QTNkey - 1}`, scrollConfig)
+            message.success(`Previous question ${QTNkey} has been removed.`)
+        }, 300);
 
     }
 
     const updateForm = (values) => {
-        let quiz_length = (Object.keys(values).length - 2) / 3;
+        let quiz_length = question.length
         let newQuiz = {}
 
         console.log("values for update form", values)
-        console.log("quiz_length", quiz_length)
 
         newQuiz["name"] = values["quiz_name"]
         newQuiz["description"] = values["quiz_description"]
@@ -179,13 +201,24 @@ const EditQuiz = (props) => {
             let newQuestion = {}
             let newOptions = values["question" + i + "_options"]
 
-            // console.log("test here")
-            // console.log(newOptions)
-
             newQuestion["option"] = newOptions
             newQuestion["type"] = values["question" + i + "_type"]
             newQuestion["string"] = values["question" + i]
             newQuestion["answer"] = []
+
+            if (values["question" + i + "_id"] != null) {
+                if (newQuestion.type == "Identification" || newQuestion.type == "Multiple Choice" || newQuestion.type == "Checkbox" || newQuestion.type == "Instruction") {
+                    newQuestion["_id"] = values["question" + i + "_id"]
+                }
+
+                else if (newQuestion.type == "Image") {
+
+                    if (newFile[`question${i}_image`].isNewFile == false) {
+                        newQuestion["_id"] = values["question" + i + "_id"]
+                    }
+
+                }
+            }
 
             if (newOptions != undefined) {
                 if (newQuestion.type == "Identification") {
@@ -194,28 +227,42 @@ const EditQuiz = (props) => {
                     }
                 }
 
-                else {
-                    if (newQuestion.type == "Multiple Choice" || newQuestion.type == "Checkbox") {
-                        for (let x = 0; x < newOptions.length; x++) {
-                            if (newOptions[x] != undefined) {
-                                if (newOptions[x].isAnswer == true) {
-                                    newQuestion["answer"].push(newOptions[x].value)
-                                }
+                else if (newQuestion.type == "Multiple Choice" || newQuestion.type == "Checkbox") {
+                    for (let x = 0; x < newOptions.length; x++) {
+                        if (newOptions[x] != undefined) {
+                            if (newOptions[x].isAnswer == true) {
+                                newQuestion["answer"].push(newOptions[x].value)
                             }
-
                         }
+
                     }
                 }
+
             }
 
             newQuiz["question"].push(newQuestion)
 
         }
-        // console.log("updateForm")
         console.log("newQuiz", newQuiz)
 
         return newQuiz
-    };
+    }
+
+    const updateNewFile = (currentFormData) => {
+        var newFileKeys = Object.keys(newFile)
+        console.log("updateNewFile", newFile)
+
+        newFileKeys.map((file) => {
+            var cf = newFile[file] //Current NewFile
+            var question = currentFormData.question[cf.index - 1]
+            question.img = { file: cf.file, filename: cf.filename }
+
+
+        })
+
+        console.log("updateNewFile done:", currentFormData)
+        return currentFormData
+    }
 
     const changeQuizType = (value) => {
         SetNewQuizType(value)
@@ -243,8 +290,18 @@ const EditQuiz = (props) => {
                                     initialValue={"Identification"}
                                     hidden={true}
                                 >
-                                    <Input placeholder='Question here....' className='underline-input' />
+                                    <Input />
                                 </Form.Item>
+
+                                {question._id != null &&
+                                    <Form.Item
+                                        name={"question" + key + "_id"}
+                                        initialValue={question._id}
+                                        hidden={true}
+                                    >
+                                        <Input />
+                                    </Form.Item>
+                                }
 
                                 <Form.Item
                                     className='mb-0'
@@ -259,6 +316,7 @@ const EditQuiz = (props) => {
 
 
                                 <Form.Item
+                                    className='mb-0'
                                     name={"question" + key + "_options"}
                                     rules={[{ required: true, message: "Need answer for this question!" }]}
                                     required={false}
@@ -282,8 +340,18 @@ const EditQuiz = (props) => {
                                     initialValue={"Multiple Choice"}
                                     hidden={true}
                                 >
-                                    <Input placeholder='Question here....' className='underline-input' />
+                                    <Input />
                                 </Form.Item>
+
+                                {question._id != null &&
+                                    <Form.Item
+                                        name={"question" + key + "_id"}
+                                        initialValue={question._id}
+                                        hidden={true}
+                                    >
+                                        <Input />
+                                    </Form.Item>
+                                }
 
                                 <Form.Item
                                     className='mb-0'
@@ -369,8 +437,18 @@ const EditQuiz = (props) => {
                                     initialValue={"Checkbox"}
                                     hidden={true}
                                 >
-                                    <Input placeholder='Question here....' className='underline-input' />
+                                    <Input />
                                 </Form.Item>
+
+                                {question._id != null &&
+                                    <Form.Item
+                                        name={"question" + key + "_id"}
+                                        initialValue={question._id}
+                                        hidden={true}
+                                    >
+                                        <Input />
+                                    </Form.Item>
+                                }
 
 
                                 <Form.Item
@@ -438,6 +516,109 @@ const EditQuiz = (props) => {
                                 </Form.List>
                             </Card>
                         )
+                    } else if (question.type == "Image") {
+                        return (
+                            <Card className='card-box-shadow-style question-card center-div' key={QTNkey}>
+                                <img
+                                    src='https://cdn-icons-png.flaticon.com/512/1828/1828665.png'
+                                    title="Remove question"
+                                    className='question-close-btn'
+                                    onClick={() => removeQuestion(QTNkey)}
+                                />
+
+                                <Form.Item
+                                    name={"question" + key + "_type"}
+                                    initialValue={"Image"}
+                                    hidden={true}
+                                >
+                                    <Input />
+                                </Form.Item>
+
+                                {(question._id != null) &&
+                                    <Form.Item
+                                        name={"question" + key + "_id"}
+                                        initialValue={question._id}
+                                        hidden={true}
+                                    >
+                                        <Input />
+                                    </Form.Item>
+                                }
+
+                                <Form.Item
+                                    className='mb-0'
+                                    name={"question" + QTNkey}
+                                    colon={false}
+                                    label={key + "."}
+                                    rules={[{ required: true, message: "Question can't be blank!" }]}
+                                    required={false}
+                                >
+                                    <Input placeholder='Question here....' className='underline-input' />
+                                </Form.Item>
+
+
+                                <Form.Item
+                                    className='mb-0'
+                                    name={"question" + key + "_image"}
+                                    valuePropName={"question" + key + "_image"}
+                                >
+                                    <Upload
+                                        {...uploadConfig}
+                                        maxCount={1}
+                                        className="upload-container"
+                                        onChange={(file) => handleFileUpload(file, "question" + key + "_image", key)}
+                                        onRemove={() => handleFileRemove("question" + key + "_image", key)}
+                                        defaultFileList={() => getFile("question" + key + "_image")}
+                                    >
+                                        <Button icon={<UploadOutlined />} style={{ width: "100%" }}>Click to Upload</Button>
+                                    </Upload>
+
+                                </Form.Item>
+
+                                {getImgFile("question" + key + "_image")}
+
+                            </Card>
+                        )
+                    } else if (question.type == "Instruction") {
+                        return (
+                            <Card className='card-box-shadow-style question-card center-div' key={QTNkey}>
+                                <img
+                                    src='https://cdn-icons-png.flaticon.com/512/1828/1828665.png'
+                                    title="Remove question"
+                                    className='question-close-btn'
+                                    onClick={() => removeQuestion(QTNkey)}
+                                />
+
+                                <Form.Item
+                                    name={"question" + key + "_type"}
+                                    initialValue={"Instruction"}
+                                    hidden={true}
+                                >
+                                    <Input />
+                                </Form.Item>
+
+                                {(question._id != null) &&
+                                    <Form.Item
+                                        name={"question" + key + "_id"}
+                                        initialValue={question._id}
+                                        hidden={true}
+                                    >
+                                        <Input />
+                                    </Form.Item>
+                                }
+
+                                <Form.Item
+                                    className='mb-0'
+                                    name={"question" + QTNkey}
+                                    colon={false}
+                                    label={key + "."}
+                                    rules={[{ required: true, message: "This can't be blank!!" }]}
+                                    required={false}
+                                >
+                                    <Input.TextArea placeholder='Question here....' className='underline-input' autoSize={{ minRows: 1, maxRows: 4 }} />
+                                </Form.Item>
+
+                            </Card>
+                        )
                     }
 
                 })
@@ -447,12 +628,10 @@ const EditQuiz = (props) => {
     }
 
     const onFinish = async (values) => {
-        let quiz_length = (Object.keys(values).length - 2) / 3;
+        console.log("Values from form", values)
+        let quiz_length = question.length
         let newQuiz = {}
         let hasError = false;
-
-        console.log('Received values of form:', values);
-        console.log('Length:', quiz_length);
 
         newQuiz["name"] = values["quiz_name"]
         newQuiz["description"] = values["quiz_description"]
@@ -466,6 +645,10 @@ const EditQuiz = (props) => {
             newQuestion["type"] = values["question" + i + "_type"]
             newQuestion["string"] = values["question" + i]
             newQuestion["answer"] = []
+
+            if (values["question" + i + "_id"] != null) {
+                newQuestion["_id"] = values["question" + i + "_id"]
+            }
 
             if (newQuestion.type == "Identification") {
                 newQuestion["answer"].push(newOptions)
@@ -488,13 +671,41 @@ const EditQuiz = (props) => {
 
             }
 
+            else if (newQuestion.type == "Image") {
+                if (newFile[`question${i}_image`] == null) {
+                    message.error("Failed to upload quiz, question " + i + " has no image!!")
+                    hasError = true
+                }
+            }
+
             newQuiz["question"].push(newQuestion)
         }
-        console.log("newQuiz:", newQuiz)
+
+        console.log(newQuiz)
 
         if (!hasError) {
+            const formData = new FormData()
+            var newFileObject = Object.keys(newFile)
+
+            newFileObject.forEach((key, index) => {
+                console.log("newFile[key]", newFile[key])
+
+                if (newFile[key].isNewFile == true) {
+                    formData.append(key, newFile[key].file.file)
+                }
+
+                formData.append("question_index", JSON.stringify({ index: newFile[key].index - 1, isNewFile: newFile[key].isNewFile }))
+
+            });
+
+            console.log(newFile)
+
+            formData.append("newQuiz", JSON.stringify(newQuiz))
+            formData.append("quiz_id", quiz.quiz_id)
+            formData.append("tid", tid)
+
             try {
-                await Axios.put("/api/quiz/update", { newQuiz, quiz_id: quiz.quiz_id, tid }).then((response) => {
+                await Axios.put("/api/quiz/update", formData).then((response) => {
                     console.log(response.data)
                 }).then(
                     message.success("Changes has been saved.", 10)
@@ -508,9 +719,72 @@ const EditQuiz = (props) => {
 
     };
 
+    const uploadConfig = {
+        beforeUpload: file => {
+            if (file.type !== 'image/png') {
+                message.error(`${file.name} is not a png file`);
+                return Upload.LIST_IGNORE
+            }
+            return false;
+        },
+    }
+
+    const handleFileUpload = (file, name, key) => {
+
+        if (file != null && file.file.status != "removed") {
+            SetNewFile({ ...newFile, [name]: { file, filename: file.file.name, index: key, isNewFile: true } })
+        }
+    }
+
+    const handleFileRemove = (name, key) => {
+        var tempNewFile = newFile
+        delete tempNewFile[name]
+        SetNewFile(tempNewFile)
+        console.log(newFile)
+    }
+
+    const getFile = (name) => {
+
+        var tempFile = newFile[name]
+
+        if (tempFile !== undefined) {
+            return ([{ name: tempFile.filename }])
+        }
+    }
+
+    function getBase64(file) {
+        return (URL.createObjectURL(file))
+    }
+
+    const getImgFile = (name) => {
+
+        var tempFile = newFile[name]
+
+        if (tempFile !== undefined) {
+
+            if (tempFile.isNewFile == false) {
+                return (
+                    <img src={`data:image/png;base64,${tempFile.file}`} className='center-div' style={{ width: "80%" }} />
+                )
+            }
+
+            else if (tempFile.isNewFile == true) {
+                return (
+                    <img src={getBase64(tempFile.file.file)} className='center-div' style={{ width: "80%" }} />
+                )
+
+            }
+        }
+    }
+
+    const scrollConfig = {
+        behavior: 'smooth',
+        block: 'center'
+    }
+
     return (
-        <div className='quiz-form h-100'>
-            <Spin spinning={showQuestion} wrapperClassName={({ "load-icon": showQuestion })}>
+        <div className='quiz-form h-100' >
+            <Spin spinning={isQuestionLoading} wrapperClassName={({ "load-icon": isQuestionLoading })}>
                 <Row justify='center'>
                     <Col xxl={12} xl={16} lg={16} md={18} sm={24} xs={24}>
                         <Form
@@ -521,7 +795,7 @@ const EditQuiz = (props) => {
                             form={form}
                             scrollToFirstError={true}
                         >
-                            {showQuestion != true &&
+                            {isQuestionLoading == false &&
                                 <div>
                                     <Card className='card-box-shadow-style question-card center-div'>
                                         <Form.Item
@@ -544,9 +818,7 @@ const EditQuiz = (props) => {
                                         </Form.Item>
                                     </Card>
 
-
                                     {PrintQuestion()}
-
 
                                     <div className="center-div mb-4" style={{ marginTop: "20px" }}>
                                         <Button onClick={(e) => addQuestion()}>Add Question</Button>
@@ -560,13 +832,15 @@ const EditQuiz = (props) => {
                                             <Option value="Identification">Identification</Option>
                                             <Option value="Multiple Choice">Multiple Choice</Option>
                                             <Option value="Checkbox">Checkbox</Option>
+                                            <Option value="Image">Image</Option>
+                                            <Option value="Instruction">Instruction</Option>
                                         </Select>
 
 
                                     </div>
 
                                     <div className='center-div mb-4'>
-                                        <Button type="primary" htmlType="submit">
+                                        <Button type="primary" htmlType="submit" >
                                             Submit
                                         </Button>
                                     </div>
@@ -577,7 +851,7 @@ const EditQuiz = (props) => {
                 </Row>
 
             </Spin>
-        </div>
+        </div >
     )
 }
 

@@ -646,7 +646,7 @@ ul {
   width: 100%;
   height: 100vh;
   position: absolute;
-  background-image: url("");
+  /* background-image: url(""); */
   background-size: cover;
   background-position: 50% 50%;
   background-repeat: no-repeat;
@@ -763,7 +763,7 @@ ul {
     height: 62px;
   }
   .site-layout-content-home {
-    background-image: url("");
+    /* background-image: url(""); */
   }
 }
 .no_data {
