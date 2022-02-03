@@ -1,23 +1,14 @@
 import React, {useState, useEffect} from 'react'
-import { Card, Table, Menu, Input, Button, message} from 'antd';
-import Flex from 'components/shared-components/Flex'
-import AvatarStatus from 'components/shared-components/AvatarStatus';
-import utils from 'utils'
+import { Card, Table, Menu, Button, message} from 'antd';
 import EllipsisDropdown from 'components/shared-components/EllipsisDropdown'
 import { Link } from "react-router-dom";
 import { 
-	EyeOutlined,
-    SearchOutlined,
-    SolutionOutlined,
-    EditOutlined,
-    DownloadOutlined,
-	DeleteOutlined
+	EyeOutlined
 } from '@ant-design/icons';
 import axios from "axios";
 
 const ModuleLessonsTable = ({moduleId, classCode}) => {
-    const [modules, setModules] = useState([]);
-    const [modulesList, setModulesList] = useState([]);
+    const [lessons, setLessons] = useState([]);
 
     const [isLoading, setIsLoading] = useState(true);
 
@@ -27,9 +18,8 @@ const ModuleLessonsTable = ({moduleId, classCode}) => {
     }
 
     useEffect(() => {
-        axios.get("/api/teacher/get-classroom-modules/" + classCode).then((response) => {
-            setModules(response.data)
-            setModulesList(response.data)
+        axios.get("/api/module/get-module-lessons/" + moduleId).then((response) => {
+            setLessons(response.data)
             setIsLoading(false);
           }).catch(() => {
             message.error("Could not fetch the data in the server!")
@@ -40,9 +30,9 @@ const ModuleLessonsTable = ({moduleId, classCode}) => {
     const tableColumns = [
       {
         title: 'Lesson Name',
-        dataIndex: 'module_name',
+        dataIndex: 'lesson_name',
         render: (_, result) => (
-            <span>{result.module_name}</span>
+            <span>{result.lesson_name}</span>
         )
     },
     {
@@ -52,14 +42,6 @@ const ModuleLessonsTable = ({moduleId, classCode}) => {
           <span>{(result.classwork_code == "" ? "None": result.classwork_code)}</span>
       )
     },
-    {
-      title: 'File Name',
-      dataIndex: 'lesson_count',
-      render: (_, result) => (
-          <span>{result.lesson_count}</span>
-      )
-    }
-    ,
     {
           title: 'Finished by',
           dataIndex: 'finished',
@@ -75,7 +57,7 @@ const ModuleLessonsTable = ({moduleId, classCode}) => {
             menu={
                 <Menu>
                     <Menu.Item key="0">
-                        <Link to={`/admin/classroom/${classCode}/module/${result._id}`}>
+                        <Link to={`/admin/classroom/${classCode}/module/${result.module_lesson_id}`}>
                             <EyeOutlined style={menu_icons_style}/>
                             <span className="ml-2">View</span>
                         </Link>
@@ -86,38 +68,15 @@ const ModuleLessonsTable = ({moduleId, classCode}) => {
             )
         }
       ]
-
-    const onClassroomSearch = (e) => {
-        const value = e.currentTarget.value;
-        const searchArray = e.currentTarget.value ? modulesList : modules;
-        const data = utils.wildCardSearch(searchArray, value);
-        setModulesList(data);
-    };
     
   return (
     <>
       <Card title="Lessons" extra={<><Link to={"/admin/classroom/" + classCode}><Button type="primary" style={{backgroundColor: "green", borderColor: "green"}}>Back</Button></Link></>}>
-        <Flex
-          alignItems="center"
-          className=""
-          justifyContent="between"
-          mobileFlex={false}
-        >
-          <Flex className="mb-1" mobileFlex={false}>
-            <div className="mb-3 mr-md-3">
-              <Input
-                placeholder="Search"
-                prefix={<SearchOutlined />}
-                onChange={(e) => onClassroomSearch(e)}
-              />
-            </div>
-          </Flex>
-        </Flex>
         <Table
             pagination={true}
             columns={tableColumns} 
-            dataSource={modulesList} 
-            rowKey='_id'
+            dataSource={lessons} 
+            rowKey='module_lesson_id'
             loading={isLoading}
             scroll={{ x: "max-content" }}
         />
