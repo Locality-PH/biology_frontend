@@ -6,9 +6,9 @@ import { useHistory } from "react-router-dom";
 import Axios from 'axios'
 
 //css
-import "assets/css/app-views/Quiz/ViewQuiz.css"
+import "assets/css/app-views/Classwork/ViewClasswork.css"
 
-const StudentViewQuiz = (props) => {
+const StudentViewClasswork = (props) => {
     let history = useHistory();
     const quiz_code = props.match.params.quiz_code
     const class_code = props.match.params.class_code
@@ -18,7 +18,7 @@ const StudentViewQuiz = (props) => {
     const [form] = Form.useForm();
     const formRef = React.createRef();
 
-    const [quiz, setQuiz] = useState({})
+    const [quiz, setClasswork] = useState({})
     const [question, setQuestion] = useState({})
     const [showQuestion, setShowQuestion] = useState(true)
     const [scoreModal, setScoreModal] = useState(false);
@@ -31,7 +31,7 @@ const StudentViewQuiz = (props) => {
                 const quizData = response.data;
 
                 if (response.data != "failed") {
-                    setQuiz(quizData)
+                    setClasswork(quizData)
                     setQuestion(quizData.question)
 
                     setTimeout(() => {
@@ -40,7 +40,7 @@ const StudentViewQuiz = (props) => {
 
 
                 } else {
-                    message.error("Quiz not found!!")
+                    message.error("Classwork not found!!")
                     setTimeout(() => {
                         window.location.assign("/client/home")
                     }, 500);
@@ -304,4 +304,4 @@ const StudentViewQuiz = (props) => {
     )
 }
 
-export default StudentViewQuiz
+export default StudentViewClasswork

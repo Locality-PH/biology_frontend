@@ -1,22 +1,20 @@
 import React, { useState, useEffect } from 'react'
 import { Card, Row, Col, Form, Input, Space, Button, Checkbox, Radio, Select, Spin, Modal, message } from 'antd'
-import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
-import { AiOutlinePlus } from "react-icons/ai"
 import { useHistory } from "react-router-dom";
 import Axios from 'axios'
 
 //css
-import "assets/css/app-views/Quiz/ViewQuiz.css"
+import "assets/css/app-views/Classwork/ViewClasswork.css"
 
-const ViewQuiz = (props) => {
+const ViewClasswork = (props) => {
     let history = useHistory();
-    const quiz_code = props.match.params.quiz_code
+    const classwork_code = props.match.params.classwork_code
     const tid = localStorage.getItem("tid");
 
     const [form] = Form.useForm();
     const formRef = React.createRef();
 
-    const [quiz, setQuiz] = useState({})
+    const [classwork, setClasswork] = useState({})
     const [question, setQuestion] = useState({})
     const [showQuestion, setShowQuestion] = useState(true)
     const [scoreModal, setScoreModal] = useState(false);
@@ -24,18 +22,18 @@ const ViewQuiz = (props) => {
 
     useEffect(() => {
         (async () => {
-            await Axios.post("/api/quiz/get/code/" + quiz_code, { tid }).then((response) => {
-                const quizData = response.data;
+            await Axios.post("/api/classwork/get/code/" + classwork_code, { tid }).then((response) => {
+                const classworkData = response.data;
 
                 if (response.data != "failed") {
-                    setQuiz(quizData)
-                    setQuestion(quizData.question)
+                    setClasswork(classworkData)
+                    setQuestion(classworkData.question)
 
                     setTimeout(() => {
                         setShowQuestion(false)
                     }, 300);
                 } else {
-                    message.error("Quiz not found!!")
+                    message.error("Classwork not found!!")
                     setTimeout(() => {
                         history.goBack()
                     }, 500);
@@ -50,12 +48,12 @@ const ViewQuiz = (props) => {
         form.resetFields();
     }, [question])
 
-    console.log("This is quiz array:", quiz)
+    console.log("This is classwork array:", classwork)
 
     //Initialize default value here
     const tempInitialVal = [
-        { quiz_name: quiz.name },
-        { quiz_description: quiz.description }
+        { classwork_name: classwork.name },
+        { classwork_description: classwork.description }
     ]
 
     //Setting up of initialVal for form
@@ -121,26 +119,25 @@ const ViewQuiz = (props) => {
     }
 
     const onTempFinish = (values) => {
-        console.log("Values from quiz form:", values)
+        console.log("Values from classwork form:", values)
 
-        const quiz_length = Object.keys(values).length
+        const classwork_length = Object.keys(values).length
         let answer_list = []
         let score = 0
 
-        for (let i = 1; i < quiz_length + 1; i++) {
+        for (let i = 1; i < classwork_length + 1; i++) {
             const sa = values["question" + i + "_answer"] //student_answer
             const qa = question[i - 1].answer // question_answer
             const qt = question[i - 1].type //question_type
             let am; //answer_match
 
             if (qt == "Checkbox") {
-                console.log(compareArray(sa, qa))
                 am = compareArray(sa, qa)
 
             } else {
-                console.log(sa)
-                console.log(qa)
-                console.log(sa == qa)
+                // console.log(sa)
+                // console.log(qa)
+                // console.log(sa == qa)
 
                 am = (sa == qa)
             }
@@ -158,8 +155,8 @@ const ViewQuiz = (props) => {
 
         const tempValues = {
             student_id: "61ee4308545ddd8a3f4cd7fc",
-            quiz_id: quiz.quiz_id,
-            max_score: quiz_length,
+            classwork_id: classwork.classwork_id,
+            max_score: classwork_length,
             score,
         }
 
@@ -172,46 +169,7 @@ const ViewQuiz = (props) => {
         // });
     }
 
-    const onFinish = (values) => {
-        let quiz_length = (Object.keys(values).length - 2) / 3;
-        let newQuiz = {}
-
-        console.log('Received values of form:', values);
-
-        newQuiz["name"] = values["quiz_name"]
-        newQuiz["description"] = values["quiz_description"]
-        newQuiz["question"] = []
-
-        for (let i = 1; i < quiz_length + 1; i++) {
-            let newQuestion = {}
-            let newOptions = values["question" + i + "_options"]
-
-            newQuestion["option"] = newOptions
-            newQuestion["type"] = values["question" + i + "_type"]
-            newQuestion["string"] = values["question" + i]
-            newQuestion["answer"] = []
-
-            if (newOptions.length == 1) {
-                newQuestion["answer"].push(newOptions[0])
-                // console.log("Answer: " + newOptions)
-            }
-
-            else {
-
-                for (let x = 0; x < newOptions.length; x++) {
-                    if (newOptions[x].isAnswer == true) {
-                        newQuestion["answer"].push(newOptions[x].value)
-                        // console.log("Answer: " + newOptions[x].value)
-                    }
-                }
-
-            }
-
-            newQuiz["question"].push(newQuestion)
-        }
-
-        console.log("Quiz done:", newQuiz)
-    };
+    
 
     const PrintQuestion = () => {
         if (question.length != undefined) {
@@ -224,7 +182,7 @@ const ViewQuiz = (props) => {
                         return (
                             <Card className='card-box-shadow-style question-card center-div' key={QTNkey}>
 
-                                <p>{QTNkey}. {question.string}</p>
+                                <p> {question.string}</p>
 
                                 <Form.Item
                                     name={"question" + QTNkey + "_answer"}
@@ -239,7 +197,7 @@ const ViewQuiz = (props) => {
                         return (
                             <Card className='card-box-shadow-style question-card center-div' key={QTNkey}>
 
-                                <p>{QTNkey}. {question.string}</p>
+                                <p> {question.string}</p>
                                 {console.log(question.option)}
 
                                 <Form.Item
@@ -269,7 +227,7 @@ const ViewQuiz = (props) => {
                         return (
                             <Card className='card-box-shadow-style question-card center-div' key={QTNkey}>
 
-                                <p>{QTNkey}. {question.string}</p>
+                                <p> {question.string}</p>
 
                                 <Form.Item
                                     className='mb-0'
@@ -293,6 +251,24 @@ const ViewQuiz = (props) => {
 
                             </Card>
                         )
+                    } else if (question.type == "Image") {
+                        return (
+                            <Card className='card-box-shadow-style question-card center-div' key={QTNkey}>
+
+                                <p> {question.string}</p>
+
+                                <img src={`data:image/png;base64,${question.img.file}`} className='center-div' style={{ width: "80%" }} />
+
+                            </Card>
+                        )
+                    } else if (question.type == "Instruction") {
+                        return (
+                            <Card className='card-box-shadow-style question-card center-div' key={QTNkey}>
+
+                                <p className='m-0'> {question.string}</p>
+
+                            </Card>
+                        )
                     }
 
                 })
@@ -312,7 +288,7 @@ const ViewQuiz = (props) => {
 
         if (Object.keys(scoreboard).length > 0) {
             return (
-                <Modal title={quiz.name} visible={scoreModal} onOk={handleOk} onCancel={handleCancel}>
+                <Modal title={classwork.name} visible={scoreModal} onOk={handleOk} onCancel={handleCancel}>
                     <h2>Your Score: {scoreboard.score} / {scoreboard.max_score}</h2>
                 </Modal>
             )
@@ -320,13 +296,13 @@ const ViewQuiz = (props) => {
     }
 
     return (
-        <div className='view-quiz'>
+        <div className='view-classwork'>
             <Spin spinning={showQuestion} wrapperClassName={({ "load-icon": showQuestion })}>
 
                 <Row justify='center'>
                     <Col xxl={12} xl={16} lg={16} md={18} sm={24} xs={24}>
                         <Form
-                            name="quiz-form"
+                            name="classwork-form"
                             onFinish={onTempFinish}
                             ref={formRef}
                             form={form}
@@ -335,11 +311,11 @@ const ViewQuiz = (props) => {
                             {showQuestion != true &&
                                 <div>
                                     <Card className='card-box-shadow-style question-card center-div'>
-                                        <p className='quiz-name' >
-                                            {quiz.name}
+                                        <p className='classwork-name' >
+                                            {classwork.name}
                                         </p>
                                         <p className='m-0'>
-                                            {quiz.description}
+                                            {classwork.description}
                                         </p>
                                     </Card>
 
@@ -364,4 +340,4 @@ const ViewQuiz = (props) => {
     )
 }
 
-export default ViewQuiz
+export default ViewClasswork

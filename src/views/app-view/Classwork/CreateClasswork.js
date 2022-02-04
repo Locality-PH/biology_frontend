@@ -3,49 +3,31 @@ import { Card, Row, Col, Form, Input, Space, Button, Checkbox, Radio, Select, Sp
 import { MinusCircleOutlined, PlusOutlined, UploadOutlined, StarOutlined } from '@ant-design/icons';
 import { AiOutlinePlus } from "react-icons/ai"
 import { useHistory } from "react-router-dom";
+import "assets/css/app-views/Classwork/CreateClasswork.css"
 import Axios from 'axios';
 
 const { Option } = Select;
 
-const EditQuiz = (props) => {
+const EditClasswork = (props) => {
     let history = useHistory();
     const [form] = Form.useForm();
     const formRef = React.createRef();
-    const [newQuizType, SetNewQuizType] = useState("Identification")
+    const [newClassworkType, SetNewClassworkType] = useState("Identification")
     const [newFile, SetNewFile] = useState({})
     const tid = localStorage.getItem("tid");
 
-    const [quiz, setQuiz] = useState({})
+    const [classwork, setClasswork] = useState({})
     const [question, setQuestion] = useState({})
     const [isQuestionLoading, setIsQuestionLoading] = useState(true)
     const [initialVal, setInitialVal] = useState({})
 
-    const quiz_code = props.match.params.quiz_code
+    const classwork_code = props.match.params.classwork_code
 
     useEffect(() => {
 
-        (async () => {
-            await Axios.post("/api/quiz/get/code/" + quiz_code, { tid }).then(async (response) => {
-                const quizData = response.data;
-
-                if (response.data != "failed") {
-                    setQuiz(quizData)
-                    setQuestion(quizData.question)
-
-                    setTimeout(() => {
-                        setIsQuestionLoading(false)
-                    }, 300);
-
-                } else {
-                    message.error("Quiz not found!!")
-                    setTimeout(() => {
-                        history.goBack()
-                    }, 500);
-                }
-            });
-
-
-        })()
+        setTimeout(() => {
+            setIsQuestionLoading(false)
+        }, 300);
 
     }, [])
 
@@ -63,9 +45,11 @@ const EditQuiz = (props) => {
     useEffect(() => {
         if (question.length != undefined) {
             let tempInitialVal = [
-                { quiz_name: quiz.name },
-                { quiz_description: quiz.description }
+                { classwork_name: classwork.name },
+                { classwork_description: classwork.description }
             ]
+
+            console.log("tempInitialVal", tempInitialVal)
 
             let tempNewFile = {}
 
@@ -136,17 +120,31 @@ const EditQuiz = (props) => {
         formRef.current.setFieldsValue(temp_options);
     };
 
+
     const addQuestion = () => {
         var ql = question.length
         setIsQuestionLoading(true)
 
-        let quiz_type = newQuizType
+        let classwork_type = newClassworkType
 
-        let newQuestion = {
-            string: "This is a new test question ",
-            type: quiz_type,
-            answer: [null],
-            option: [null]
+        let newQuestion = {}
+
+        if (classwork_type == "Multiple Choice") {
+            newQuestion = {
+                string: "This is a new test question ",
+                type: classwork_type,
+                answer: [null],
+                option: [{ isAnswer: false }, { isAnswer: false }, { isAnswer: false }, { isAnswer: false }]
+            }
+        }
+
+        else {
+            newQuestion = {
+                string: "This is a new test question ",
+                type: classwork_type,
+                answer: [null],
+                option: [null]
+            }
         }
 
         // form.getFieldsValue(true)
@@ -155,6 +153,7 @@ const EditQuiz = (props) => {
         currentFormData = updateNewFile(currentFormData)
         newQuestion = currentFormData.question.concat(newQuestion)
 
+        setClasswork({ ...classwork, name: currentFormData.name, description: currentFormData.description })
         setQuestion(newQuestion)
 
         setTimeout(() => {
@@ -166,7 +165,7 @@ const EditQuiz = (props) => {
 
     const removeQuestion = (QTNkey) => {
         setIsQuestionLoading(true)
-        var quiz_length = question.length
+        var ql = question.length
 
         let currentFormData = formRef.current.getFieldsValue("true")
         currentFormData = updateForm(currentFormData)
@@ -176,6 +175,7 @@ const EditQuiz = (props) => {
         currentFormData.question.splice(QTNkey - 1, 1)
 
         console.log(currentFormData)
+        setClasswork({ ...classwork, name: currentFormData.name, description: currentFormData.description })
         setQuestion(currentFormData.question)
 
         setTimeout(() => {
@@ -188,16 +188,16 @@ const EditQuiz = (props) => {
     }
 
     const updateForm = (values) => {
-        let quiz_length = question.length
-        let newQuiz = {}
+        let classwork_length = question.length
+        let newClasswork = {}
 
         console.log("values for update form", values)
 
-        newQuiz["name"] = values["quiz_name"]
-        newQuiz["description"] = values["quiz_description"]
-        newQuiz["question"] = []
+        newClasswork["name"] = values["classwork_name"]
+        newClasswork["description"] = values["classwork_description"]
+        newClasswork["question"] = []
 
-        for (let i = 1; i < quiz_length + 1; i++) {
+        for (let i = 1; i < classwork_length + 1; i++) {
             let newQuestion = {}
             let newOptions = values["question" + i + "_options"]
 
@@ -240,12 +240,12 @@ const EditQuiz = (props) => {
 
             }
 
-            newQuiz["question"].push(newQuestion)
+            newClasswork["question"].push(newQuestion)
 
         }
-        console.log("newQuiz", newQuiz)
+        console.log("newClasswork", newClasswork)
 
-        return newQuiz
+        return newClasswork
     }
 
     const updateNewFile = (currentFormData) => {
@@ -264,8 +264,8 @@ const EditQuiz = (props) => {
         return currentFormData
     }
 
-    const changeQuizType = (value) => {
-        SetNewQuizType(value)
+    const changeClassworkType = (value) => {
+        SetNewClassworkType(value)
     }
 
     const PrintQuestion = () => {
@@ -307,7 +307,6 @@ const EditQuiz = (props) => {
                                     className='mb-0'
                                     name={"question" + key}
                                     colon={false}
-                                    label={key + "."}
                                     rules={[{ required: true, message: "Question can't be blank!" }]}
                                     required={false}
                                 >
@@ -323,6 +322,8 @@ const EditQuiz = (props) => {
                                 >
                                     <Input prefix={<b>Answer:</b>} />
                                 </Form.Item>
+
+                                <p className='m-0 center-div question-text-card'>card {key}</p>
                             </Card>
                         )
                     } else if (question.type == "Multiple Choice") {
@@ -357,69 +358,58 @@ const EditQuiz = (props) => {
                                     className='mb-0'
                                     name={"question" + QTNkey}
                                     colon={false}
-                                    label={key + "."}
                                     rules={[{ required: true, message: "Question can't be blank!" }]}
                                     required={false}
                                 >
                                     <Input placeholder='Question here....' className='underline-input' />
                                 </Form.Item>
 
+                                {/* name={"question" + QTNkey + "_options"} */}
                                 <Form.List
                                     name={"question" + QTNkey + "_options"}
                                 >
 
-                                    {(fields, { add, remove }) => (
-
+                                    {(fields) => (
                                         <>
                                             {fields.map(({ key, name, ...restField }) => (
 
-                                                <Space key={key} style={{ width: "100%", marginBottom: 8 }} align='middle'>
+                                                <Row key={key} gutter={0} wrap={false}>
+                                                    <Col>
+                                                        <Form.Item
+                                                            {...restField}
+                                                            name={[name, "isAnswer"]}
+                                                            className='mb-2'
+                                                            valuePropName="checked"
+                                                        >
+                                                            <Radio onChange={() =>
+                                                                setIsAnswer(key, QTNkey)
+                                                            } />
+                                                        </Form.Item>
+                                                    </Col>
 
-                                                    <Form.Item
-                                                        {...restField}
-                                                        name={[name, "isAnswer"]}
-                                                        className='mb-0'
-                                                        valuePropName="checked"
-                                                    // initialValue={false}
-                                                    >
-                                                        <Radio onChange={() =>
-                                                            setIsAnswer(key, QTNkey)
-                                                        } />
-                                                    </Form.Item>
-
-                                                    <Form.Item
-                                                        {...restField}
-                                                        name={[name, "value"]}
-                                                        rules={[{ required: true, message: 'Put option here!' }]}
-                                                        className='mb-0'
-                                                    >
-                                                        <Input placeholder="Option here" />
-                                                    </Form.Item>
-
-                                                    <MinusCircleOutlined
-                                                        onClick={
-                                                            () => {
-                                                                remove(name)
-                                                                // console.log("removing" + name)
-                                                            }} />
-                                                </Space>
+                                                    <Col xs={22} sm={22} md={23} lg={23} xl={23} xxl={23} style={{ width: "100%" }}>
+                                                        <Form.Item
+                                                            {...restField}
+                                                            name={[name, "value"]}
+                                                            rules={[{ required: true, message: 'Put option here!' }]}
+                                                            className='mb-2'
+                                                            style={{ width: "100%" }}
+                                                        >
+                                                            <Input placeholder="Option here" />
+                                                        </Form.Item>
+                                                    </Col>
+                                                </Row>
 
 
                                             ))}
-
-                                            <Form.Item className='mb-0 center-div'>
-                                                <Button type="dashed" block onClick={() => { add() }} >
-                                                    <Space size={4} align='middle'>
-                                                        <AiOutlinePlus /> <p>Add Option</p>
-                                                    </Space>
-                                                </Button>
-
-                                            </Form.Item>
                                         </>
                                     )}
 
 
                                 </Form.List>
+
+
+                                <p className='m-0 center-div question-text-card'>card {key}</p>
                             </Card>
                         )
                     } else if (question.type == "Checkbox") {
@@ -455,7 +445,6 @@ const EditQuiz = (props) => {
                                     className='mb-0'
                                     name={"question" + QTNkey}
                                     colon={false}
-                                    label={key + "."}
                                     rules={[{ required: true, message: "Question can't be blank!" }]}
                                     required={false}
                                 >
@@ -512,8 +501,9 @@ const EditQuiz = (props) => {
                                         </>
                                     )}
 
-
                                 </Form.List>
+
+                                <p className='m-0 center-div question-text-card'>card {key}</p>
                             </Card>
                         )
                     } else if (question.type == "Image") {
@@ -548,7 +538,6 @@ const EditQuiz = (props) => {
                                     className='mb-0'
                                     name={"question" + QTNkey}
                                     colon={false}
-                                    label={key + "."}
                                     rules={[{ required: true, message: "Question can't be blank!" }]}
                                     required={false}
                                 >
@@ -576,6 +565,7 @@ const EditQuiz = (props) => {
 
                                 {getImgFile("question" + key + "_image")}
 
+                                <p className='m-0 center-div question-text-card'>card {key}</p>
                             </Card>
                         )
                     } else if (question.type == "Instruction") {
@@ -610,13 +600,13 @@ const EditQuiz = (props) => {
                                     className='mb-0'
                                     name={"question" + QTNkey}
                                     colon={false}
-                                    label={key + "."}
                                     rules={[{ required: true, message: "This can't be blank!!" }]}
                                     required={false}
                                 >
-                                    <Input.TextArea placeholder='Question here....' className='underline-input' autoSize={{ minRows: 1, maxRows: 4 }} />
+                                    <Input.TextArea placeholder='Question here....' className='underline-input' style={{ marginBottom: 0 }} autoSize={{ minRows: 1, maxRows: 4 }} />
                                 </Form.Item>
 
+                                <p className='m-0 center-div question-text-card'>card {key}</p>
                             </Card>
                         )
                     }
@@ -629,15 +619,15 @@ const EditQuiz = (props) => {
 
     const onFinish = async (values) => {
         console.log("Values from form", values)
-        let quiz_length = question.length
-        let newQuiz = {}
+        let classwork_length = question.length
+        let newClasswork = {}
         let hasError = false;
 
-        newQuiz["name"] = values["quiz_name"]
-        newQuiz["description"] = values["quiz_description"]
-        newQuiz["question"] = []
+        newClasswork["name"] = values["classwork_name"]
+        newClasswork["description"] = values["classwork_description"]
+        newClasswork["question"] = []
 
-        for (let i = 1; i < quiz_length + 1; i++) {
+        for (let i = 1; i < classwork_length + 1; i++) {
             let newQuestion = {}
             let newOptions = values["question" + i + "_options"]
 
@@ -665,7 +655,7 @@ const EditQuiz = (props) => {
                 }
 
                 if (newQuestion["answer"].length == 0) {
-                    message.error("Failed to upload quiz, question " + i + " need answer!!")
+                    message.error("Failed to upload classwork, card " + i + " need answer!!")
                     hasError = true
                 }
 
@@ -673,22 +663,21 @@ const EditQuiz = (props) => {
 
             else if (newQuestion.type == "Image") {
                 if (newFile[`question${i}_image`] == null) {
-                    message.error("Failed to upload quiz, question " + i + " has no image!!")
+                    message.error("Failed to upload classwork, card " + i + " has no image!!")
                     hasError = true
                 }
             }
 
-            newQuiz["question"].push(newQuestion)
+            newClasswork["question"].push(newQuestion)
         }
 
-        console.log(newQuiz)
+        console.log(newClasswork)
 
         if (!hasError) {
             const formData = new FormData()
             var newFileObject = Object.keys(newFile)
 
             newFileObject.forEach((key, index) => {
-                console.log("newFile[key]", newFile[key])
 
                 if (newFile[key].isNewFile == true) {
                     formData.append(key, newFile[key].file.file)
@@ -700,12 +689,11 @@ const EditQuiz = (props) => {
 
             console.log(newFile)
 
-            formData.append("newQuiz", JSON.stringify(newQuiz))
-            formData.append("quiz_id", quiz.quiz_id)
+            formData.append("newClasswork", JSON.stringify(newClasswork))
             formData.append("tid", tid)
 
             try {
-                await Axios.put("/api/quiz/update", formData).then((response) => {
+                await Axios.post("/api/classwork/create-classwork", formData).then((response) => {
                     console.log(response.data)
                 }).then(
                     message.success("Changes has been saved.", 10)
@@ -737,10 +725,10 @@ const EditQuiz = (props) => {
     }
 
     const handleFileRemove = (name, key) => {
-        var tempNewFile = newFile
+        var tempNewFile = { ...newFile }
         delete tempNewFile[name]
         SetNewFile(tempNewFile)
-        console.log(newFile)
+
     }
 
     const getFile = (name) => {
@@ -783,12 +771,12 @@ const EditQuiz = (props) => {
     }
 
     return (
-        <div className='quiz-form h-100' >
+        <div className='classwork-form h-100' >
             <Spin spinning={isQuestionLoading} wrapperClassName={({ "load-icon": isQuestionLoading })}>
                 <Row justify='center'>
                     <Col xxl={12} xl={16} lg={16} md={18} sm={24} xs={24}>
                         <Form
-                            name="quiz-form"
+                            name="classwork-form"
                             onFinish={onFinish}
                             initialValues={initialVal}
                             ref={formRef}
@@ -800,17 +788,17 @@ const EditQuiz = (props) => {
                                     <Card className='card-box-shadow-style question-card center-div'>
                                         <Form.Item
                                             className='mb-0'
-                                            name="quiz_name"
+                                            name="classwork_name"
                                             colon={false}
-                                            rules={[{ required: true, message: "Quiz Name can't be blank!" }]}
+                                            rules={[{ required: true, message: "Classwork Name can't be blank!" }]}
                                             required={false}
                                         >
-                                            <Input placeholder='Quiz Name' className='underline-input quiz-name-input' />
+                                            <Input placeholder='Classwork Name' className='underline-input classwork-name-input' />
                                         </Form.Item>
 
 
                                         <Form.Item
-                                            name="quiz_description"
+                                            name="classwork_description"
                                             // rules={[{ required: true, message: "Need answer for this question!" }]}
                                             required={false}
                                         >
@@ -825,8 +813,8 @@ const EditQuiz = (props) => {
 
                                         <Select
                                             style={{ width: 150, marginLeft: 10 }}
-                                            onChange={(value) => { changeQuizType(value) }}
-                                            defaultValue={newQuizType}
+                                            onChange={(value) => { changeClassworkType(value) }}
+                                            defaultValue={newClassworkType}
                                         >
 
                                             <Option value="Identification">Identification</Option>
@@ -855,4 +843,5 @@ const EditQuiz = (props) => {
     )
 }
 
-export default EditQuiz
+export default EditClasswork
+

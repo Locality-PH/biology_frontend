@@ -12,11 +12,10 @@ import EditMyModule from "./views/app-view/Module/EditMyModule";
 import CreatePresetModule from "./views/app-view/Module/CreatePresetModule";
 import EditPresetModule from "./views/app-view/Module/EditPresetModule";
 
-import Quiz from "views/app-view/Quiz/Quiz.js";
-import ViewQuiz from "views/app-view/Quiz/ViewQuiz.js";
-import CreateQuiz from "views/app-view/Quiz/CreateQuiz.js";
-import EditQuiz from "views/app-view/Quiz/EditQuiz";
-import AssignQuiz from "views/app-view/Quiz/AssignQuiz";
+import Classwork from "views/app-view/Classwork/Classwork.js";
+import ViewClasswork from "views/app-view/Classwork/ViewClasswork.js";
+import CreateClasswork from "views/app-view/Classwork/CreateClasswork.js";
+import EditClasswork from "views/app-view/Classwork/EditClasswork";
 
 import ViewModule from "views/app-view/Classroom/ViewModule"
 import ModuleStudents from "views/app-view/Classroom/ModuleStudents";
@@ -153,46 +152,37 @@ const dashboardRoutes = [
     isExact: true,
   },
   {
-    path: "/quiz",
-    name: "Quiz",
+    path: "/classwork",
+    name: "Classwork",
     icon: "nc-icon nc-attach-87",
-    component: Quiz,
+    component: Classwork,
     layout: "/admin",
     renderSidebar: true,
     isExact: true,
   },
   {
-    path: "/quiz/view/:quiz_code",
-    name: "View Quiz",
+    path: "/classwork/view/:classwork_code",
+    name: "View Classwork",
     icon: "nc-icon nc-attach-87",
-    component: ViewQuiz,
+    component: ViewClasswork,
     layout: "/admin",
     renderSidebar: false,
     isExact: false,
   },
   {
-    path: "/quiz/create-new",
-    name: "Create Quiz",
+    path: "/classwork/create-new",
+    name: "Create Classwork",
     icon: "nc-icon nc-attach-87",
-    component: CreateQuiz,
+    component: CreateClasswork,
     layout: "/admin",
     renderSidebar: false,
     isExact: false,
   },
   {
-    path: "/quiz/edit/:quiz_code",
-    name: "Edit Quiz",
+    path: "/classwork/edit/:classwork_code",
+    name: "Edit Classwork",
     icon: "nc-icon nc-attach-87",
-    component: EditQuiz,
-    layout: "/admin",
-    renderSidebar: false,
-    isExact: false,
-  },
-  {
-    path: "/quiz/assign/:Qid",
-    name: "Assign Quiz",
-    icon: "nc-icon nc-attach-87",
-    component: AssignQuiz,
+    component: EditClasswork,
     layout: "/admin",
     renderSidebar: false,
     isExact: false,
