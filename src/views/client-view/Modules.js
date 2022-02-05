@@ -215,16 +215,16 @@ const Modules = ({ match }) => {
         onClick={HandleModules}
       >
         {modules.map((modulesData, modulesIndex) => (
-          <SubMenu key={"sub" + modulesIndex} icon={<FileTextOutlined />} title={modulesData.name}>
+          <SubMenu disabled={modulesData.disabled} key={"sub" + modulesIndex} icon={<FileTextOutlined />} title={modulesData.name}>
             <Menu.Item key={`introduction/${modulesData.module_id}`}>{modulesData.topic_name}</Menu.Item>
             <SubMenu key={"l" + modulesIndex} title="Lessons">
               {modulesData.lessons.map(lessonData => (
-                  <Menu.Item key={`lesson/${lessonData.module_lesson_id}/${lessonData.classwork_code}`}>
+                  <Menu.Item disabled={lessonData.disabled} key={`lesson/${lessonData.module_lesson_id}/${lessonData.classwork_code}`}>
                     {lessonData.lesson_name}
                   </Menu.Item>
               ))}
             </SubMenu>
-            <Menu.Item key={`quiz/${modulesData.module_id}/${modulesData.classwork_code}`}>Quiz</Menu.Item>
+            <Menu.Item disabled={(modulesData.lessons[modulesData.lessons.length -1].disabled == false)?false:true} key={`quiz/${modulesData.module_id}/${modulesData.classwork_code}`}>Quiz</Menu.Item>
           </SubMenu>
         ))}
       </Menu>

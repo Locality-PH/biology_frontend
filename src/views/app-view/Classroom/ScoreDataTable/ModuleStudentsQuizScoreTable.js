@@ -87,8 +87,8 @@ const ModuleStudentsQuizScoreTable = ({moduleId, classCode}) => {
       <Container fluid>
         <Row>
           <Col md="12">
-            <Card title="Module Finished Student" extra={ <CSVLink hidden={isLoading} data={finishedStudentList} headers={headers} filename={fileName}>
-            <Button type="primary" style={{backgroundColor: "green", borderColor: "green"}}>Download {fileName}</Button>
+            <Card title="Module Finished Student" extra={ <CSVLink hidden={isLoading} data={finishedStudentList} headers={headers} filename="ScoreData.csv">
+            <Button type="primary" style={{backgroundColor: "green", borderColor: "green"}}>Download ScoreData.csv</Button>
           </CSVLink>}>
               <Flex
                 alignItems="center"

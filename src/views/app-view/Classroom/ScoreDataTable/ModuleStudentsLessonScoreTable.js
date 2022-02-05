@@ -21,6 +21,8 @@ import {CSVLink} from "react-csv"
 
 const ModuleStudentsLessonScoreTable = ({match}) => {
     const moduleLessonId = match.params.module_lesson_id
+    const moduleId = match.params.module_id
+    const classCode = match.params.class_code
     const [finishedStudent, setFinishedStudent] = useState([]);
     const [finishedStudentList, setFinishedStudentList] = useState([]);
 
@@ -88,9 +90,11 @@ const ModuleStudentsLessonScoreTable = ({match}) => {
       <Container fluid>
         <Row>
           <Col md="12">
-            <Card title="Lesson Finished Student" extra={ <CSVLink hidden={isLoading} data={finishedStudentList} headers={headers} filename={fileName}>
-            <Button type="primary" style={{backgroundColor: "green", borderColor: "green"}}>Download {fileName}</Button>
-          </CSVLink>}>
+            <Card title="Lesson Finished Student" extra={<> 
+              <Link style={{marginRight: "1rem"}} to={"/admin/classroom/" + classCode+ "/module/" + moduleId}><Button type="primary" style={{backgroundColor: "green", borderColor: "green"}}>Back</Button></Link>
+            <CSVLink hidden={isLoading} data={finishedStudentList} headers={headers} filename="ScoreData.csv">
+            <Button type="primary" style={{backgroundColor: "green", borderColor: "green"}}>Download ScoreData.csv</Button>
+          </CSVLink></>}>
               <Flex
                 alignItems="center"
                 className=""
