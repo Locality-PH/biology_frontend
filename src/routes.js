@@ -5,6 +5,7 @@ import CreateClassroom from "views/app-view/Classroom/CreateClassroom";
 import ViewClassroom from "views/app-view/Classroom/ViewClassroom";
 import EditClassroom from "views/app-view/Classroom/EditClassroom";
 import ViewStudent from "views/app-view/Classroom/ViewStudent";
+import ModuleStudentsLessonScoreTable from "views/app-view/Classroom/ScoreDataTable/ModuleStudentsLessonScoreTable";
 
 import Module from "./views/app-view/Module/Module";
 import CreateMyModule from "./views/app-view/Module/CreateMyModule";
@@ -102,6 +103,15 @@ const dashboardRoutes = [
     name: "View Module Student",
     icon: "",
     component: ModuleStudents,
+    layout: "/admin",
+    renderSidebar: false,
+    isExact: true,
+  },
+  {
+    path: "/classroom/:class_code/module/:module_id/lesson/:module_lesson_id",
+    name: "View Module Student",
+    icon: "",
+    component: ModuleStudentsLessonScoreTable,
     layout: "/admin",
     renderSidebar: false,
     isExact: true,

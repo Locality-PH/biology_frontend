@@ -9,14 +9,14 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 
 const StudentQuizScoreTable = ({studentEnrolledId, classCode}) => {
-    const [studentModuleFinished, setStudentModuleFinished] = useState([]);
+    const [scoreData, setScoreData] = useState([]);
 
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        axios.get("/api/teacher/get-student-module-finished/" + studentEnrolledId).then((response) => {
-            setStudentModuleFinished(response.data)
+        axios.get("/api/scoreboard/get-student-module-score/" + studentEnrolledId).then((response) => {
+            setScoreData(response.data)
             setIsLoading(false);
             setError(null);
           }).catch(() => {
@@ -28,7 +28,7 @@ const StudentQuizScoreTable = ({studentEnrolledId, classCode}) => {
     const tableColumns = [
         {
             title: 'Module Name',
-            dataIndex: 'name',
+            dataIndex: 'module_name',
             render: (_, result) => (
                 <span>{result.module_name}</span>
             )
@@ -42,9 +42,9 @@ const StudentQuizScoreTable = ({studentEnrolledId, classCode}) => {
         },
         {
             title: 'Quiz Score',
-            dataIndex: 'quiz_score',
+            dataIndex: 'score',
             render: (_, result) => (
-                <span>{result.quiz_score}</span>
+                <span>{result.score}</span>
             )
         }
       ]
@@ -59,7 +59,7 @@ const StudentQuizScoreTable = ({studentEnrolledId, classCode}) => {
               <Table
                   pagination={true}
                   columns={tableColumns} 
-                  dataSource={studentModuleFinished} 
+                  dataSource={scoreData} 
                   rowKey='_id'
                   loading={isLoading}
                   scroll={{ x: "max-content" }}
