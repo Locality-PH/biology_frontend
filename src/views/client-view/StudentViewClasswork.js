@@ -10,7 +10,7 @@ import "assets/css/app-views/Classwork/ViewClasswork.css"
 
 const StudentViewClasswork = (props) => {
     let history = useHistory();
-    const quiz_code = props.match.params.quiz_code
+    const classwork_code = props.match.params.classwork_code
     const class_code = props.match.params.class_code
     const mid = props.match.params.module_id
     const sid = localStorage.getItem("sid");
@@ -18,7 +18,7 @@ const StudentViewClasswork = (props) => {
     const [form] = Form.useForm();
     const formRef = React.createRef();
 
-    const [quiz, setClasswork] = useState({})
+    const [classwork, setClasswork] = useState({})
     const [question, setQuestion] = useState({})
     const [showQuestion, setShowQuestion] = useState(true)
     const [scoreModal, setScoreModal] = useState(false);
@@ -27,12 +27,14 @@ const StudentViewClasswork = (props) => {
 
     useEffect(() => {
         (async () => {
-            await Axios.post("/api/quiz/student/get/code/" + quiz_code, { sid, class_code, mid }).then((response) => {
-                const quizData = response.data;
+            await Axios.post("/api/classwork/student/get/code/" + classwork_code, { sid, class_code, mid }).then((response) => {
+                const classworkData = response.data;
+
+                console.log(classworkData)
 
                 if (response.data != "failed") {
-                    setClasswork(quizData)
-                    setQuestion(quizData.question)
+                    setClasswork(classworkData)
+                    setQuestion(classworkData.question)
 
                     setTimeout(() => {
                         setShowQuestion(false)
@@ -47,7 +49,7 @@ const StudentViewClasswork = (props) => {
                 }
             });
 
-            await Axios.post("/api/scoreboard/validate/student", { sid, qc: quiz_code }).then((response) => {
+            await Axios.post("/api/scoreboard/validate/student", { sid, qc: classwork_code }).then((response) => {
                 const scoreData = response.data
 
                 if (scoreData != null) {
@@ -65,7 +67,7 @@ const StudentViewClasswork = (props) => {
         form.resetFields();
     }, [question, scoreboard])
 
-    console.log("This is quiz array:", quiz)
+    console.log("This is classwork array:", classwork)
     console.log("This is scoreboard array:", scoreboard.answer_list)
 
     const initialVal = scoreboard.answer_list
@@ -94,13 +96,13 @@ const StudentViewClasswork = (props) => {
     }
 
     const onFinish = (values) => {
-        // console.log("Values from quiz form:", values)
+        // console.log("Values from classwork form:", values)
 
-        const quiz_length = Object.keys(values).length
+        const classwork_length = Object.keys(values).length
         let score_list = []
         let score = 0
 
-        for (let i = 1; i < quiz_length + 1; i++) {
+        for (let i = 1; i < classwork_length + 1; i++) {
             const sa = values["question" + i + "_answer"] //student_answer
             const qa = question[i - 1].answer // question_answer
             const qt = question[i - 1].type //question_type
@@ -133,8 +135,8 @@ const StudentViewClasswork = (props) => {
             student_id: sid,
             score_list,
             answer_list: values,
-            quiz_id: quiz.quiz_id,
-            max_score: quiz_length,
+            classwork_id: classwork.classwork_id,
+            max_score: classwork_length,
             score,
         }
 
@@ -246,7 +248,7 @@ const StudentViewClasswork = (props) => {
 
         if (!isScoreboardEmpty) {
             return (
-                <Modal title={quiz.name} visible={scoreModal} onOk={handleOk} onCancel={handleCancel}>
+                <Modal title={classwork.name} visible={scoreModal} onOk={handleOk} onCancel={handleCancel}>
                     <h2>Your Score: {scoreboard.score} / {scoreboard.max_score}</h2>
                 </Modal>
             )
@@ -254,13 +256,13 @@ const StudentViewClasswork = (props) => {
     }
 
     return (
-        <div className='view-quiz' style={{marginTop: 50}}>
+        <div className='view-classwork' style={{marginTop: 50}}>
             <Spin spinning={showQuestion} wrapperClassName={({ "load-icon": showQuestion })}>
 
                 <Row justify='center'>
                     <Col xxl={12} xl={16} lg={16} md={18} sm={24} xs={24}>
                         <Form
-                            name="quiz-form"
+                            name="classwork-form"
                             onFinish={onFinish}
                             ref={formRef}
                             form={form}
@@ -271,11 +273,11 @@ const StudentViewClasswork = (props) => {
                             {showQuestion != true &&
                                 <div>
                                     <Card className='card-box-shadow-style question-card center-div'>
-                                        <p className='quiz-name' >
-                                            {quiz.name}
+                                        <p className='classwork-name' >
+                                            {classwork.name}
                                         </p>
                                         <p className='m-0'>
-                                            {quiz.description}
+                                            {classwork.description}
                                         </p>
                                     </Card>
 
