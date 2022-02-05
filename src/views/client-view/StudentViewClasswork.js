@@ -12,7 +12,9 @@ const StudentViewClasswork = (props) => {
     let history = useHistory();
     const classwork_code = props.match.params.classwork_code
     const class_code = props.match.params.class_code
-    const mid = props.match.params.module_id
+    const mal_id = props.match.params.mal_id
+    const classwork_type = props.match.params.classwork_type
+    console.log("classwork_type", classwork_type)
     const sid = localStorage.getItem("sid");
 
     const [form] = Form.useForm();
@@ -27,7 +29,7 @@ const StudentViewClasswork = (props) => {
 
     useEffect(() => {
         (async () => {
-            await Axios.post("/api/classwork/student/get/code/" + classwork_code, { sid, class_code, mid }).then((response) => {
+            await Axios.post("/api/classwork/student/get/code/" + classwork_code, { sid, class_code, mal_id, ct: classwork_type }).then((response) => {
                 const classworkData = response.data;
 
                 console.log(classworkData)
@@ -44,12 +46,12 @@ const StudentViewClasswork = (props) => {
                 } else {
                     message.error("Classwork not found!!")
                     setTimeout(() => {
-                        window.location.assign("/client/home")
+                        // window.location.assign("/client/home")
                     }, 500);
                 }
             });
 
-            await Axios.post("/api/scoreboard/validate/student", { sid, qc: classwork_code }).then((response) => {
+            await Axios.post("/api/scoreboard/validate/student", { sid, cc: classwork_code, mal_id}).then((response) => {
                 const scoreData = response.data
 
                 if (scoreData != null) {
@@ -69,6 +71,7 @@ const StudentViewClasswork = (props) => {
 
     console.log("This is classwork array:", classwork)
     console.log("This is scoreboard array:", scoreboard.answer_list)
+    console.log("This is cc:", classwork_code)
 
     const initialVal = scoreboard.answer_list
 
@@ -135,9 +138,11 @@ const StudentViewClasswork = (props) => {
             student_id: sid,
             score_list,
             answer_list: values,
-            classwork_id: classwork.classwork_id,
             max_score: classwork_length,
             score,
+            mal_id,
+            class_code,
+            classwork_type
         }
 
         // console.log("Scoreboard:", tempValues)
@@ -161,7 +166,7 @@ const StudentViewClasswork = (props) => {
                         return (
                             <Card className='card-box-shadow-style question-card center-div' key={QTNkey}>
 
-                                <p>{QTNkey}. {question.string}</p>
+                                <p>  {question.string}</p>
 
                                 <Form.Item
                                     name={"question" + QTNkey + "_answer"}
@@ -176,7 +181,7 @@ const StudentViewClasswork = (props) => {
                         return (
                             <Card className='card-box-shadow-style question-card center-div' key={QTNkey}>
 
-                                <p>{QTNkey}. {question.string}</p>
+                                <p>  {question.string}</p>
 
                                 <Form.Item
                                     className='mb-0'
@@ -205,7 +210,7 @@ const StudentViewClasswork = (props) => {
                         return (
                             <Card className='card-box-shadow-style question-card center-div' key={QTNkey}>
 
-                                <p>{QTNkey}. {question.string}</p>
+                                <p>  {question.string}</p>
 
                                 <Form.Item
                                     className='mb-0'
@@ -226,6 +231,24 @@ const StudentViewClasswork = (props) => {
                                         </Space>
                                     </Checkbox.Group>
                                 </Form.Item>
+
+                            </Card>
+                        )
+                    } else if (question.type == "Image") {
+                        return (
+                            <Card className='card-box-shadow-style question-card center-div' key={QTNkey}>
+
+                                <p> {question.string}</p>
+
+                                <img src={`data:image/png;base64,${question.img.file}`} className='center-div' style={{ width: "80%" }} />
+
+                            </Card>
+                        )
+                    } else if (question.type == "Instruction") {
+                        return (
+                            <Card className='card-box-shadow-style question-card center-div' key={QTNkey}>
+
+                                <p className='m-0'> {question.string}</p>
 
                             </Card>
                         )
@@ -256,7 +279,7 @@ const StudentViewClasswork = (props) => {
     }
 
     return (
-        <div className='view-classwork' style={{marginTop: 50}}>
+        <div className='view-classwork' style={{ marginTop: 50 }}>
             <Spin spinning={showQuestion} wrapperClassName={({ "load-icon": showQuestion })}>
 
                 <Row justify='center'>

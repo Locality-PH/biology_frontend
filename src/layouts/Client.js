@@ -33,7 +33,7 @@ function Admin() {
           <Route path="/client/classroom/:class_code/modules" component={Modules} />
           <Route path="/client/classroom/:class_code/leave" component={LeaveClassroom}/>
           <Route path="/client/classroom/:class_code/students" component={Student} />
-          <Route path="/client/:class_code/:module_id/quiz/:classwork_code" component={StudentViewClasswork} />
+          <Route path="/client/:class_code/:mal_id/:classwork_type/:classwork_code" component={StudentViewClasswork} />
           <Route path="/client/user" component={StudentProfile} />
         </Switch>
       </Layout>
