@@ -12,6 +12,7 @@ import {
   Divider,
 } from "antd";
 import ModulePages from "./Modules-pages";
+import Lesson from "./Lesson"
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
 
@@ -24,6 +25,7 @@ const Modules = ({ match }) => {
   const studentId = localStorage.getItem("sid");
 
   const [modules, setModules] = useState([]);
+  const [description, setDescription] = useState("")
 
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -51,20 +53,27 @@ const Modules = ({ match }) => {
 
   }
 
+  const getClassroomDescription = () => {
+    axios
+    .get("/api/student/get-classroom-description/" + classCode)
+    .then((response) => {
+      setDescription(response.data)
+    })
+    .catch(() => {
+      message.error("Could not fetch the data in the server!");
+    });
+
+  }
+
   useEffect(() => {
+    getClassroomDescription()
     getClassroomModules()
-   
   }, []);
 
   const HandleModules = (e) => {
     setIsLoading(false);
     // console.log(e.key);
     setCurrentItem(e.key);
-  };
-
-  const goToQuiz = (quizLink) => {
-    console.log("/" + quizLink)
-    window.open("/client/" + `${classCode}/${moduleId}` + "/quiz/" + quizLink);
   };
 
   const ModuleContent = () => {
@@ -85,21 +94,37 @@ const Modules = ({ match }) => {
     }
    
     return (
-      <h1>This is Classroom Description {classCode}</h1>
+      <Card title="Classroom Description">
+        <h2>{description}</h2>
+      </Card>
     )
+  };
+
+  const downloadModule = (moduleId) => {
+    console.log("Downloading");
+    // window.location.assign(
+    //   "https://biology-server.herokuapp.com/api/student/download-module/" + moduleId,
+    //   "_blank"
+    // );
+
+    window.location.assign(
+      "http://localhost:5000/api/student/download-module/" + moduleId,
+      "_blank"
+    );
   };
 
   const introductionContent = () => {
     const moduleId = currentItem.split("/")[1]
-
     const introData = modules.filter(modules => modules.module_id == moduleId)
-    console.log(introData)
 
     return (
       <>
         <Card title={
-        <Button type="primary" style={{ backgroundColor: "green", borderColor: "green" }}>Download {introData[0].downloadable_module.filename}</Button>}>
+          <Button type="primary" onClick={() => {downloadModule(moduleId)}} style={{ backgroundColor: "green", borderColor: "green" }}>
+            Download {introData[0].downloadable_module.filename}
+          </Button>}>
         </Card>
+        <ModulePages moduleId={moduleId}></ModulePages>
       </>
     )
   }
@@ -108,10 +133,23 @@ const Modules = ({ match }) => {
     const moduleLessonId = currentItem.split("/")[1]
     const lessonClassworkCode = currentItem.split("/")[2]
 
+    const [hidden, setHidden] = useState(false)
+
+    const ViewLesson = () => {
+      return(
+        <>
+          {(hidden == true)?<Lesson moduleLessonId={moduleLessonId}></Lesson>:""}
+        </>
+      )
+    }
+
     return (
       <>
-        <Card title={<Button type="primary" style={{ backgroundColor: "green", borderColor: "green" }}>Go to Lesson</Button>}>
+        <Card hidden={hidden} title={<Button type="primary" onClick={() => {setHidden(true)}} style={{ backgroundColor: "green", borderColor: "green" }}>View Lesson</Button>}>
         </Card>
+        <div hidden={!hidden}>
+          <ViewLesson></ViewLesson>
+        </div>
         <Card title="Activity Classwork">
           <h4 style={underLineStyle}>
             <a href={`/client/${classCode}/${moduleLessonId}/activity/${lessonClassworkCode}`} target="_blank">

@@ -26,20 +26,12 @@ const ModuleStudentsQuizScoreTable = ({moduleId, classCode}) => {
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    const [deletedMessage, setDeletedMessage] = useState("");
-
-    const [csvData, setCsvData] = useState([])
     const [fileName, setFileName] = useState("")
 
-    const menu_icons_style = {
-      display: "inline-flex",
-      paddingRight: "5px"
-    }
-
     useEffect(() => {
-        axios.get("/api/teacher/finished-students/" + moduleId).then((response) => {
-            setFinishedStudent(response.data.finished_student)
-            setFinishedStudentList(response.data.finished_student)
+        axios.get("/api/scoreboard/get-students-module-score/" + moduleId).then((response) => {
+            setFinishedStudent(response.data)
+            setFinishedStudentList(response.data)
             setFileName(response.data.module_name + ".csv")
             setIsLoading(false);
             setError(null);
@@ -66,9 +58,9 @@ const ModuleStudentsQuizScoreTable = ({moduleId, classCode}) => {
         },
         {
             title: 'Quiz Score',
-            dataIndex: 'quiz_score',
+            dataIndex: 'score',
             render: (_, result) => (
-                <span>{result.quiz_score}</span>
+                <span>{result.score}</span>
             )
         }
       ]
@@ -87,7 +79,7 @@ const ModuleStudentsQuizScoreTable = ({moduleId, classCode}) => {
       label: "Finished at", key: "finished_at"
     },
     {
-      label: "Quiz Score", key: "quiz_score"
+      label: "Quiz Score", key: "score"
     }]
     
   return (

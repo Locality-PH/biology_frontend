@@ -290,11 +290,11 @@ return (
                         <MinusCircleOutlined onClick={() => remove(name)} />
                       </Space>
                     ))}
-                    <Form.Item>
+                    {/* <Form.Item>
                       <Button type="dashed" onClick={() => add()} block icon={<PlusOutlined />}>
                         New Lesson
                       </Button>
-                    </Form.Item>
+                    </Form.Item> */}
                   </>
                 )}
               </Form.List>

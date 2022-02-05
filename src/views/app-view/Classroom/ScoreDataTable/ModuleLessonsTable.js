@@ -57,7 +57,7 @@ const ModuleLessonsTable = ({moduleId, classCode}) => {
             menu={
                 <Menu>
                     <Menu.Item key="0">
-                        <Link to={`/admin/classroom/${classCode}/module/${result.module_lesson_id}`}>
+                        <Link to={`/admin/classroom/${classCode}/module/${moduleId}/lesson/${result.module_lesson_id}`}>
                             <EyeOutlined style={menu_icons_style}/>
                             <span className="ml-2">View</span>
                         </Link>
