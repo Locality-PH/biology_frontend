@@ -31,7 +31,7 @@ const Classwork = () => {
         (async () => {
             await Axios.post("/api/classwork/get-all/" + tid).then((response) => {
                 const classworkData = response.data;
-                // console.log(classworkData)
+                console.log(response.data)
                 setClasswork(classworkData)
                 setClassworkList(classworkData)
             }).catch(() => {
@@ -59,9 +59,17 @@ const Classwork = () => {
             key: 'classwork_link',
         },
         {
+            title: 'Time Updated',
+            dataIndex: 'classwork_link',
+            key: 'classwork_link',
+            render: (_, result) => (
+                <span>{new Date(result.updatedAt).toDateString()}, {new Date(result.updatedAt).toLocaleTimeString()}</span>
+            )
+        },
+        {
             title: 'Actions',
             dataIndex: 'actions',
-            width: '20%',
+            width: '10%',
             align: 'center',
             key: 'actions',
             render: (_, result, rowKey) => (
@@ -127,7 +135,7 @@ const Classwork = () => {
         <div className="classwork">
             <Card
                 className="card-box-shadow-style"
-                title="Quizzes"
+                title="Classworks"
                 extra={
                     <>
                         <Link to="/admin/classwork/create-new">
