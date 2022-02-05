@@ -59,7 +59,7 @@ const EditClasswork = (props) => {
                 if (question.option != undefined) {
 
                     if (question.type == 'Identification') {
-                        tempInitialVal.push({ ["question" + [i + 1] + "_options"]: question.option[0] })
+                        tempInitialVal.push({ ["question" + [i + 1] + "_options"]: question.option })
                     }
 
                     else {
@@ -122,7 +122,12 @@ const EditClasswork = (props) => {
 
 
     const addQuestion = () => {
-        var ql = question.length
+        var ql 
+
+        if (question.length != null) {
+            ql =  question.length 
+        } else ( ql = 0)
+
         setIsQuestionLoading(true)
 
         let classwork_type = newClassworkType
@@ -641,7 +646,7 @@ const EditClasswork = (props) => {
             }
 
             if (newQuestion.type == "Identification") {
-                newQuestion["answer"].push(newOptions)
+                newQuestion["answer"] = [newOptions]
                 // console.log("Answer: " + newOptions)
             }
 
@@ -767,7 +772,7 @@ const EditClasswork = (props) => {
 
     const scrollConfig = {
         behavior: 'smooth',
-        block: 'center'
+        block: 'start'
     }
 
     return (

@@ -51,6 +51,7 @@ const CreateClasswork = (props) => {
 
     useEffect(() => {
         form.resetFields()
+        console.log("initialVal:", initialVal)
     }, [initialVal]);
 
     useEffect(() => {
@@ -75,7 +76,7 @@ const CreateClasswork = (props) => {
                 if (question.option != undefined) {
 
                     if (question.type == 'Identification') {
-                        tempInitialVal.push({ ["question" + [i + 1] + "_options"]: question.option[0] })
+                        tempInitialVal.push({ ["question" + [i + 1] + "_options"]: question.option })
                     }
 
                     else {
@@ -108,7 +109,7 @@ const CreateClasswork = (props) => {
             })
 
             tempInitialVal = (tempInitialVal.reduce(((r, c) => Object.assign(r, c)), {}))
-            setInitialVal(() => tempInitialVal)
+            setInitialVal(tempInitialVal)
             SetNewFile({ ...tempNewFile })
         }
 
@@ -137,7 +138,12 @@ const CreateClasswork = (props) => {
     };
 
     const addQuestion = () => {
-        var ql = question.length
+        var ql 
+
+        if (question.length != null) {
+            ql =  question.length 
+        } else ( ql = 0)
+        
         setIsQuestionLoading(true)
 
         let classwork_type = newClassworkType
@@ -173,8 +179,8 @@ const CreateClasswork = (props) => {
 
         setTimeout(() => {
             setIsQuestionLoading(false)
-            form.scrollToField("question" + ql, scrollConfig)
-            message.success(`question ${ql + 1} has been added.`)
+            form.scrollToField(`question${ql}`, scrollConfig)
+            message.success(`Card ${ql + 1} has been added.`)
         }, 300);
     }
 
@@ -237,12 +243,13 @@ const CreateClasswork = (props) => {
 
             if (newOptions != undefined) {
                 if (newQuestion.type == "Identification") {
-                    if (newOptions[0] != undefined) {
-                        newQuestion["answer"].push(newOptions[0])
-                    }
+                    console.log("1newOptions i: ", newQuestion.type)
+                    console.log(newOptions)
+                    newQuestion["answer"] = [newOptions]
                 }
 
                 else if (newQuestion.type == "Multiple Choice" || newQuestion.type == "Checkbox") {
+                    console.log("2newOptions i: ", newQuestion.type)
                     for (let x = 0; x < newOptions.length; x++) {
                         if (newOptions[x] != undefined) {
                             if (newOptions[x].isAnswer == true) {
@@ -388,7 +395,7 @@ const CreateClasswork = (props) => {
                                         <>
                                             {fields.map(({ key, name, ...restField }) => (
 
-                                                <Row gutter={0} wrap={false}>
+                                                <Row key={key} gutter={0} wrap={false}>
                                                     <Col>
                                                         <Form.Item
                                                             {...restField}

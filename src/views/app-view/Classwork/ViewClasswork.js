@@ -48,7 +48,13 @@ const ViewClasswork = (props) => {
         form.resetFields();
     }, [question])
 
-    console.log("This is classwork array:", classwork)
+    // useEffect(() => {
+    //     if () {
+            
+    //     }
+    // }, [classwork])
+
+    console.log(classwork)
 
     //Initialize default value here
     const tempInitialVal = [
@@ -90,15 +96,15 @@ const ViewClasswork = (props) => {
 
         initialVal = tempInitialVal.reduce(((r, c) => Object.assign(r, c)), {})
 
-        console.log("Initial values: ", initialVal)
+        // console.log("Initial values: ", initialVal)
 
         // form.resetFields();
     }
 
     //Functions
     const compareArray = (arr1, arr2) => {
-        console.log(arr1)
-        console.log(arr2)
+        // console.log(arr1)
+        // console.log(arr2)
 
         if (arr1.length == arr2.length) {
             for (let i = 0; i <= arr1.length; i++) {
@@ -121,32 +127,35 @@ const ViewClasswork = (props) => {
     const onTempFinish = (values) => {
         console.log("Values from classwork form:", values)
 
-        const classwork_length = Object.keys(values).length
+        const classwork_length = Object.keys(question).length
+        let temp_cl = classwork_length
         let answer_list = []
         let score = 0
 
         for (let i = 1; i < classwork_length + 1; i++) {
-            const sa = values["question" + i + "_answer"] //student_answer
-            const qa = question[i - 1].answer // question_answer
             const qt = question[i - 1].type //question_type
-            let am; //answer_match
 
-            if (qt == "Checkbox") {
-                am = compareArray(sa, qa)
+            if (qt != "Instriction" &&  qt != "Image"  ) {
+                const sa = values["question" + i + "_answer"] //student_answer
+                const qa = question[i - 1].answer // question_answer
+                let am; //answer_match
+    
+                if (qt == "Checkbox") {
+                    am = compareArray(sa, qa)
+                }
+                // else if (qt == "Identification") {
 
-            } else {
-                // console.log(sa)
-                // console.log(qa)
-                // console.log(sa == qa)
-
-                am = (sa == qa)
-            }
-
-            answer_list.push(am)
-
-            if (am == true) {
-                score++;
-            }
+                // }
+                else {
+                    am = (sa == qa)
+                }
+    
+                answer_list.push(am)
+    
+                if (am == true) {
+                    score++;
+                }
+            } else ( temp_cl -- )
 
         }
 
@@ -156,7 +165,7 @@ const ViewClasswork = (props) => {
         const tempValues = {
             student_id: "61ee4308545ddd8a3f4cd7fc",
             classwork_id: classwork.classwork_id,
-            max_score: classwork_length,
+            max_score: temp_cl,
             score,
         }
 
@@ -198,7 +207,7 @@ const ViewClasswork = (props) => {
                             <Card className='card-box-shadow-style question-card center-div' key={QTNkey}>
 
                                 <p> {question.string}</p>
-                                {console.log(question.option)}
+                                {/* {console.log(question.option)} */}
 
                                 <Form.Item
                                     className='mb-0'
