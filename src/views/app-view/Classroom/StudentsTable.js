@@ -52,6 +52,9 @@ const StudentsTable = ({classCode}) => {
             studentsList.filter((students) => students.students !== studentId)
             )
           message.success(studentName + " has been successfully deleted")
+        }else{
+          message.destroy()
+          message.error("The action can't be completed, please try again.")
         }
     });
 
