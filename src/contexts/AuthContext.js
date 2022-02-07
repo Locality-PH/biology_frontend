@@ -4,7 +4,6 @@ import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import Axios from "axios";
 const provider = new GoogleAuthProvider();
 const AuthContext = React.createContext();
-import Cookies from "universal-cookie";
 
 export function useAuth() {
   return useContext(AuthContext);
@@ -15,7 +14,6 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
   const [localMid, setLocalMid] = useState();
   const [localrole, setLocalRole] = useState();
-  const cookiestored = new Cookies();
 
   async function SignInWithGoogle(history) {
     return auth

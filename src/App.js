@@ -15,6 +15,7 @@ import Loading from "components/shared-components/Loading";
 import { Route, Switch, Redirect } from "react-router-dom";
 import ClientLogin from "views/auth-view/client/Login";
 import ClientRegister from "views/auth-view/client/Register";
+import Cookies from "universal-cookie";
 
 function App() {
   const { localData, localrole } = useAuth(); // determine if authorized, from context or however you're doing it
