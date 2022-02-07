@@ -47,40 +47,68 @@ export function AuthProvider({ children }) {
   }
 
   async function SignInWithGoogleStudent(history) {
-    auth.signInWithRedirect(provider);
+    return auth
+      .signInWithPopup(provider)
+      .then((result) => {
+        const user = result.user;
+        const avatar = user.photoURL;
 
-    auth.onAuthStateChanged((user) => {
-      auth
-        .getRedirectResult()
-        .then((result) => {
-          console.log(result);
-          const user = result.user;
+        Axios.post("/api/admin/google-login", { user }).then((response) => {
+          const currentUserUUID = response.data;
+          console.log("response from controller");
+          console.log(currentUserUUID);
 
-          Axios.post("/api/student/google-login", {
-            user,
-          }).then((response) => {
-            const currentUserUUID = response.data;
-            console.log("response from controller");
-            console.log(currentUserUUID);
-
-            Axios.get("/api/admin/login/" + currentUserUUID)
-              .then((res) => {
-                console.log(res.data);
-                localStorage.setItem("mid", res.data[0]?.auth_id);
-                localStorage.setItem("role", res.data[0]?.role);
-                localStorage.setItem("sid", res.data[0]?.student);
-
-                localData(res.data[0].uuid, res.data[0]?.role);
-              })
-              .then((_) => {
-                history.push("/client/home");
-              });
-          });
-        })
-        .catch((error) => {
-          console.log(error);
+          Axios.get("/api/admin/login/" + currentUserUUID)
+            .then((res) => {
+              console.log(res.data);
+              localStorage.setItem("mid", res.data[0]?.auth_id);
+              localStorage.setItem("role", res.data[0]?.role);
+              localStorage.setItem("sid", res.data[0]?.student);
+              localData(res.data[0].uuid, res.data[0]?.role);
+              localStorage.setItem("avatar", avatar);
+              localData(res.data[0].uuid, res.data[0]?.role);
+            })
+            .then((_) => {
+              history.push("/admin/dashboard");
+            });
         });
-    });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
+    // auth.onAuthStateChanged((user) => {
+    //   auth
+    //     .getRedirectResult()
+    //     .then((result) => {
+    //       console.log(result);
+    //       const user = result.user;
+
+    //       Axios.post("/api/student/google-login", {
+    //         user,
+    //       }).then((response) => {
+    //         const currentUserUUID = response.data;
+    //         console.log("response from controller");
+    //         console.log(currentUserUUID);
+
+    //         Axios.get("/api/admin/login/" + currentUserUUID)
+    //           .then((res) => {
+    //             console.log(res.data);
+    //             localStorage.setItem("mid", res.data[0]?.auth_id);
+    //             localStorage.setItem("role", res.data[0]?.role);
+    //             localStorage.setItem("sid", res.data[0]?.student);
+
+    //             localData(res.data[0].uuid, res.data[0]?.role);
+    //           })
+    //           .then((_) => {
+    //             history.push("/client/home");
+    //           });
+    //       });
+    //     })
+    //     .catch((error) => {
+    //       console.log(error);
+    //     });
+    // });
   }
   function signup(email, password) {
     return auth.createUserWithEmailAndPassword(email, password);

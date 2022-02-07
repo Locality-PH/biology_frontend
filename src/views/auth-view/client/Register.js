@@ -1,12 +1,11 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { useAuth } from "contexts/AuthContext";
 import { auth } from "firebase";
-import { Alert } from "antd";
-import Loading from "components/shared-components/Loading";
-import LoadingOverlay from "react-loading-overlay";
+import { Alert } from "react-bootstrap";
 
 import { Row, Card, Col, Form, Input, Checkbox, Button } from "antd";
+
 //Icons
 import { FaUserAlt, FaFeatherAlt } from "react-icons/fa";
 import { AiFillLock } from "react-icons/ai";
@@ -28,36 +27,7 @@ function ClientRegister() {
     backgroundSize: "cover",
     overflow: "auto",
   };
-  useEffect(() => {
-    auth.onAuthStateChanged((user) => {
-      axios
-        .post("/api/student/google-login", {
-          user,
-        })
-        .then((response) => {
-          const currentUserUUID = response.data;
-          console.log("response from controller");
-          console.log(currentUserUUID);
 
-          axios
-            .get("/api/admin/login/" + currentUserUUID)
-            .then((res) => {
-              console.log(res.data);
-              localStorage.setItem("mid", res.data[0]?.auth_id);
-              localStorage.setItem("role", res.data[0]?.role);
-              localStorage.setItem("sid", res.data[0]?.student);
-
-              localData(res.data[0].uuid, res.data[0]?.role);
-            })
-            .then((_) => {
-              history.push("/client/home");
-            })
-            .catch((err) => {
-              console.log(err);
-            });
-        });
-    });
-  }, []);
   const leftLoginDiv = {
     paddingRight: "20px",
     backgroundImage: "url('/img/others/Videocall_Isometric.svg')",
@@ -71,8 +41,6 @@ function ClientRegister() {
   //     console.log(values);
   //   };
   const handleSubmit = async (values) => {
-    setError("");
-
     console.log(error);
     console.log(values);
     if (values.confirm_password !== values.password) {
@@ -81,7 +49,6 @@ function ClientRegister() {
     try {
       setLoading(true);
       await signup(values.email, values.password).then(() => {
-        setError("Failed to create an account or email already exists");
         setTimeout(async () => {
           auth.onAuthStateChanged((user) => {
             if (user) {
@@ -94,18 +61,21 @@ function ClientRegister() {
                 full_name: values.fullname,
               };
               console.log(data);
-              axios.post("/api/student/register", data).then((res) => {
-                console.log(res.data);
-                console.log(res.data.role);
-                localStorage.setItem("mid", res.data.mid);
-                localStorage.setItem("role", res.data.role);
-                localStorage.setItem("sid", res.data.sid);
+              axios
+                .post("/api/student/register", data)
+                .then((res) => {
+                  console.log(res.data);
+                  console.log(res.data.role);
+                  localStorage.setItem("mid", res.data.mid);
+                  localStorage.setItem("role", res.data.role);
+                  localStorage.setItem("sid", res.data.sid);
 
-                localData(res.data.mid, res.data.role);
+                  localData(res.data.mid, res.data.role);
 
-                user
+                  user
                   .updateProfile({
                     displayName: values.fullname,
+
                   })
                   .then(() => {
                     console.log("Update successful");
@@ -115,7 +85,8 @@ function ClientRegister() {
                   .catch((error) => {
                     console.log("displayName failed");
                   });
-              });
+                })
+
             } else {
               // User is signed out
               // ...
@@ -126,141 +97,114 @@ function ClientRegister() {
     } catch (e) {
       console.log(e.message);
       setError("Failed to create an account or email already exists");
+
       setLoading(false);
     }
   };
   return (
-    <>
-      {loading ? (
-        <div style={divStyle}>
-          {" "}
-          <Row className="h-100" justify="center" align="middle">
-            <Card className="login-card" style={{ height: "500px" }}>
-              <Col className="text-center vertical-center-auth">
-                {" "}
-                <Loading cover="page" />{" "}
-                <LoadingOverlay active={true}>
-                  <p>Preparing to Log in please wait.</p>
-                </LoadingOverlay>
-              </Col>
-            </Card>
-          </Row>
-        </div>
-      ) : (
-        <div style={divStyle}>
-          <Row className="h-100" justify="center" align="middle">
-            <Card className="register-card">
-              <Row gutter={70}>
-                <Col span={12} style={leftLoginDiv}></Col>
+    <div style={divStyle}>
+      <Row className="h-100" justify="center" align="middle">
+        <Card className="register-card">
+          <Row gutter={70}>
+            <Col span={12} style={leftLoginDiv}></Col>
 
-                <Col
-                  xxl={12}
-                  xl={12}
-                  lg={12}
-                  md={24}
-                  sm={24}
-                  xs={24}
-                  style={{ height: "auto" }}
-                >
-                  <h2 className="login-card-label">Register</h2>
-                  <Form layout="horizontal" onFinish={handleSubmit}>
-                    {" "}
-                    {error && <Alert message={error} type="error" />}
-                    <div className="form-input-field-style">
-                      <Form.Item
-                        label={<FaUserAlt />}
-                        labelAlign="left"
-                        required={false}
-                        name="email"
-                        rules={[
-                          {
-                            required: true,
-                            message: "Please input Email!!",
-                          },
-                        ]}
-                      >
-                        <Input className="custom-input" placeholder="Email" />
-                      </Form.Item>
-                      <Form.Item
-                        label={<FaFeatherAlt />}
-                        labelAlign="left"
-                        required={false}
-                        name="fullname"
-                        rules={[
-                          {
-                            required: true,
-                            message: "Please input your Full Name!!",
-                          },
-                        ]}
-                      >
-                        <Input
-                          className="custom-input"
-                          placeholder="Full Name"
-                        />
-                      </Form.Item>
-                      <Form.Item
-                        label={<AiFillLock />}
-                        labelAlign="left"
-                        required={false}
-                        name="password"
-                        rules={[
-                          {
-                            required: true,
-                            message: "Please input password!!",
-                          },
-                        ]}
-                      >
-                        <Input.Password
-                          className="custom-input"
-                          type="password"
-                          placeholder="Password"
-                        />
-                      </Form.Item>
-                      <Form.Item
-                        label={<AiFillLock />}
-                        labelAlign="left"
-                        required={false}
-                        name="confirm_password"
-                        rules={[
-                          {
-                            required: true,
-                            message: "Please type your password again!!",
-                          },
-                        ]}
-                      >
-                        <Input.Password
-                          className="custom-input"
-                          type="password"
-                          placeholder="Confirm Password"
-                        />
-                      </Form.Item>
-                    </div>
-                    <Row className="w-100" align="between" justify="center">
-                      <Col xxl={14} xl={14} lg={12} md={12} sm={24} xs={24}>
-                        <Link
-                          to="/client/login"
-                          className="register-custom-link"
-                        >
-                          Already have an account?
-                        </Link>
-                      </Col>
-                      <Col xxl={10} xl={10} lg={12} md={12} sm={24} xs={24}>
-                        <button
-                          disabled={loading}
-                          className="custom-button-green sm-btn"
-                        >
-                          Sign up
-                        </button>
-                      </Col>
-                    </Row>
-                  </Form>
-                </Col>
-              </Row>
-            </Card>
+            <Col
+              xxl={12}
+              xl={12}
+              lg={12}
+              md={24}
+              sm={24}
+              xs={24}
+              style={{ height: "auto" }}
+            >
+              <h2 className="login-card-label">Register</h2>
+              <Form layout="horizontal" onFinish={handleSubmit}>
+                {" "}
+                {error && <Alert variant="danger">{error}</Alert>}
+                <div className="form-input-field-style">
+                  <Form.Item
+                    label={<FaUserAlt />}
+                    labelAlign="left"
+                    required={false}
+                    name="email"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please input Email!!",
+                      },
+                    ]}
+                  >
+                    <Input className="custom-input" placeholder="Email" />
+                  </Form.Item>
+                  <Form.Item
+                    label={<FaFeatherAlt />}
+                    labelAlign="left"
+                    required={false}
+                    name="fullname"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please input your Full Name!!",
+                      },
+                    ]}
+                  >
+                    <Input className="custom-input" placeholder="Full Name" />
+                  </Form.Item>
+                  <Form.Item
+                    label={<AiFillLock />}
+                    labelAlign="left"
+                    required={false}
+                    name="password"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please input password!!",
+                      },
+                    ]}
+                  >
+                    <Input.Password
+                      className="custom-input"
+                      type="password"
+                      placeholder="Password"
+                    />
+                  </Form.Item>
+                  <Form.Item
+                    label={<AiFillLock />}
+                    labelAlign="left"
+                    required={false}
+                    name="confirm_password"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please type your password again!!",
+                      },
+                    ]}
+                  >
+                    <Input.Password
+                      className="custom-input"
+                      type="password"
+                      placeholder="Confirm Password"
+                    />
+                  </Form.Item>
+                </div>
+                <Row className="w-100" align="between" justify="center">
+                  <Col xxl={14} xl={14} lg={12} md={12} sm={24} xs={24}>
+                    <Link to="/client/login" className="register-custom-link">
+                      Already have an account?
+                    </Link>
+                  </Col>
+                  <Col xxl={10} xl={10} lg={12} md={12} sm={24} xs={24}>
+                    <button className="custom-button-green sm-btn">
+                      Sign up
+                    </button>
+                  </Col>
+                </Row>
+              </Form>
+            </Col>
           </Row>
-        </div>
-      )}
-    </>
+        </Card>
+      </Row>
+    </div>
   );
 }
 

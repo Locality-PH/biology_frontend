@@ -19,36 +19,7 @@ function ClientLogin() {
   const history = useHistory();
   console.log(currentUser?.uid);
 
-  useEffect(() => {
-    auth.onAuthStateChanged((user) => {
-      axios
-        .post("/api/student/google-login", {
-          user,
-        })
-        .then((response) => {
-          const currentUserUUID = response.data;
-          console.log("response from controller");
-          console.log(currentUserUUID);
-
-          axios
-            .get("/api/admin/login/" + currentUserUUID)
-            .then((res) => {
-              console.log(res.data);
-              localStorage.setItem("mid", res.data[0]?.auth_id);
-              localStorage.setItem("role", res.data[0]?.role);
-              localStorage.setItem("sid", res.data[0]?.student);
-
-              localData(res.data[0].uuid, res.data[0]?.role);
-            })
-            .then((_) => {
-              history.push("/client/home");
-            })
-            .catch((err) => {
-              console.log(err);
-            });
-        });
-    });
-  }, []);
+  useEffect(() => {}, []);
   async function loginGoogleUser(e) {
     SignInWithGoogleStudent(history);
   }
