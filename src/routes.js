@@ -6,19 +6,17 @@ import ViewClassroom from "views/app-view/Classroom/ViewClassroom";
 import EditClassroom from "views/app-view/Classroom/EditClassroom";
 import ViewStudent from "views/app-view/Classroom/ViewStudent";
 import ModuleStudentsLessonScoreTable from "views/app-view/Classroom/ScoreDataTable/ModuleStudentsLessonScoreTable";
-
 import Module from "./views/app-view/Module/Module";
 import CreateMyModule from "./views/app-view/Module/CreateMyModule";
 import EditMyModule from "./views/app-view/Module/EditMyModule";
 import CreatePresetModule from "./views/app-view/Module/CreatePresetModule";
 import EditPresetModule from "./views/app-view/Module/EditPresetModule";
-
 import Classwork from "views/app-view/Classwork/Classwork.js";
 import ViewClasswork from "views/app-view/Classwork/ViewClasswork.js";
 import CreateClasswork from "views/app-view/Classwork/CreateClasswork.js";
 import EditClasswork from "views/app-view/Classwork/EditClasswork";
 
-import ViewModule from "views/app-view/Classroom/ViewModule"
+import ViewModule from "views/app-view/Classroom/ViewModule";
 import ModuleStudents from "views/app-view/Classroom/ModuleStudents";
 
 import TableList from "views/app-view/TableList.js";
