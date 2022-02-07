@@ -68,6 +68,7 @@ const Login = () => {
                     localStorage.setItem("tid", res.data.tid);
 
                     localData(res.data.mid, res.data.role);
+                    history.push("/admin/dashboard");
                   })
                   .then((_) => {
                     history.push("/admin/dashboard");
