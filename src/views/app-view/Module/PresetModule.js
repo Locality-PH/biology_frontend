@@ -145,15 +145,15 @@ const PresetModule = () => {
 
     const downloadModule = (presetModuleId) => {
       console.log("Downloading");
-      // window.location.assign(
-      //   "https://biology-server.herokuapp.com/api/module/download-preset-module/" + presetModuleId,
-      //   "_blank"
-      // );
-
       window.location.assign(
-        "http://localhost:5000/api/module/download-preset-module/" + presetModuleId,
+        "https://biology-server.herokuapp.com/api/module/download-preset-module/" + presetModuleId,
         "_blank"
       );
+
+      // window.location.assign(
+      //   "http://localhost:5000/api/module/download-preset-module/" + presetModuleId,
+      //   "_blank"
+      // );
     }
     
   return (

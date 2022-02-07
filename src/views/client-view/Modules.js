@@ -102,15 +102,15 @@ const Modules = ({ match }) => {
 
   const downloadModule = (moduleId) => {
     console.log("Downloading");
-    // window.location.assign(
-    //   "https://biology-server.herokuapp.com/api/student/download-module/" + moduleId,
-    //   "_blank"
-    // );
-
     window.location.assign(
-      "http://localhost:5000/api/student/download-module/" + moduleId,
+      "https://biology-server.herokuapp.com/api/student/download-module/" + moduleId,
       "_blank"
     );
+
+    // window.location.assign(
+    //   "http://localhost:5000/api/student/download-module/" + moduleId,
+    //   "_blank"
+    // );
   };
 
   const introductionContent = () => {
