@@ -61,21 +61,18 @@ function ClientRegister() {
                 full_name: values.fullname,
               };
               console.log(data);
-              axios
-                .post("/api/student/register", data)
-                .then((res) => {
-                  console.log(res.data);
-                  console.log(res.data.role);
-                  localStorage.setItem("mid", res.data.mid);
-                  localStorage.setItem("role", res.data.role);
-                  localStorage.setItem("sid", res.data.sid);
+              axios.post("/api/student/register", data).then((res) => {
+                console.log(res.data);
+                console.log(res.data.role);
+                localStorage.setItem("mid", res.data.mid);
+                localStorage.setItem("role", res.data.role);
+                localStorage.setItem("sid", res.data.sid);
 
-                  localData(res.data.mid, res.data.role);
+                localData(res.data.mid, res.data.role);
 
-                  user
+                user
                   .updateProfile({
                     displayName: values.fullname,
-
                   })
                   .then(() => {
                     console.log("Update successful");
@@ -85,8 +82,7 @@ function ClientRegister() {
                   .catch((error) => {
                     console.log("displayName failed");
                   });
-                })
-
+              });
             } else {
               // User is signed out
               // ...
