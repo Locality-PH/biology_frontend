@@ -10,7 +10,8 @@ import ClientLayout from "layouts/Client.js";
 
 import PrivateRouteAdmin from "components/Private/PrivateRouteAdmin";
 import PrivateRouteClient from "components/Private/PrivateRouteClient";
-
+import About from "views/info-view/about";
+import Term from "views/info-view/privacy";
 import AdminLayout from "layouts/Admin.js";
 import { Route, Switch, Redirect } from "react-router-dom";
 import ClientLogin from "views/auth-view/client/Login";
@@ -40,6 +41,8 @@ function App() {
         {/* CLIENTSIDE */}
         <Route path="/client/login" component={ClientLogin} />{" "}
         <Route path="/client/register" component={ClientRegister} />
+        <Route path="/about-us/" component={About} />
+        <Route path="/term/" component={Term} />
         <PrivateRouteClient path="/">
           <ClientLayout />
         </PrivateRouteClient>{" "}
