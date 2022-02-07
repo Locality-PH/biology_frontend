@@ -9,6 +9,7 @@ import {
 	EyeOutlined,
     SearchOutlined,
     SolutionOutlined,
+    EditOutlined,
     DownloadOutlined,
 	DeleteOutlined
 } from '@ant-design/icons';
@@ -74,25 +75,38 @@ const ModulesTable = ({classCode}) => {
     }
 
     const tableColumns = [
-        {
-            title: 'Module Name',
-            dataIndex: 'name',
-            render: (_, result) => (
-                <Flex>
-                    <AvatarStatus src="/img/thumbs/thumb-5.jpg" size={30} name={result.module_name}/>
-                </Flex>
-            )
-        },
-        {
-            title: 'File Name',
-            dataIndex: 'filename',
-            render: (_, result) => (
-                <span>{result.module_file.filename}</span>
-            )
-        },
+      {
+        title: 'Module Name',
+        dataIndex: 'module_name',
+        render: (_, result) => (
+            <span>{result.module_name}</span>
+        )
+    },
+    {
+      title: 'Classwork Code',
+      dataIndex: 'classwork_code',
+      render: (_, result) => (
+          <span>{(result.classwork_code == "" ? "None": result.classwork_code)}</span>
+      )
+    },
+    {
+      title: 'Lesson Count',
+      dataIndex: 'lesson_count',
+      render: (_, result) => (
+          <span>{result.lesson_count}</span>
+      )
+    }
+    ,
+    {
+      title: 'Type',
+      dataIndex: 'type',
+      render: (_, result) => (
+          <span>{result.type}</span>
+      )
+    },
         {
           title: 'Finished by',
-          dataIndex: 'filename',
+          dataIndex: 'finished',
           render: (_, result) => (
               <span>{result.finished} student</span>
           )
@@ -105,25 +119,26 @@ const ModulesTable = ({classCode}) => {
             menu={
                 <Menu>
                     <Menu.Item key="0">
-                        <Link to={`/admin/classroom/${classCode}/${result._id}`}>
+                        <Link to={`/admin/classroom/${classCode}/module/${result._id}`}>
                             <EyeOutlined style={menu_icons_style}/>
                             <span className="ml-2">View</span>
                         </Link>
                     </Menu.Item>
-                    <Menu.Item key="1">
+                    {/* <Menu.Item key="1">
                         <Link to={`/admin/classroom/${classCode}/module/${result._id}`}>
                             <SolutionOutlined style={menu_icons_style}/>
                             <span className="ml-2">Finished Students</span>
                         </Link>
-                    </Menu.Item>
-                    <Menu.Item key="2" onClick={() => downloadModule(result._id)}>
-                        <>
-                            <DownloadOutlined style={menu_icons_style}/>
-                            <span className="ml-2">Download PDF</span>
-                        </>
-                    </Menu.Item>
+                    </Menu.Item> */}
+                     {/* <Menu.Item key="1">
+                        <Link to={(result.type == "MyModule")?`/admin/module/edit-my-module/${result.module_id}`:
+                      `/admin/module/edit-preset-module/${result.module_id}`}>
+                            <EditOutlined style={menu_icons_style}/>
+                            <span className="ml-2">Edit</span>
+                        </Link>
+                    </Menu.Item> */}
                     <Menu.Divider/>
-                    <Menu.Item key="3" onClick={() => deleteModule(result._id, result.module_name)}>
+                    <Menu.Item key="1" onClick={() => deleteModule(result._id, result.module_name)}>
                         <>
                             <DeleteOutlined style={menu_icons_style}/>
                             <span className="ml-2">Delete</span>

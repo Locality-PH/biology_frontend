@@ -1,59 +1,42 @@
 import React, { useState, useEffect } from 'react'
 import { Card, Row, Col, Form, Input, Space, Button, Checkbox, Radio, Select, Spin, Modal, message } from 'antd'
-import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
-import { AiOutlinePlus } from "react-icons/ai"
 import { useHistory } from "react-router-dom";
 import Axios from 'axios'
 
 //css
-import "assets/css/app-views/Quiz/ViewQuiz.css"
+import "assets/css/app-views/Classwork/ViewClasswork.css"
 
-const StudentViewQuiz = (props) => {
+const ViewClasswork = (props) => {
     let history = useHistory();
-    const quiz_code = props.match.params.quiz_code
-    const class_code = props.match.params.class_code
-    const mid = props.match.params.module_id
-    const sid = localStorage.getItem("sid");
+    const classwork_code = props.match.params.classwork_code
+    const tid = localStorage.getItem("tid");
 
     const [form] = Form.useForm();
     const formRef = React.createRef();
 
-    const [quiz, setQuiz] = useState({})
+    const [classwork, setClasswork] = useState({})
     const [question, setQuestion] = useState({})
     const [showQuestion, setShowQuestion] = useState(true)
     const [scoreModal, setScoreModal] = useState(false);
     const [scoreboard, setScoreboard] = useState({});
-    let isScoreboardEmpty = Object.keys(scoreboard).length <= 0
 
     useEffect(() => {
         (async () => {
-            await Axios.post("/api/quiz/student/get/code/" + quiz_code, { sid, class_code, mid }).then((response) => {
-                const quizData = response.data;
+            await Axios.post("/api/classwork/get/code/" + classwork_code, { tid }).then((response) => {
+                const classworkData = response.data;
 
                 if (response.data != "failed") {
-                    setQuiz(quizData)
-                    setQuestion(quizData.question)
+                    setClasswork(classworkData)
+                    setQuestion(classworkData.question)
 
                     setTimeout(() => {
                         setShowQuestion(false)
                     }, 300);
-
-
                 } else {
-                    message.error("Quiz not found!!")
+                    message.error("Classwork not found!!")
                     setTimeout(() => {
-                        window.location.assign("/client/home")
+                        history.goBack()
                     }, 500);
-                }
-            });
-
-            await Axios.post("/api/scoreboard/validate/student", { sid, qc: quiz_code }).then((response) => {
-                const scoreData = response.data
-
-                if (scoreData != null) {
-                    setScoreboard(scoreData)
-                } else {
-                    console.log(response.data)
                 }
             });
 
@@ -63,17 +46,65 @@ const StudentViewQuiz = (props) => {
 
     useEffect(() => {
         form.resetFields();
-    }, [question, scoreboard])
+    }, [question])
 
-    console.log("This is quiz array:", quiz)
-    console.log("This is scoreboard array:", scoreboard.answer_list)
+    // useEffect(() => {
+    //     if () {
 
-    const initialVal = scoreboard.answer_list
+    //     }
+    // }, [classwork])
+
+    console.log(classwork)
+
+    //Initialize default value here
+    const tempInitialVal = [
+        { classwork_name: classwork.name },
+        { classwork_description: classwork.description }
+    ]
+
+    //Setting up of initialVal for form
+    let initialVal = []
+    if (question.length != undefined) {
+        question.map((question, i) => {
+            tempInitialVal.push({ ["question" + [i + 1]]: question.string })
+
+            if (question.option != undefined) {
+
+                if (typeof question.option == 'string') {
+                    tempInitialVal.push({ ["question" + [i + 1] + "_options"]: question.option })
+                }
+
+                else {
+
+                    if (typeof question.option == 'object') {
+                        let optionArray = []
+
+                        question.option.map(
+                            (option) => {
+                                if (option != null) {
+                                    optionArray.push(option)
+                                }
+                            })
+
+                        tempInitialVal.push({ ["question" + [i + 1] + "_options"]: optionArray })
+                    }
+
+                }
+            }
+
+        })
+
+        initialVal = tempInitialVal.reduce(((r, c) => Object.assign(r, c)), {})
+
+        // console.log("Initial values: ", initialVal)
+
+        // form.resetFields();
+    }
 
     //Functions
     const compareArray = (arr1, arr2) => {
-        console.log(arr1)
-        console.log(arr2)
+        // console.log(arr1)
+        // console.log(arr2)
 
         if (arr1.length == arr2.length) {
             for (let i = 0; i <= arr1.length; i++) {
@@ -93,59 +124,73 @@ const StudentViewQuiz = (props) => {
 
     }
 
-    const onFinish = (values) => {
-        // console.log("Values from quiz form:", values)
+    const onTempFinish = (values) => {
+        console.log("Values from classwork form:", values)
 
-        const quiz_length = Object.keys(values).length
-        let score_list = []
+        const classwork_length = Object.keys(question).length
+        let temp_cl = classwork_length
+        let answer_list = []
         let score = 0
 
-        for (let i = 1; i < quiz_length + 1; i++) {
-            const sa = values["question" + i + "_answer"] //student_answer
-            const qa = question[i - 1].answer // question_answer
+        for (let i = 1; i < classwork_length + 1; i++) {
             const qt = question[i - 1].type //question_type
-            let am; //answer_match
 
-            if (qt == "Checkbox") {
-                console.log(compareArray(sa, qa))
-                am = compareArray(sa, qa)
+            if (qt != "Instriction" && qt != "Image") {
+                var sa = values["question" + i + "_answer"] //student_answer
+                var qa = question[i - 1].answer // question_answer
+                let am; //answer_match
 
-            } else {
-                console.log(sa)
-                console.log(qa)
-                console.log(sa == qa)
+                if (qt == "Checkbox") {
+                    am = compareArray(sa, qa)
+                }
+                else if (qt == "Identification") {
+                    if (typeof sa != 'string') {
+                        sa = sa.toString()
+                    }
 
-                am = (sa == qa)
-            }
+                    if (typeof qa != 'string') {
+                        qa = qa.toString()
+                    }
 
-            score_list.push(am)
+                    sa = sa.replace(/\s/g, '');
+                    sa = sa.toLowerCase();
+                    qa = qa.replace(/\s/g, '');
+                    qa = qa.toLowerCase();
 
-            if (am == true) {
-                score++;
-            }
+                    am = (sa == qa)
+                }
+                else {
+                    am = (sa == qa)
+                }
+
+                answer_list.push(am)
+
+                if (am == true) {
+                    score++;
+                }
+            } else (temp_cl--)
 
         }
 
-        console.log(score_list)
+        console.log(answer_list)
         console.log(score)
 
         const tempValues = {
-            student_id: sid,
-            score_list,
-            answer_list: values,
-            quiz_id: quiz.quiz_id,
-            max_score: quiz_length,
+            student_id: "61ee4308545ddd8a3f4cd7fc",
+            classwork_id: classwork.classwork_id,
+            max_score: temp_cl,
             score,
         }
 
-        // console.log("Scoreboard:", tempValues)
+        console.log("Scoreboard:", tempValues)
         setScoreboard(tempValues)
         setScoreModal(true)
 
-        Axios.post("/api/scoreboard/create", { tempValues }).then((response) => {
-            console.log(response.data)
-        });
+        // Axios.post("/api/scoreboard/create", {tempValues}).then((response) => {
+        //             console.log(response.data)
+        // });
     }
+
 
 
     const PrintQuestion = () => {
@@ -159,14 +204,14 @@ const StudentViewQuiz = (props) => {
                         return (
                             <Card className='card-box-shadow-style question-card center-div' key={QTNkey}>
 
-                                <p>{QTNkey}. {question.string}</p>
+                                <p> {question.string}</p>
 
                                 <Form.Item
                                     name={"question" + QTNkey + "_answer"}
                                     rules={[{ required: true, message: "Need answer for this question!" }]}
                                     required={false}
                                 >
-                                    <Input prefix={<b>Answer:</b>} disabled={!isScoreboardEmpty} />
+                                    <Input prefix={<b>Answer:</b>} />
                                 </Form.Item>
                             </Card>
                         )
@@ -174,7 +219,8 @@ const StudentViewQuiz = (props) => {
                         return (
                             <Card className='card-box-shadow-style question-card center-div' key={QTNkey}>
 
-                                <p>{QTNkey}. {question.string}</p>
+                                <p> {question.string}</p>
+                                {/* {console.log(question.option)} */}
 
                                 <Form.Item
                                     className='mb-0'
@@ -182,7 +228,7 @@ const StudentViewQuiz = (props) => {
                                     rules={[{ required: true, message: "Question can't be blank!" }]}
                                     required={false}
                                 >
-                                    <Radio.Group disabled={!isScoreboardEmpty}>
+                                    <Radio.Group >
                                         <Space direction="vertical">
 
                                             {question.option.map(
@@ -203,7 +249,7 @@ const StudentViewQuiz = (props) => {
                         return (
                             <Card className='card-box-shadow-style question-card center-div' key={QTNkey}>
 
-                                <p>{QTNkey}. {question.string}</p>
+                                <p> {question.string}</p>
 
                                 <Form.Item
                                     className='mb-0'
@@ -211,19 +257,37 @@ const StudentViewQuiz = (props) => {
                                     rules={[{ required: true, message: "Question can't be blank!" }]}
                                     required={false}
                                 >
-                                    <Checkbox.Group disabled={!isScoreboardEmpty}>
+                                    <Checkbox.Group >
                                         <Space direction="vertical">
 
                                             {question.option.map(
                                                 (option, QTNkey) => {
                                                     return (
-                                                        <Checkbox key={QTNkey} value={option.value}>{option.value}</Checkbox>
+                                                        <Checkbox key={QTNkey} value={option.value}><p className='m-0'>{option.value}</p></Checkbox>
                                                     )
                                                 }
                                             )}
                                         </Space>
                                     </Checkbox.Group>
                                 </Form.Item>
+
+                            </Card>
+                        )
+                    } else if (question.type == "Image") {
+                        return (
+                            <Card className='card-box-shadow-style question-card center-div' key={QTNkey}>
+
+                                <p> {question.string}</p>
+
+                                <img src={`data:image/png;base64,${question.img.file}`} className='center-div' style={{ width: "80%" }} />
+
+                            </Card>
+                        )
+                    } else if (question.type == "Instruction") {
+                        return (
+                            <Card className='card-box-shadow-style question-card center-div' key={QTNkey}>
+
+                                <p className='m-0'> {question.string}</p>
 
                             </Card>
                         )
@@ -244,9 +308,9 @@ const StudentViewQuiz = (props) => {
             setScoreModal(false);
         };
 
-        if (!isScoreboardEmpty) {
+        if (Object.keys(scoreboard).length > 0) {
             return (
-                <Modal title={quiz.name} visible={scoreModal} onOk={handleOk} onCancel={handleCancel}>
+                <Modal title={classwork.name} visible={scoreModal} onOk={handleOk} onCancel={handleCancel}>
                     <h2>Your Score: {scoreboard.score} / {scoreboard.max_score}</h2>
                 </Modal>
             )
@@ -254,40 +318,34 @@ const StudentViewQuiz = (props) => {
     }
 
     return (
-        <div className='view-quiz' style={{marginTop: 50}}>
+        <div className='view-classwork'>
             <Spin spinning={showQuestion} wrapperClassName={({ "load-icon": showQuestion })}>
 
                 <Row justify='center'>
                     <Col xxl={12} xl={16} lg={16} md={18} sm={24} xs={24}>
                         <Form
-                            name="quiz-form"
-                            onFinish={onFinish}
+                            name="classwork-form"
+                            onFinish={onTempFinish}
                             ref={formRef}
                             form={form}
                             scrollToFirstError={true}
-                            initialValues={initialVal}
-
                         >
                             {showQuestion != true &&
                                 <div>
                                     <Card className='card-box-shadow-style question-card center-div'>
-                                        <p className='quiz-name' >
-                                            {quiz.name}
+                                        <p className='classwork-name' >
+                                            {classwork.name}
                                         </p>
                                         <p className='m-0'>
-                                            {quiz.description}
+                                            {classwork.description}
                                         </p>
                                     </Card>
 
                                     {PrintQuestion()}
 
                                     <div className='center-div mb-4'>
-                                        <Button type="primary" htmlType="submit" disabled={!isScoreboardEmpty}>
+                                        <Button type="primary" htmlType="submit">
                                             Submit
-                                        </Button>
-
-                                        <Button type="primary" className='ml-2' onClick={() => setScoreModal(true)}>
-                                            View Score
                                         </Button>
                                     </div>
                                 </div>
@@ -304,4 +362,4 @@ const StudentViewQuiz = (props) => {
     )
 }
 
-export default StudentViewQuiz
+export default ViewClasswork

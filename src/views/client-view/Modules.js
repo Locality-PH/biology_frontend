@@ -12,27 +12,36 @@ import {
   Divider,
 } from "antd";
 import ModulePages from "./Modules-pages";
+import Lesson from "./Lesson"
 const { Header, Content, Footer, Sider } = Layout;
+const { SubMenu } = Menu;
+
 
 import axios from "axios";
-import { ConsoleSqlOutlined } from "@ant-design/icons";
+import { FileTextOutlined} from "@ant-design/icons";
 
 const Modules = ({ match }) => {
   const classCode = match.params.class_code;
   const studentId = localStorage.getItem("sid");
 
   const [modules, setModules] = useState([]);
+  const [description, setDescription] = useState("")
 
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const [moduleId, setModuleId] = useState();
+  const [currentItem, setCurrentItem] = useState();
+
+  const underLineStyle = {
+    textDecoration: "underline"
+  }
 
   const getClassroomModules = () =>{
     message.loading("Loading modules...", 0);
     axios
     .get("/api/student/get-classroom-modules/" + classCode + "/" + studentId)
     .then((response) => {
+      console.log(response.data)
       setModules(response.data);
       setError(null);
       message.destroy();
@@ -44,106 +53,130 @@ const Modules = ({ match }) => {
 
   }
 
+  const getClassroomDescription = () => {
+    axios
+    .get("/api/student/get-classroom-description/" + classCode)
+    .then((response) => {
+      setDescription(response.data)
+    })
+    .catch(() => {
+      message.error("Could not fetch the data in the server!");
+    });
+
+  }
+
   useEffect(() => {
+    getClassroomDescription()
     getClassroomModules()
-   
   }, []);
 
   const HandleModules = (e) => {
     setIsLoading(false);
-    console.log(e.key);
-    setModuleId(e.key);
-  };
-
-  const checkboxOnChange = (e, moduleId, moduleName) => {
-    if(e.target.checked == true){
-      console.log("Finish Checkbox Module id", moduleId)
-
-      // if(modules.length > index + 1){
-      //   modules[index].finish = true
-      //   modules[index + 1].disabled = false
-      // }else{
-      //   modules[index].finish = true
-      // }
-
-      message.loading("Finishing " + moduleName + "...", 0)
-      
-      axios
-      .post("/api/student/module-finish", {"class_code": classCode, "module_id": moduleId, "student_id": studentId})
-      .then((response) => {
-        if (response.data == "Error") {
-          message.destroy();
-          message.error("Error");
-        } else {
-          message.destroy();
-          message.success(response.data);
-          getClassroomModules()
-        }
-      })
-      .catch(() => {
-        message.destroy();
-        message.error("Error!");
-      });
-    }else if(e.target.checked == false){
-      console.log("Unfinish Checkbox Module id", moduleId)
-
-      message.loading("Unfinishing " + moduleName + "...", 0)
-
-      axios
-      .post("/api/student/module-unfinish", {"class_code": classCode, "module_id": moduleId, "student_id": studentId})
-      .then((response) => {
-        if (response.data == "Error") {
-          message.destroy();
-          message.error("Error");
-        } else {
-          message.destroy();
-          message.success(response.data);
-          getClassroomModules()
-        }
-      })
-      .catch(() => {
-        message.destroy();
-        message.error("Error!");
-      });
-    }
-  }
-
-  const goToQuiz = (quizLink) => {
-    console.log("/" + quizLink)
-    window.open("/client/" + `${classCode}/${moduleId}` + "/quiz/" + quizLink);
+    // console.log(e.key);
+    setCurrentItem(e.key);
   };
 
   const ModuleContent = () => {
-    const module = modules.filter((module) => module._id == moduleId);
-    var fileName = "";
-    var quizLink = "";
+    if(currentItem != null){
+      const currentItemContent = currentItem.split("/")[0]
 
-    if (module.length != 0) {
-      fileName = module[0].module_file.filename;
-      quizLink = module[0].quiz_link;
+      if(currentItemContent == "introduction"){
+        return introductionContent()
+      }
+
+      if(currentItemContent == "lesson"){
+        return lessonContent()
+      }
+
+      if(currentItemContent == "quiz"){
+        return quizContent()
+      }
+    }
+   
+    return (
+      <Card title="Classroom Description">
+        <h2>{description}</h2>
+      </Card>
+    )
+  };
+
+  const downloadModule = (moduleId) => {
+    console.log("Downloading");
+    window.location.assign(
+      "https://biology-server.herokuapp.com/api/student/download-module/" + moduleId,
+      "_blank"
+    );
+
+    // window.location.assign(
+    //   "http://localhost:5000/api/student/download-module/" + moduleId,
+    //   "_blank"
+    // );
+  };
+
+  const introductionContent = () => {
+    const moduleId = currentItem.split("/")[1]
+    const introData = modules.filter(modules => modules.module_id == moduleId)
+
+    return (
+      <>
+        <Card title={
+          <Button type="primary" onClick={() => {downloadModule(moduleId)}} style={{ backgroundColor: "green", borderColor: "green" }}>
+            Download {introData[0].downloadable_module.filename}
+          </Button>}>
+        </Card>
+        <ModulePages moduleId={moduleId}></ModulePages>
+      </>
+    )
+  }
+
+  const lessonContent = () => {
+    const moduleLessonId = currentItem.split("/")[1]
+    const lessonClassworkCode = currentItem.split("/")[2]
+
+    const [hidden, setHidden] = useState(false)
+
+    const ViewLesson = () => {
+      return(
+        <>
+          {(hidden == true)?<Lesson moduleLessonId={moduleLessonId}></Lesson>:""}
+        </>
+      )
     }
 
     return (
-      <div hidden={isLoading}>
-        <ModulePages moduleId={moduleId} fileName={fileName}></ModulePages>
-        <Divider></Divider>
-        <Card
-          title="Quiz"
-          extra={
-            <Button
-              type="primary"
-              onClick={() => goToQuiz(quizLink)}
-              style={{ backgroundColor: "green", borderColor: "green" }}
-            >
-              Go to quiz
-            </Button>
-          }
-        >
-          <p>{quizLink}</p>
+      <>
+        <Card hidden={hidden} title={<Button type="primary" onClick={() => {setHidden(true)}} style={{ backgroundColor: "green", borderColor: "green" }}>View Lesson</Button>}>
         </Card>
-      </div>
-    );
-  };
+        <div hidden={!hidden}>
+          <ViewLesson></ViewLesson>
+        </div>
+        <Card title="Activity Classwork">
+          <h4 style={underLineStyle}>
+            <a href={`/client/${classCode}/${moduleLessonId}/activity/${lessonClassworkCode}`} target="_blank">
+              client/{classCode}/{moduleLessonId}/activity/{lessonClassworkCode}
+            </a>
+          </h4>
+        </Card>
+      </>
+    )
+  }
+
+  const quizContent = () => {
+    const moduleId = currentItem.split("/")[1]
+    const moduleClassworkCode = currentItem.split("/")[2]
+
+    return (
+      <>
+        <Card title="Quiz">
+          <h4 style={underLineStyle}>
+            <a href={`/client/${classCode}/${moduleId}/quiz/${moduleClassworkCode}`} target="_blank">
+              client/{classCode}/{moduleId}/quiz/{moduleClassworkCode}
+            </a>
+          </h4>
+        </Card>
+      </>
+    )
+  }
 
   return (
     <Layout>
@@ -160,19 +193,27 @@ const Modules = ({ match }) => {
         }}
       >
         <Menu
-          mode="inline"
-          defaultSelectedKeys={["1"]}
-          defaultOpenKeys={["sub1"]}
-          style={{ height: "100%", borderRight: 0 }}
-          onClick={HandleModules}
-        >
-          {modules.map((result, i) => (
-            <Menu.Item key={result._id} disabled={result.disabled} style={{backgroundColor: (result.disabled == true)?"#bebebe": ""}}>
-              <Checkbox onChange={e => checkboxOnChange(e, result._id, result.module_name)} defaultChecked={result.finish} disabled={result.disabled}></Checkbox>
-              <span className="checkbox-span" style={{cursor: (result.disabled == true)?"not-allowed": "pointer"}}>{result.module_name}</span>
-            </Menu.Item>
-          ))}
-        </Menu>{" "}
+        mode="inline"
+        defaultSelectedKeys={["1"]}
+        defaultOpenKeys={["sub0"]}
+        style={{ height: "100%", borderRight: 0 }}
+        onClick={HandleModules}
+      >
+        {modules.map((modulesData, modulesIndex) => (
+          <SubMenu disabled={modulesData.disabled} key={"sub" + modulesIndex} icon={<FileTextOutlined />} title={modulesData.name}>
+            <Menu.Item key={`introduction/${modulesData.module_id}`}>{modulesData.topic_name}</Menu.Item>
+            <SubMenu key={"l" + modulesIndex} title="Lessons">
+              {modulesData.lessons.map(lessonData => (
+                  <Menu.Item disabled={lessonData.disabled} key={`lesson/${lessonData.module_lesson_id}/${lessonData.classwork_code}`}>
+                    {lessonData.lesson_name}
+                  </Menu.Item>
+              ))}
+            </SubMenu>
+            <Menu.Item disabled={modulesData.quiz_disabled} key={`quiz/${modulesData.module_id}/${modulesData.classwork_code}`}>Quiz</Menu.Item>
+          </SubMenu>
+        ))}
+      </Menu>
+      
       </Sider>
       <Layout style={{ padding: "0 24px 24px" }}>
         <Breadcrumb style={{ margin: "16px 0" }}>

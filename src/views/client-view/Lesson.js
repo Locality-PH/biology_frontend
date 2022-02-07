@@ -5,18 +5,18 @@ pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/$
 import { Link } from "react-router-dom";
 import axios from "axios";
 
-const ModulePages = ({ moduleId }) => {
+const Lesson = ({ moduleLessonId }) => {
   const [numPages, setNumPages] = useState(null);
-  const [modulePDF, setModulePDF] = useState(null);
+  const [lessonPDF, setLessonPDF] = useState(null);
   
   useEffect(() => {
-    message.loading("Loading pdf...", 0)
+    message.loading("Loading Lesson...", 0)
     axios
-    .get("/api/student/get-module/" + moduleId)
+    .get("/api/student/get-lesson/" + moduleLessonId)
     .then((response) => {
-      console.log("File PDF")
+      console.log("Lesson PDF")
       message.destroy();
-      setModulePDF(response.data);
+      setLessonPDF(response.data);
     })
     .catch(() => {
       message.error("The action can't be completed, please try again.");
@@ -34,7 +34,7 @@ const ModulePages = ({ moduleId }) => {
       <div>
         <Document
           noData=""
-          file={modulePDF}
+          file={lessonPDF}
           onLoadSuccess={onDocumentLoadSuccess}
         >
           {Array.from(new Array(numPages), (el, index) => (
@@ -46,4 +46,4 @@ const ModulePages = ({ moduleId }) => {
   );
 };
 
-export default ModulePages;
+export default Lesson;

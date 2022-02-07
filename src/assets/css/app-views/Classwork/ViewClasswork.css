@@ -1,46 +1,46 @@
-.view-quiz .card-box-shadow-style{
+.view-classwork .card-box-shadow-style{
   box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
   border-radius: 10px ;
   }
 
-.view-quiz .center-tag {
+.view-classwork .center-tag {
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.view-quiz .question-number{
+.view-classwork .question-number{
   margin-top: 10px;
   font-size: 14px;
   font-family: "poppins", sans-serif;
 }
 
-.view-quiz .center-div{
+.view-classwork .center-div{
   margin: auto;
 }
 
 
-.view-quiz .question-card{
+.view-classwork .question-card{
   margin-bottom: 40px;
 }
 
-.view-quiz .quiz-name {
+.view-classwork .classwork-name {
   font-size: 45px;
   font-weight: 300;
   font-family: "poppins", sans-serif;
   margin-bottom: 0px;
 }
 
-.view-quiz .ant-checkbox-wrapper {
+.view-classwork .ant-checkbox-wrapper {
   align-items: flex-start;
 }
 
-.view-quiz .ant-card .ant-card-body{
+.view-classwork .ant-card .ant-card-body{
   width: 100% !important;
   padding: 20px !important;
 }
 
-.view-quiz .underline-input {
+.view-classwork .underline-input {
   border: 0 !important;
   outline: 0 !important;
   width: 100% !important;
@@ -50,7 +50,7 @@
   margin-bottom: 10px;
 }
 
-.view-quiz .load-icon{
+.view-classwork .load-icon{
   position: absolute;
   top: 50%;
   left: 50%;
