@@ -50,7 +50,7 @@ const ViewClasswork = (props) => {
 
     // useEffect(() => {
     //     if () {
-            
+
     //     }
     // }, [classwork])
 
@@ -135,27 +135,40 @@ const ViewClasswork = (props) => {
         for (let i = 1; i < classwork_length + 1; i++) {
             const qt = question[i - 1].type //question_type
 
-            if (qt != "Instriction" &&  qt != "Image"  ) {
-                const sa = values["question" + i + "_answer"] //student_answer
-                const qa = question[i - 1].answer // question_answer
+            if (qt != "Instriction" && qt != "Image") {
+                var sa = values["question" + i + "_answer"] //student_answer
+                var qa = question[i - 1].answer // question_answer
                 let am; //answer_match
-    
+
                 if (qt == "Checkbox") {
                     am = compareArray(sa, qa)
                 }
-                // else if (qt == "Identification") {
+                else if (qt == "Identification") {
+                    if (typeof sa != 'string') {
+                        sa = sa.toString()
+                    }
 
-                // }
+                    if (typeof qa != 'string') {
+                        qa = qa.toString()
+                    }
+
+                    sa = sa.replace(/\s/g, '');
+                    sa = sa.toLowerCase();
+                    qa = qa.replace(/\s/g, '');
+                    qa = qa.toLowerCase();
+
+                    am = (sa == qa)
+                }
                 else {
                     am = (sa == qa)
                 }
-    
+
                 answer_list.push(am)
-    
+
                 if (am == true) {
                     score++;
                 }
-            } else ( temp_cl -- )
+            } else (temp_cl--)
 
         }
 
@@ -178,7 +191,7 @@ const ViewClasswork = (props) => {
         // });
     }
 
-    
+
 
     const PrintQuestion = () => {
         if (question.length != undefined) {

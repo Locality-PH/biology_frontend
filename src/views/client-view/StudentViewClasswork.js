@@ -101,33 +101,48 @@ const StudentViewClasswork = (props) => {
     const onFinish = (values) => {
         // console.log("Values from classwork form:", values)
 
-        const classwork_length = Object.keys(values).length
+        const classwork_length = Object.keys(question).length
+        let temp_cl = classwork_length
         let score_list = []
         let score = 0
 
         for (let i = 1; i < classwork_length + 1; i++) {
-            const sa = values["question" + i + "_answer"] //student_answer
-            const qa = question[i - 1].answer // question_answer
             const qt = question[i - 1].type //question_type
-            let am; //answer_match
 
-            if (qt == "Checkbox") {
-                console.log(compareArray(sa, qa))
-                am = compareArray(sa, qa)
+            if (qt != "Instriction" && qt != "Image") {
+                var sa = values["question" + i + "_answer"] //student_answer
+                var qa = question[i - 1].answer // question_answer
+                let am; //answer_match
 
-            } else {
-                console.log(sa)
-                console.log(qa)
-                console.log(sa == qa)
+                if (qt == "Checkbox") {
+                    am = compareArray(sa, qa)
+                }
+                else if (qt == "Identification") {
+                    if (typeof sa != 'string') {
+                        sa = sa.toString()
+                    }
 
-                am = (sa == qa)
-            }
+                    if (typeof qa != 'string') {
+                        qa = qa.toString()
+                    }
 
-            score_list.push(am)
+                    sa = sa.replace(/\s/g, '');
+                    sa = sa.toLowerCase();
+                    qa = qa.replace(/\s/g, '');
+                    qa = qa.toLowerCase();
 
-            if (am == true) {
-                score++;
-            }
+                    am = (sa == qa)
+                }
+                else {
+                    am = (sa == qa)
+                }
+
+                score_list.push(am)
+
+                if (am == true) {
+                    score++;
+                }
+            } else (temp_cl--)
 
         }
 
@@ -138,7 +153,7 @@ const StudentViewClasswork = (props) => {
             student_id: sid,
             score_list,
             answer_list: values,
-            max_score: classwork_length,
+            max_score: temp_cl,
             score,
             mal_id,
             class_code,
