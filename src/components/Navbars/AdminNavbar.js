@@ -144,7 +144,7 @@ function Header() {
                   src={currentUser?.photoURL}
                   style={{ backgroundColor: "green" }}
                 >
-                  {utils.getNameInitial(currentUser?.displayName)}{" "}
+                  {utils.getNameInitial("Test")}{" "}
                 </Avatar>
               </Nav.Link>
             </Nav.Item>
