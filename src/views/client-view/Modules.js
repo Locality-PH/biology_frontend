@@ -192,21 +192,6 @@ const Modules = ({ match }) => {
           console.log(collapsed, type);
         }}
       >
-        {/* <Menu
-          mode="inline"
-          defaultSelectedKeys={["1"]}
-          defaultOpenKeys={["sub1"]}
-          style={{ height: "100%", borderRight: 0 }}
-          onClick={HandleModules}
-        >
-          {modules.map((result, i) => (
-            <Menu.Item key={result._id} disabled={result.disabled} style={{backgroundColor: (result.disabled == true)?"#bebebe": ""}}>
-              <Checkbox onChange={e => checkboxOnChange(e, result._id, result.module_name)} defaultChecked={result.finish} disabled={result.disabled}></Checkbox>
-              <span className="checkbox-span" style={{cursor: (result.disabled == true)?"not-allowed": "pointer"}}>{result.module_name}</span>
-            </Menu.Item>
-          ))}
-        </Menu> */}
-
         <Menu
         mode="inline"
         defaultSelectedKeys={["1"]}
@@ -224,7 +209,7 @@ const Modules = ({ match }) => {
                   </Menu.Item>
               ))}
             </SubMenu>
-            <Menu.Item disabled={(modulesData.lessons[modulesData.lessons.length -1].disabled == false)?false:true} key={`quiz/${modulesData.module_id}/${modulesData.classwork_code}`}>Quiz</Menu.Item>
+            <Menu.Item disabled={modulesData.quiz_disabled} key={`quiz/${modulesData.module_id}/${modulesData.classwork_code}`}>Quiz</Menu.Item>
           </SubMenu>
         ))}
       </Menu>

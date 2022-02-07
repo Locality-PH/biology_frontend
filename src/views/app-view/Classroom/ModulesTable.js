@@ -130,15 +130,15 @@ const ModulesTable = ({classCode}) => {
                             <span className="ml-2">Finished Students</span>
                         </Link>
                     </Menu.Item> */}
-                     <Menu.Item key="1">
+                     {/* <Menu.Item key="1">
                         <Link to={(result.type == "MyModule")?`/admin/module/edit-my-module/${result.module_id}`:
                       `/admin/module/edit-preset-module/${result.module_id}`}>
                             <EditOutlined style={menu_icons_style}/>
                             <span className="ml-2">Edit</span>
                         </Link>
-                    </Menu.Item>
+                    </Menu.Item> */}
                     <Menu.Divider/>
-                    <Menu.Item key="2" onClick={() => deleteModule(result._id, result.module_name)}>
+                    <Menu.Item key="1" onClick={() => deleteModule(result._id, result.module_name)}>
                         <>
                             <DeleteOutlined style={menu_icons_style}/>
                             <span className="ml-2">Delete</span>
