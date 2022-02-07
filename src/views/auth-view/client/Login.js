@@ -2,15 +2,19 @@ import React, { useRef, useState, useEffect } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { useAuth } from "contexts/AuthContext";
 import { auth } from "firebase";
-import { Alert } from "react-bootstrap";
+import { Alert } from "antd";
 import axios from "axios";
 import { Row, Card, Col, Form, Input, Checkbox, Button, Space } from "antd";
 import { FaUserAlt } from "react-icons/fa";
 import { AiFillLock } from "react-icons/ai";
 import { FcGoogle } from "react-icons/fc";
+<<<<<<< HEAD
+=======
+import Loading from "components/shared-components/Loading";
+>>>>>>> main
 import "./Login.css";
 import "assets/css/custom-design.css";
-
+import LoadingOverlay from "react-loading-overlay";
 function ClientLogin() {
   const { login, currentUser, localData, SignInWithGoogleStudent } = useAuth();
   const [error, setError] = useState("");
@@ -75,7 +79,6 @@ function ClientLogin() {
                 localStorage.setItem("sid", res.data[0]?.student);
 
                 localData(res.data[0].uuid, res.data[0]?.role);
-
                 user
                   .updateProfile({
                     displayName: res.data[0].full_name,
@@ -102,10 +105,9 @@ function ClientLogin() {
       });
       console.log("test");
     } catch (err) {
-      setError("Email or Password is wrong");
+      setError("Email or Password is wrong or this account is teacher only");
       console.log(err);
     }
-
     setLoading(false);
   }
   const divStyle = {
@@ -127,107 +129,165 @@ function ClientLogin() {
   };
 
   return (
-    <div style={divStyle}>
-      <Row className="h-100" justify="center" align="middle">
-        <Card className="login-card">
-          <Row gutter={70}>
-            <Col
-              xxl={12}
-              xl={12}
-              lg={12}
-              md={24}
-              sm={24}
-              xs={24}
-              style={{ height: "auto" }}
-            >
-              <h2 className="login-card-label">Login</h2>
-              <Form layout="horizontal" onFinish={handleSubmit}>
-                <div className="form-input-field-style">
-                  <Form.Item
-                    label={<FaUserAlt />}
-                    labelAlign="left"
-                    required={false}
-                    name="email"
-                    rules={[
-                      {
-                        required: true,
-                        message: "Please input email",
-                      },
-                    ]}
-                  >
-                    <Input className="custom-input" placeholder="Email" />
-                  </Form.Item>
-                  <Form.Item
-                    label={<AiFillLock />}
-                    labelAlign="left"
-                    required={false}
-                    name="password"
-                    rules={[
-                      {
-                        required: true,
-                        message: "Please input password",
-                      },
-                    ]}
-                  >
-                    <Input.Password
-                      className="custom-input"
-                      type="password"
-                      placeholder="Password"
-                    />
-                  </Form.Item>
-                </div>
-
-                <Space className="w-100" direction="vertical">
-                  <Row
-                    className="w-100"
-                    align="between"
-                    justify="center"
-                    style={{ marginBottom: "15px" }}
-                  >
-                    <Col xxl={12} xl={12} lg={12} md={12} sm={24} xs={24}>
-                      <Checkbox className="remember-me-style">
-                        Remember me
-                      </Checkbox>
-                    </Col>
-                    <Col xxl={12} xl={12} lg={12} md={12} sm={24} xs={24}>
-                      <button className="custom-button-green sm-btn">
-                        Sign in
-                      </button>
-                    </Col>
-                  </Row>
-                </Space>
-              </Form>{" "}
-              <div className="w-100 center-div login-with">
-                <Space>
-                  <p className="m-0">Login with: </p>
-                  <button
-                    onClick={(e) => loginGoogleUser(e)}
-                    className="custom-button-white"
-                  >
-                    <FcGoogle />
-                  </button>
-                </Space>
-              </div>{" "}
-              <div className="center-div">
-                <Link to="/client/register" className="login-custom-link">
-                  Create an account
-                </Link>
-              </div>
-            </Col>
-
-            <Col
-              xxl={12}
-              xl={12}
-              lg={12}
-              md={0}
-              sm={0}
-              xs={0}
-              style={rightLoginDiv}
-            ></Col>
+    <>
+      {" "}
+      {loading ? (
+        <div style={divStyle}>
+          {" "}
+          <Row className="h-100" justify="center" align="middle">
+            <Card className="login-card" style={{ height: "500px" }}>
+              <Col className="text-center vertical-center-auth">
+                {" "}
+                <Loading cover="page" />{" "}
+                <LoadingOverlay active={true}>
+                  <p>Preparing to Log in please wait.</p>
+                </LoadingOverlay>
+              </Col>
+            </Card>
           </Row>
-        </Card>
-      </Row>
-    </div>
+        </div>
+      ) : (
+        <div style={divStyle}>
+          <Row className="h-100" justify="center" align="middle">
+            <Card className="login-card">
+              {" "}
+              <Row gutter={70}>
+                <Col
+                  xxl={12}
+                  xl={12}
+                  lg={12}
+                  md={24}
+                  sm={24}
+                  xs={24}
+                  style={{ height: "auto" }}
+                >
+                  <h2 className="login-card-label">Login</h2>{" "}
+                  {error && (
+                    <Alert
+                      style={{ marginButtom: "10px" }}
+                      message={error}
+                      type="error"
+                    />
+                  )}
+                  <Form layout="horizontal" onFinish={handleSubmit}>
+                    <div className="form-input-field-style">
+                      <Form.Item
+                        label={<FaUserAlt />}
+                        labelAlign="left"
+                        required={false}
+                        name="email"
+                        rules={[
+                          {
+                            required: true,
+                            message: "Please input email",
+                          },
+                        ]}
+                      >
+                        <Input className="custom-input" placeholder="Email" />
+                      </Form.Item>
+                      <Form.Item
+                        label={<AiFillLock />}
+                        labelAlign="left"
+                        required={false}
+                        name="password"
+                        rules={[
+                          {
+                            required: true,
+                            message: "Please input password",
+                          },
+                        ]}
+                      >
+                        <Input.Password
+                          className="custom-input"
+                          type="password"
+                          placeholder="Password"
+                        />
+                      </Form.Item>
+                    </div>
+
+                    <Space className="w-100" direction="vertical">
+                      <Row
+                        className="w-100"
+                        align="between"
+                        justify="center"
+                        style={{ marginBottom: "15px" }}
+                      >
+                        <Col xxl={12} xl={12} lg={12} md={12} sm={24} xs={24}>
+                          <Checkbox className="remember-me-style">
+                            Remember me
+                          </Checkbox>
+                        </Col>
+                        <Col xxl={12} xl={12} lg={12} md={12} sm={24} xs={24}>
+                          <button
+                            disabled={loading}
+                            className="custom-button-green sm-btn"
+                          >
+                            Sign in
+                          </button>
+                        </Col>
+                      </Row>
+                    </Space>
+                  </Form>{" "}
+                  <div className="w-100 center-div login-with">
+                    <Space>
+                      <p className="m-0">Login with: </p>
+                      <button
+                        onClick={(e) => loginGoogleUser(e)}
+                        className="custom-button-white"
+                      >
+                        <FcGoogle />
+                      </button>
+                    </Space>
+                  </div>{" "}
+                  <div className="center-div">
+                    <Link to="/client/register" className="login-custom-link">
+                      Create an account
+                    </Link>
+                  </div>
+                </Col>
+                <Col
+                  xxl={12}
+                  xl={12}
+                  lg={12}
+                  md={0}
+                  sm={0}
+                  xs={0}
+                  style={rightLoginDiv}
+                ></Col>
+              </Row>{" "}
+              <Row
+                xxl={24}
+                xl={24}
+                lg={24}
+                md={24}
+                sm={24}
+                xs={24}
+                className="mt-5 text-center d-flex justify-content-between"
+                style={{ justifyContent: "space-between" }}
+              >
+                <Col xxl={8} xl={8} lg={24} md={24} sm={24} xs={24}>
+                  <Link to="/term" className="login-custom-link">
+                    {" "}
+                    <div>Term & Privacy</div>
+                  </Link>
+                </Col>{" "}
+                <Col xxl={8} xl={8} lg={24} md={24} sm={24} xs={24}>
+                  <Link to="/about-us/" className="login-custom-link">
+                    {" "}
+                    <div>About Us</div>{" "}
+                  </Link>
+                </Col>{" "}
+                <Col xxl={8} xl={8} lg={24} md={24} sm={24} xs={24}>
+                  <Link to="/admin/login" className="login-custom-link">
+                    <div>Create Classroom</div>{" "}
+                  </Link>
+                </Col>{" "}
+              </Row>{" "}
+            </Card>
+          </Row>{" "}
+        </div>
+      )}
+    </>
   );
 }
 
