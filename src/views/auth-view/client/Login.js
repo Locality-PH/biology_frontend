@@ -200,7 +200,35 @@ function ClientLogin() {
                     <Link to="/client/register" className="login-custom-link">
                       Create an account
                     </Link>
-                  </div>
+                  </div>{" "}
+                  <Row
+                    xxl={24}
+                    xl={24}
+                    lg={24}
+                    md={24}
+                    sm={24}
+                    xs={24}
+                    className="mt-5 text-center d-flex justify-content-between"
+                    style={{ justifyContent: "space-between" }}
+                  >
+                    <Col xxl={8} xl={8} lg={24} md={24} sm={24} xs={24}>
+                      <Link to="/term" className="login-custom-link">
+                        {" "}
+                        <div>Term & Privacy</div>
+                      </Link>
+                    </Col>{" "}
+                    <Col xxl={8} xl={8} lg={24} md={24} sm={24} xs={24}>
+                      <Link to="/about-us/" className="login-custom-link">
+                        {" "}
+                        <div>About Us</div>{" "}
+                      </Link>
+                    </Col>{" "}
+                    <Col xxl={8} xl={8} lg={24} md={24} sm={24} xs={24}>
+                      <Link to="/admin/login" className="login-custom-link">
+                        <div>Create Classroom</div>{" "}
+                      </Link>
+                    </Col>{" "}
+                  </Row>{" "}
                 </Col>
 
                 <Col

@@ -109,7 +109,6 @@ const Login = () => {
             <img src={Avatar} />
             <h2 className="title">Welcome</h2>
             {error && <Alert variant="danger">{error}</Alert>}
-
             <div className="input-div one">
               <div className="i">
                 <i className="fas fa-user"></i>
@@ -144,7 +143,6 @@ const Login = () => {
                 </LoginLink>
               </div>
             </div>
-
             <input
               type="submit"
               disabled={loading}
@@ -168,6 +166,10 @@ const Login = () => {
             <div className="mt-2 text-center w-100">
               Need an account?{" "}
               <LoginLink to="/admin/signup">Sign up </LoginLink>
+            </div>{" "}
+            <div className="mt-2 text-center w-100">
+              Student Login
+              <LoginLink to="/client/login"> Here </LoginLink>
             </div>
           </form>{" "}
         </div>
