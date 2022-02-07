@@ -8,10 +8,7 @@ import { Row, Card, Col, Form, Input, Checkbox, Button, Space } from "antd";
 import { FaUserAlt } from "react-icons/fa";
 import { AiFillLock } from "react-icons/ai";
 import { FcGoogle } from "react-icons/fc";
-<<<<<<< HEAD
-=======
 import Loading from "components/shared-components/Loading";
->>>>>>> main
 import "./Login.css";
 import "assets/css/custom-design.css";
 import LoadingOverlay from "react-loading-overlay";

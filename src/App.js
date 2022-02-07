@@ -1,9 +1,4 @@
-<<<<<<< HEAD
-import React from "react";
-import Cookies from "universal-cookie";
-=======
 import React, { Suspense } from "react";
->>>>>>> main
 import { useAuth } from "contexts/AuthContext";
 import Login from "./views/auth-view/Login";
 import Signup from "./views/auth-view/Signup";
@@ -34,31 +29,6 @@ function App() {
   console.log(process.env.REACT_APP_FIREBASE_AUTH_DOMAIN);
 
   return (
-<<<<<<< HEAD
-    <div>
-      <Switch>
-        {/* ADMINSIDE START */}{" "}
-        <Route exact path="/">
-          <Redirect to="/home" />
-        </Route>
-        <Route path="/admin/login" component={Login} />
-        <Route path="/admin/signup" component={Signup} />
-        <PrivateRouteAdmin path="/admin">
-          <Route path="/admin" render={(props) => <AdminLayout {...props} />} />
-        </PrivateRouteAdmin>
-        {/* ADMINSIDE */}
-        {/* CLIENTSIDE */}{" "}
-        <Route path="/client/login" component={ClientLogin} />{" "}
-        <Route path="/client/register" component={ClientRegister} />
-        <PrivateRouteClient path="/">
-          {" "}
-          <ClientLayout />{" "}
-        </PrivateRouteClient>{" "}
-        {/* <Redirect from="/" to="/client/login" /> */}
-        {/* CLIENTSIDE */}
-      </Switch>
-    </div>
-=======
     <>
       {" "}
       <Suspense fallback={<Loading cover="page" />}>
@@ -90,7 +60,6 @@ function App() {
         </Switch>{" "}
       </Suspense>
     </>
->>>>>>> main
   );
 }
 export default App;
