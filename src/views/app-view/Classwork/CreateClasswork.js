@@ -701,7 +701,7 @@ const EditClasswork = (props) => {
                 await Axios.post("/api/classwork/create-classwork", formData).then((response) => {
                     console.log(response.data)
                 }).then(
-                    message.success("Changes has been saved.", 10)
+                    message.success("Classwork has been created successfully.", 10)
                 )
 
             } catch (error) {
