@@ -2,8 +2,9 @@ import React, { useRef, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { useAuth } from "contexts/AuthContext";
 import { auth } from "firebase";
-import { Alert } from "react-bootstrap";
-
+import { Alert } from "antd";
+import LoadingOverlay from "react-loading-overlay";
+import Loading from "components/shared-components/Loading";
 import { Row, Card, Col, Form, Input, Checkbox, Button } from "antd";
 
 //Icons
@@ -98,109 +99,141 @@ function ClientRegister() {
     }
   };
   return (
-    <div style={divStyle}>
-      <Row className="h-100" justify="center" align="middle">
-        <Card className="register-card">
-          <Row gutter={70}>
-            <Col span={12} style={leftLoginDiv}></Col>
-
-            <Col
-              xxl={12}
-              xl={12}
-              lg={12}
-              md={24}
-              sm={24}
-              xs={24}
-              style={{ height: "auto" }}
-            >
-              <h2 className="login-card-label">Register</h2>
-              <Form layout="horizontal" onFinish={handleSubmit}>
+    <>
+      {loading ? (
+        <div style={divStyle}>
+          {" "}
+          <Row className="h-100" justify="center" align="middle">
+            <Card className="login-card" style={{ height: "500px" }}>
+              <Col className="text-center vertical-center-auth">
                 {" "}
-                {error && <Alert variant="danger">{error}</Alert>}
-                <div className="form-input-field-style">
-                  <Form.Item
-                    label={<FaUserAlt />}
-                    labelAlign="left"
-                    required={false}
-                    name="email"
-                    rules={[
-                      {
-                        required: true,
-                        message: "Please input Email!!",
-                      },
-                    ]}
-                  >
-                    <Input className="custom-input" placeholder="Email" />
-                  </Form.Item>
-                  <Form.Item
-                    label={<FaFeatherAlt />}
-                    labelAlign="left"
-                    required={false}
-                    name="fullname"
-                    rules={[
-                      {
-                        required: true,
-                        message: "Please input your Full Name!!",
-                      },
-                    ]}
-                  >
-                    <Input className="custom-input" placeholder="Full Name" />
-                  </Form.Item>
-                  <Form.Item
-                    label={<AiFillLock />}
-                    labelAlign="left"
-                    required={false}
-                    name="password"
-                    rules={[
-                      {
-                        required: true,
-                        message: "Please input password!!",
-                      },
-                    ]}
-                  >
-                    <Input.Password
-                      className="custom-input"
-                      type="password"
-                      placeholder="Password"
-                    />
-                  </Form.Item>
-                  <Form.Item
-                    label={<AiFillLock />}
-                    labelAlign="left"
-                    required={false}
-                    name="confirm_password"
-                    rules={[
-                      {
-                        required: true,
-                        message: "Please type your password again!!",
-                      },
-                    ]}
-                  >
-                    <Input.Password
-                      className="custom-input"
-                      type="password"
-                      placeholder="Confirm Password"
-                    />
-                  </Form.Item>
-                </div>
-                <Row className="w-100" align="between" justify="center">
-                  <Col xxl={14} xl={14} lg={12} md={12} sm={24} xs={24}>
-                    <Link to="/client/login" className="register-custom-link">
-                      Already have an account?
-                    </Link>
-                  </Col>
-                  <Col xxl={10} xl={10} lg={12} md={12} sm={24} xs={24}>
-                    <button className="custom-button-green sm-btn">
-                      Sign up
-                    </button>
-                  </Col>
-                </Row>
-              </Form>
-            </Col>
+                <Loading cover="page" />{" "}
+                <LoadingOverlay active={true}>
+                  <p>Preparing to Log in please wait.</p>
+                </LoadingOverlay>
+              </Col>
+            </Card>
           </Row>
-        </Card>
-      </Row>
-    </div>
+        </div>
+      ) : (
+        <div style={divStyle}>
+          <Row className="h-100" justify="center" align="middle">
+            <Card className="register-card">
+              <Row gutter={70}>
+                <Col span={12} style={leftLoginDiv}></Col>
+
+                <Col
+                  xxl={12}
+                  xl={12}
+                  lg={12}
+                  md={24}
+                  sm={24}
+                  xs={24}
+                  style={{ height: "auto" }}
+                >
+                  <h2 className="login-card-label">Register</h2>
+                  {error && (
+                    <Alert
+                      style={{ marginButtom: "10px" }}
+                      message={error}
+                      type="error"
+                    />
+                  )}
+                  <Form layout="horizontal" onFinish={handleSubmit}>
+                    {" "}
+                    {error && <Alert variant="danger">{error}</Alert>}
+                    <div className="form-input-field-style">
+                      <Form.Item
+                        label={<FaUserAlt />}
+                        labelAlign="left"
+                        required={false}
+                        name="email"
+                        rules={[
+                          {
+                            required: true,
+                            message: "Please input Email!!",
+                          },
+                        ]}
+                      >
+                        <Input className="custom-input" placeholder="Email" />
+                      </Form.Item>
+                      <Form.Item
+                        label={<FaFeatherAlt />}
+                        labelAlign="left"
+                        required={false}
+                        name="fullname"
+                        rules={[
+                          {
+                            required: true,
+                            message: "Please input your Full Name!!",
+                          },
+                        ]}
+                      >
+                        <Input
+                          className="custom-input"
+                          placeholder="Full Name"
+                        />
+                      </Form.Item>
+                      <Form.Item
+                        label={<AiFillLock />}
+                        labelAlign="left"
+                        required={false}
+                        name="password"
+                        rules={[
+                          {
+                            required: true,
+                            message: "Please input password!!",
+                          },
+                        ]}
+                      >
+                        <Input.Password
+                          className="custom-input"
+                          type="password"
+                          placeholder="Password"
+                        />
+                      </Form.Item>
+                      <Form.Item
+                        label={<AiFillLock />}
+                        labelAlign="left"
+                        required={false}
+                        name="confirm_password"
+                        rules={[
+                          {
+                            required: true,
+                            message: "Please type your password again!!",
+                          },
+                        ]}
+                      >
+                        <Input.Password
+                          className="custom-input"
+                          type="password"
+                          placeholder="Confirm Password"
+                        />
+                      </Form.Item>
+                    </div>
+                    <Row className="w-100" align="between" justify="center">
+                      <Col xxl={14} xl={14} lg={12} md={12} sm={24} xs={24}>
+                        <Link
+                          to="/client/login"
+                          className="register-custom-link"
+                        >
+                          Already have an account?
+                        </Link>
+                      </Col>
+                      <Col xxl={10} xl={10} lg={12} md={12} sm={24} xs={24}>
+                        <button className="custom-button-green sm-btn">
+                          Sign up
+                        </button>
+                      </Col>
+                    </Row>
+                  </Form>
+                </Col>
+              </Row>
+            </Card>
+          </Row>
+        </div>
+      )}
+    </>
   );
 }
 
