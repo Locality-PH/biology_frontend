@@ -4,24 +4,22 @@ import {
   Row,
   Col,
 } from "react-bootstrap";
-import StudentsTable from "./StudentsTable"
-import ModulesTable from "./ModulesTable"
+import MyModule from "./MyModule";
+import PresetModule from "./PresetModule";
 
-const ViewClassroom = ({match}) => {
-    const class_code = match.params.class_code
-    
+const Module = () => {
     return (
         <>
             <Container fluid>
                 <Row>
                     <Col md="12">
-                        <StudentsTable classCode={class_code}></StudentsTable>
+                        <MyModule></MyModule>
                     </Col>
                 </Row>
                 <br></br>
                 <Row>
                     <Col md="12">
-                        <ModulesTable classCode = {class_code}></ModulesTable>
+                        {/* <PresetModule></PresetModule> */}
                     </Col>
                 </Row>
             </Container>
@@ -29,4 +27,4 @@ const ViewClassroom = ({match}) => {
     )
 }
 
-export default ViewClassroom
+export default Module

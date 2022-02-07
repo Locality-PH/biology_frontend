@@ -6,7 +6,7 @@ import HomeDashboard from "views/client-view/HomeDashboard";
 import LeaveClassroom from "views/client-view/LeaveClassroom";
 import Modules from "views/client-view/Modules";
 import Student from "views/client-view/Student";
-import StudentViewQuiz from "views/client-view/StudentViewQuiz";
+import StudentViewClasswork from "views/client-view/StudentViewClasswork";
 
 import Particles from "react-tsparticles";
 import particlesConfig from "./ParticlesConfig";
@@ -27,6 +27,7 @@ function Admin() {
           />{" "}
         </div>
         <Switch>
+<<<<<<< HEAD
           <Route path="/client/home" component={HomeDashboard} />
 
           <Route
@@ -45,6 +46,15 @@ function Admin() {
             path="/client/:class_code/:module_id/quiz/:quiz_code"
             component={StudentViewQuiz}
           />
+=======
+          <Route path="/client/home">
+            <HomeDashboard />
+          </Route>
+          <Route path="/client/classroom/:class_code/modules" component={Modules} />
+          <Route path="/client/classroom/:class_code/leave" component={LeaveClassroom}/>
+          <Route path="/client/classroom/:class_code/students" component={Student} />
+          <Route path="/client/:class_code/:mal_id/:classwork_type/:classwork_code" component={StudentViewClasswork} />
+>>>>>>> 339225c49633dc2d91cbd0405f37d767c5a210a1
           <Route path="/client/user" component={StudentProfile} />
         </Switch>
       </Layout>

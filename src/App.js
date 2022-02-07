@@ -16,9 +16,6 @@ import { Route, Switch, Redirect } from "react-router-dom";
 import ClientLogin from "views/auth-view/client/Login";
 import ClientRegister from "views/auth-view/client/Register";
 
-//Global Page Component
-import ViewQuiz from "views/app-view/Quiz/ViewQuiz.js";
-
 function App() {
   const { localData, localrole } = useAuth(); // determine if authorized, from context or however you're doing it
 
