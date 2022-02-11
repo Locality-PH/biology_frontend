@@ -36,20 +36,13 @@ function Sidebar({ color, image, routes }) {
         }}
       />
       <div className="sidebar-wrapper">
-        <div className="logo d-flex align-items-center justify-content-start">
-          <a
-            href="/admin/dashboard"
-            className="simple-text logo-mini mx-1"
-          >
-            <div className="logo-img">
-              <img
-                src={require("assets/img/reactlogo.png").default}
-                alt="..."
-              />
-            </div>
-          </a>
-          <a className="simple-text" href="/admin/dashboard">
-            Biology App
+        {" "}
+        <div className="logo">
+          <a href="/admin/dashboard" className="mx-1 simple-text logo-mini">
+            <div
+              className="logo_admin"
+              style={{ color: "white", marginTop: "8px" }}
+            ></div>
           </a>
         </div>
         <Nav>
@@ -57,15 +50,13 @@ function Sidebar({ color, image, routes }) {
             if (!prop.redirect)
               return (
                 <div key={key}>
-
-                  {prop.renderSidebar &&
+                  {prop.renderSidebar && (
                     <li
                       className={
                         prop.upgrade
                           ? "active active-pro"
                           : activeRoute(prop.layout + prop.path)
                       }
-
                     >
                       <NavLink
                         to={prop.layout + prop.path}
@@ -75,7 +66,8 @@ function Sidebar({ color, image, routes }) {
                         <i className={prop.icon} />
                         <p>{prop.name}</p>
                       </NavLink>
-                    </li>}
+                    </li>
+                  )}
                 </div>
               );
             return null;

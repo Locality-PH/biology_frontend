@@ -23,7 +23,7 @@ import { Avatar, Menu, Dropdown } from "antd";
 import utils from "utils";
 import routes from "routes.js";
 
-import "../../assets/css/admin-navbar.css"
+import "../../assets/css/admin-navbar.css";
 import AvatarProfile from "components/shared-components/AvatarProfile/AvatarProfile";
 
 function Header() {
@@ -33,8 +33,8 @@ function Header() {
   const history = useHistory();
 
   useEffect(() => {
-    console.log(localStorage.getItem('avatar'))
-  }, [])
+    console.log(localStorage.getItem("avatar"));
+  }, []);
 
   async function handleLogout() {
     setError("");
@@ -100,11 +100,7 @@ function Header() {
             <i className="fas fa-ellipsis-v"></i>
           </Button>
           <Link to={getBrandLink()}>
-            <Navbar.Brand
-              className="mr-2"
-            >
-              {getBrandText()}
-            </Navbar.Brand>
+            <Navbar.Brand className="mr-2">{getBrandText()}</Navbar.Brand>
           </Link>
         </div>
         <Navbar.Toggle aria-controls="basic-navbar-nav" className="mr-2">

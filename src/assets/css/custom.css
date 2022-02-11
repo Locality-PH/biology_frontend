@@ -783,6 +783,13 @@ ul {
   height: 62px;
 }
 
+.logo_admin {
+  background-image: url("../img/logo.png");
+  background-size: 200px;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 40px;
+}
 @media screen and (max-width: 580px) {
   .logo_client {
     background-image: url("../img/logo2.png");
