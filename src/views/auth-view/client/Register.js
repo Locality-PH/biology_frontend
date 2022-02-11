@@ -6,7 +6,6 @@ import { Alert } from "antd";
 import LoadingOverlay from "react-loading-overlay";
 import Loading from "components/shared-components/Loading";
 import { Row, Card, Col, Form, Input, Checkbox, Button } from "antd";
-
 //Icons
 import { FaUserAlt, FaFeatherAlt } from "react-icons/fa";
 import { AiFillLock } from "react-icons/ai";

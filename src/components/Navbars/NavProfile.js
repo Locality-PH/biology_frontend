@@ -232,7 +232,7 @@ export const NavProfile = () => {
               src={currentUser?.photoURL}
               style={{ backgroundColor: "green" }}
             >
-              {utils.getNameInitial(currentUser?.displayName)}{" "}
+              {utils.getNameInitial("Test")}{" "}
             </Avatar>
           </Menu.Item>
         </Menu>

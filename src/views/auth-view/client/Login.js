@@ -10,7 +10,6 @@ import { AiFillLock } from "react-icons/ai";
 import { FcGoogle } from "react-icons/fc";
 import LoadingOverlay from "react-loading-overlay";
 import Loading from "components/shared-components/Loading";
-
 import "./Login.css";
 import "assets/css/custom-design.css";
 
