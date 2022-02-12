@@ -45,7 +45,7 @@ function ClientLogin() {
                   localStorage.setItem("mid", res.data[0]?.auth_id);
                   localStorage.setItem("role", "Student");
                   localStorage.setItem("sid", res.data[0]?.student);
-
+                  localStorage.setItem("fullname", res.data[0].full_name);
                   localData(res.data[0].uuid, res.data[0]?.role);
 
                   user

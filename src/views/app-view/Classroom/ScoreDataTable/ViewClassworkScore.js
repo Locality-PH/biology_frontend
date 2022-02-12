@@ -105,7 +105,7 @@ const ViewClassworkScore = (props) => {
             }
         )
 
-        setScoreboard({...scoreboard, score: totalScore})
+        setScoreboard({ ...scoreboard, score: totalScore })
 
         await Axios.post("/api/scoreboard/update_score", { score_list, score: totalScore, scoreboard_id: scoreboard.scoreboard_id }).then((response) => {
             console.log(response.data)
@@ -308,7 +308,15 @@ const ViewClassworkScore = (props) => {
                                 <h5><b>Essay:</b></h5>
                                 <p> {question.string} </p>
 
-                                <Input.TextArea style={{ marginBottom: 0 }} autoSize={{ minRows: 3, maxRows: 7 }} readOnly />
+                                <Form.Item
+                                    name={"question" + key + "_answer"}
+                                    rules={[{ required: true, message: "Need answer!" }]}
+                                    required={false}
+                                    className="m-0"
+                                >
+                                    <Input.TextArea style={{ marginBottom: 0 }} autoSize={{ minRows: 3, maxRows: 7 }} readOnly />
+                                </Form.Item>
+
 
                                 <Divider className='m-2' />
 

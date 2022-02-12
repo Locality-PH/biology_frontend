@@ -35,6 +35,7 @@ export function AuthProvider({ children }) {
               localStorage.setItem("role", res.data[0]?.role);
               localStorage.setItem("tid", res.data[0]?.teacher);
               localStorage.setItem("avatar", avatar);
+              localStorage.setItem("fullname", res.data[0]?.full_name);
               localData(res.data[0].uuid, res.data[0]?.role);
             })
             .then((_) => {
@@ -66,7 +67,7 @@ export function AuthProvider({ children }) {
               localStorage.setItem("mid", res.data[0]?.auth_id);
               localStorage.setItem("role", res.data[0]?.role);
               localStorage.setItem("sid", res.data[0]?.student);
-
+              localStorage.setItem("fullname", res.data[0]?.full_name);
               localData(res.data[0].uuid, res.data[0]?.role);
             })
             .then((_) => {
@@ -108,7 +109,7 @@ export function AuthProvider({ children }) {
     localStorage.removeItem("tid");
     localStorage.removeItem("avatar");
     localStorage.removeItem("sid");
-
+    localStorage.removeItem("fullname");
     return auth.signOut();
   }
   useEffect(() => {
