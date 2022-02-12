@@ -76,13 +76,13 @@ const ViewClassworkScore = (props) => {
                     tempInitialVal[`question${score.index}_score`] = score[`question${score.index}_score`]
                 });
 
-            setInitialVal((prev) => tempInitialVal)
+            setInitialVal(tempInitialVal)
 
         }
     }, [question, scoreboard])
 
     useEffect(() => {
-        // console.log("initialVal", initialVal)
+        console.log("initialVal", initialVal)
         form.resetFields();
     }, [initialVal])
 
