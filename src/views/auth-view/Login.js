@@ -139,9 +139,9 @@ const Login = () => {
             </div>
             <div>
               <div className="a-right">
-                <LoginLink to="/admin/forgotpassword">
+                {/* <LoginLink to="/admin/forgotpassword">
                   Forgot Password?
-                </LoginLink>
+                </LoginLink> */}
               </div>
             </div>
 

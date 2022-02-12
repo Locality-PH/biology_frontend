@@ -157,9 +157,9 @@ function ClientLogin() {
                     style={{ marginBottom: "15px" }}
                   >
                     <Col xxl={12} xl={12} lg={12} md={12} sm={24} xs={24}>
-                      <Checkbox className="remember-me-style">
+                      {/* <Checkbox className="remember-me-style">
                         Remember me
-                      </Checkbox>
+                      </Checkbox> */}
                     </Col>
                     <Col xxl={12} xl={12} lg={12} md={12} sm={24} xs={24}>
                       <button className="custom-button-green sm-btn">

@@ -123,7 +123,6 @@ const HomeDashboard = () => {
                         className={result.name}
                         section={result.section_name}
                         color="green"
-                        currentPhoto="https://joeschmoe.io/api/v1/random"
                         modules={`/client/classroom/${result.class_code}/modules`}
                         students={`/client/classroom/${result.class_code}/students`}
                         leave={`/client/classroom/${result.class_code}/leave`}

@@ -6,6 +6,7 @@ import ViewClassroom from "views/app-view/Classroom/ViewClassroom";
 import EditClassroom from "views/app-view/Classroom/EditClassroom";
 import ViewStudent from "views/app-view/Classroom/ViewStudent";
 import ModuleStudentsLessonScoreTable from "views/app-view/Classroom/ScoreDataTable/ModuleStudentsLessonScoreTable";
+import ViewClassworkScore from "views/app-view/Classroom/ScoreDataTable/ViewClassworkScore";
 
 import Module from "./views/app-view/Module/Module";
 import CreateMyModule from "./views/app-view/Module/CreateMyModule";
@@ -196,6 +197,14 @@ const dashboardRoutes = [
     layout: "/admin",
     renderSidebar: false,
     isExact: false,
+  },
+  {
+    path: "/classwork/student-score/:student_id/:mal_id/:classwork_code",
+    name: "View Classwork Score",
+    component: ViewClassworkScore,
+    layout: "/admin",
+    renderSidebar: false,
+    isExact: true,
   },
   {
     path: "/user",

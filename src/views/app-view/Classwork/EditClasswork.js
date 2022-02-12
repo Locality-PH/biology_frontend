@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { Card, Row, Col, Form, Input, Space, Button, Checkbox, Radio, Select, Spin, Upload, message } from 'antd'
+import { Card, Row, Col, Form, Input, Space, Button, Checkbox, Radio, Select, Spin, Upload, message, Divider, InputNumber } from 'antd'
 import { MinusCircleOutlined, PlusOutlined, UploadOutlined, StarOutlined } from '@ant-design/icons';
 import { AiOutlinePlus } from "react-icons/ai"
 import { useHistory } from "react-router-dom";
@@ -77,24 +77,24 @@ const CreateClasswork = (props) => {
 
                     if (question.type == 'Identification') {
                         tempInitialVal.push({ ["question" + [i + 1] + "_options"]: question.option })
+                        tempInitialVal.push({ ["question" + [i + 1] + "_score"]: question.score })
                     }
 
-                    else {
 
-                        if (question.type == 'Multiple Choice' || question.type == 'Checkbox') {
-                            let optionArray = []
+                    else if (question.type == 'Multiple Choice' || question.type == 'Checkbox') {
+                        let optionArray = []
 
-                            question.option.map(
-                                (option) => {
-                                    if (option != null) {
-                                        optionArray.push(option)
-                                    }
-                                })
+                        question.option.map(
+                            (option) => {
+                                if (option != null) {
+                                    optionArray.push(option)
+                                }
+                            })
 
-                            tempInitialVal.push({ ["question" + [i + 1] + "_options"]: optionArray })
-                        }
-
+                        tempInitialVal.push({ ["question" + [i + 1] + "_options"]: optionArray })
+                        tempInitialVal.push({ ["question" + [i + 1] + "_score"]: question.score })
                     }
+
                 }
 
                 if (question.img != undefined) {
@@ -104,6 +104,10 @@ const CreateClasswork = (props) => {
                     if (question._id != null) {
                         tempNewFile[`question${i + 1}_image`] = { ...tempNewFile[`question${i + 1}_image`], isNewFile: false, id: question._id }
                     }
+                }
+
+                if (question.type == 'Essay') {
+                    tempInitialVal.push({ ["question" + [i + 1] + "_score"]: question.score })
                 }
 
             })
@@ -138,12 +142,12 @@ const CreateClasswork = (props) => {
     };
 
     const addQuestion = () => {
-        var ql 
+        var ql
 
         if (question.length != null) {
-            ql =  question.length 
-        } else ( ql = 0)
-        
+            ql = question.length
+        } else (ql = 0)
+
         setIsQuestionLoading(true)
 
         let classwork_type = newClassworkType
@@ -167,6 +171,8 @@ const CreateClasswork = (props) => {
                 option: [null]
             }
         }
+
+        console.log("newQuestion", newQuestion)
 
         // form.getFieldsValue(true)
         let currentFormData = formRef.current.getFieldsValue("true")
@@ -243,13 +249,11 @@ const CreateClasswork = (props) => {
 
             if (newOptions != undefined) {
                 if (newQuestion.type == "Identification") {
-                    console.log("1newOptions i: ", newQuestion.type)
-                    console.log(newOptions)
                     newQuestion["answer"] = [newOptions]
+                    newQuestion["score"] = values["question" + i + "_score"]
                 }
 
                 else if (newQuestion.type == "Multiple Choice" || newQuestion.type == "Checkbox") {
-                    console.log("2newOptions i: ", newQuestion.type)
                     for (let x = 0; x < newOptions.length; x++) {
                         if (newOptions[x] != undefined) {
                             if (newOptions[x].isAnswer == true) {
@@ -257,9 +261,15 @@ const CreateClasswork = (props) => {
                             }
                         }
 
+                        newQuestion["score"] = values["question" + i + "_score"]
+
                     }
                 }
 
+            }
+
+            if (newQuestion.type == "Essay") {
+                newQuestion["score"] = values["question" + i + "_score"]
             }
 
             newClasswork["question"].push(newQuestion)
@@ -343,6 +353,22 @@ const CreateClasswork = (props) => {
                                     required={false}
                                 >
                                     <Input prefix={<b>Answer:</b>} />
+                                </Form.Item>
+
+                                <Divider className='m-2' />
+
+                                <Form.Item
+                                    name={"question" + key + "_score"}
+                                    rules={[{ required: true, message: "Need points!" }]}
+                                    required={false}
+                                    label={<b className='mt-2'>Points:</b>}
+                                    className="m-0"
+                                >
+                                    <InputNumber
+                                        className='underline-input m-0'
+                                        min={1}
+                                        style={{ width: "60px" }}
+                                    />
                                 </Form.Item>
 
                                 <p className='m-0 center-div question-text-card'>card {key}</p>
@@ -430,6 +456,21 @@ const CreateClasswork = (props) => {
 
                                 </Form.List>
 
+                                <Divider className='m-2' />
+
+                                <Form.Item
+                                    name={"question" + key + "_score"}
+                                    label={<b className='mt-2'>Points:</b>}
+                                    rules={[{ required: true, message: "Need points!" }]}
+                                    required={false}
+                                    className="m-0"
+                                >
+                                    <InputNumber
+                                        className='underline-input m-0'
+                                        min={1}
+                                        style={{ width: "60px" }}
+                                    />
+                                </Form.Item>
 
                                 <p className='m-0 center-div question-text-card'>card {key}</p>
                             </Card>
@@ -519,7 +560,7 @@ const CreateClasswork = (props) => {
 
                                             ))}
 
-                                            <Form.Item className='mb-0'>
+                                            <Form.Item className='mb-4'>
                                                 <Button type="dashed" block onClick={() => add()} >
                                                     <Space size={4} align='middle'>
                                                         <AiOutlinePlus /> <p>Add Option</p>
@@ -530,6 +571,22 @@ const CreateClasswork = (props) => {
                                     )}
 
                                 </Form.List>
+
+                                <Divider className='m-2' />
+
+                                <Form.Item
+                                    name={"question" + key + "_score"}
+                                    label={<b className='mt-2'>Points:</b>}
+                                    rules={[{ required: true, message: "Need points!" }]}
+                                    required={false}
+                                    className="m-0"
+                                >
+                                    <InputNumber
+                                        className='underline-input m-0'
+                                        min={1}
+                                        style={{ width: "60px" }}
+                                    />
+                                </Form.Item>
 
                                 <p className='m-0 center-div question-text-card'>card {key}</p>
                             </Card>
@@ -637,6 +694,64 @@ const CreateClasswork = (props) => {
                                 <p className='m-0 center-div question-text-card'>card {key}</p>
                             </Card>
                         )
+                    } else if (question.type == "Essay") {
+                        return (
+                            <Card className='card-box-shadow-style question-card center-div' key={QTNkey}>
+                                <img
+                                    src='https://cdn-icons-png.flaticon.com/512/1828/1828665.png'
+                                    title="Remove question"
+                                    className='question-close-btn'
+                                    onClick={() => removeQuestion(QTNkey)}
+                                />
+
+                                <Form.Item
+                                    name={"question" + key + "_type"}
+                                    initialValue={"Essay"}
+                                    hidden={true}
+                                >
+                                    <Input />
+                                </Form.Item>
+
+                                {(question._id != null) &&
+                                    <Form.Item
+                                        name={"question" + key + "_id"}
+                                        initialValue={question._id}
+                                        hidden={true}
+                                    >
+                                        <Input />
+                                    </Form.Item>
+                                }
+
+                                <b>Essay:</b>
+                                <Form.Item
+                                    className='mb-0'
+                                    name={"question" + QTNkey}
+                                    colon={false}
+                                    rules={[{ required: true, message: "This can't be blank!!" }]}
+                                    required={false}
+                                >
+                                    <Input.TextArea placeholder='Question here....' className='underline-input' style={{ marginBottom: 0 }} autoSize={{ minRows: 1, maxRows: 4 }} />
+                                </Form.Item>
+
+                                <Divider className='m-2' />
+
+                                <Form.Item
+                                    name={"question" + key + "_score"}
+                                    rules={[{ required: true, message: "Need points!" }]}
+                                    required={false}
+                                    label={<b className='mt-2'>Points:</b>}
+                                    className="m-0"
+                                >
+                                    <InputNumber
+                                        className='underline-input m-0'
+                                        min={1}
+                                        style={{ width: "60px" }}
+                                    />
+                                </Form.Item>
+
+                                <p className='m-0 center-div question-text-card'>card {key}</p>
+                            </Card>
+                        )
                     }
 
                 })
@@ -670,6 +785,7 @@ const CreateClasswork = (props) => {
 
             if (newQuestion.type == "Identification") {
                 newQuestion["answer"].push(newOptions)
+                newQuestion["score"] = values["question" + i + "_score"]
                 // console.log("Answer: " + newOptions)
             }
 
@@ -687,6 +803,8 @@ const CreateClasswork = (props) => {
                     hasError = true
                 }
 
+                newQuestion["score"] = values["question" + i + "_score"]
+
             }
 
             else if (newQuestion.type == "Image") {
@@ -694,6 +812,10 @@ const CreateClasswork = (props) => {
                     message.error("Failed to upload classwork, card " + i + " has no image!!")
                     hasError = true
                 }
+            }
+
+            else if (newQuestion.type == "Essay") {
+                newQuestion["score"] = values["question" + i + "_score"]
             }
 
             newClasswork["question"].push(newQuestion)
@@ -806,6 +928,11 @@ const CreateClasswork = (props) => {
                 <Row justify='center'>
                     <Col xxl={12} xl={16} lg={16} md={18} sm={24} xs={24}>
                         <Form
+                            labelCol={{ flex: '10px' }}
+                            labelAlign="left"
+                            labelWrap
+                            colon={false}
+                            wrapperCol={{ flex: 1 }}
                             name="classwork-form"
                             onFinish={onFinish}
                             initialValues={initialVal}
@@ -852,6 +979,7 @@ const CreateClasswork = (props) => {
                                             <Option value="Checkbox">Checkbox</Option>
                                             <Option value="Image">Image</Option>
                                             <Option value="Instruction">Instruction</Option>
+                                            <Option value="Essay">Essay</Option>
                                         </Select>
 
 

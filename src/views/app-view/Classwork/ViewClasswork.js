@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Card, Row, Col, Form, Input, Space, Button, Checkbox, Radio, Select, Spin, Modal, message } from 'antd'
+import { Card, Row, Col, Form, Input, InputNumber, Space, Button, Checkbox, Radio, Select, Spin, Modal, Divider, message } from 'antd'
 import { useHistory } from "react-router-dom";
 import Axios from 'axios'
 
@@ -134,8 +134,8 @@ const ViewClasswork = (props) => {
 
         for (let i = 1; i < classwork_length + 1; i++) {
             const qt = question[i - 1].type //question_type
-
-            if (qt != "Instriction" && qt != "Image") {
+            console.log(qt)
+            if (qt != "Instruction" && qt != "Image") {
                 var sa = values["question" + i + "_answer"] //student_answer
                 var qa = question[i - 1].answer // question_answer
                 let am; //answer_match
@@ -168,7 +168,10 @@ const ViewClasswork = (props) => {
                 if (am == true) {
                     score++;
                 }
-            } else (temp_cl--)
+            } else if (qt == "Instruction" || qt == "Image") {
+                console.log("Deduct to max lenght")
+                temp_cl--
+            }
 
         }
 
@@ -291,7 +294,25 @@ const ViewClasswork = (props) => {
 
                             </Card>
                         )
+                    } else if (question.type == "Essay") {
+                        return (
+                            <Card className='card-box-shadow-style question-card center-div' key={QTNkey}>
+
+                                <h5><b>Essay:</b></h5>
+                                <p> {question.string} </p>
+                                <Form.Item
+                                    className='mb-0'
+                                    name={"question" + QTNkey}
+                                    colon={false}
+                                    rules={[{ required: true, message: "This can't be blank!!" }]}
+                                    required={false}
+                                >
+                                    <Input.TextArea style={{ marginBottom: 0 }} autoSize={{ minRows: 3, maxRows: 7 }} />
+                                </Form.Item>
+                            </Card>
+                        )
                     }
+
 
                 })
             )

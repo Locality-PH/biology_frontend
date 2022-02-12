@@ -105,7 +105,7 @@ const ModulesTable = ({classCode}) => {
       )
     },
         {
-          title: 'Finished by',
+          title: 'Finished Students',
           dataIndex: 'finished',
           render: (_, result) => (
               <span>{result.finished} student</span>

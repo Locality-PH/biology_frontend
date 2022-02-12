@@ -20,6 +20,7 @@ export function AuthProvider({ children }) {
       .signInWithPopup(provider)
       .then((result) => {
         const user = result.user;
+        console.log(user)
         const avatar = user.photoURL;
 
         Axios.post("/api/admin/google-login", { user }).then((response) => {
