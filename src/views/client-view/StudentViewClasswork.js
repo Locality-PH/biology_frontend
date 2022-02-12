@@ -180,7 +180,7 @@ const StudentViewClasswork = (props) => {
         console.log(tempValues)
         setScoreModal(true)
 
-        Axios.post("/api/scoreboard/create", { tempValues }).then((response) => {
+        await Axios.post("/api/scoreboard/create", { tempValues }).then((response) => {
             console.log(response.data)
         });
     }
