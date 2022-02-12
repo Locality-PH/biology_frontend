@@ -98,7 +98,7 @@ const StudentViewClasswork = (props) => {
 
     }
 
-    const onFinish = (values) => {
+    const onFinish = async (values) => {
         // console.log("Values from classwork form:", values)
 
         const classwork_length = Object.keys(question).length
