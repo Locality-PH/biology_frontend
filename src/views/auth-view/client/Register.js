@@ -67,7 +67,7 @@ function ClientRegister() {
                 localStorage.setItem("mid", res.data.mid);
                 localStorage.setItem("role", res.data.role);
                 localStorage.setItem("sid", res.data.sid);
-
+                localStorage.setItem("fullname", data.full_name);
                 localData(res.data.mid, res.data.role);
 
                 user

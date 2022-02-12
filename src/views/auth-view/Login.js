@@ -53,7 +53,7 @@ const Login = () => {
                     localStorage.setItem("mid", res.data[0]?.auth_id);
                     localStorage.setItem("role", res.data[0]?.role);
                     localStorage.setItem("tid", res.data[0]?.teacher);
-
+                    localStorage.setItem("fullname", res.data[0]?.full_name);
                     localData(res.data[0].uuid, res.data[0]?.role);
                   })
                   .then((_) => {

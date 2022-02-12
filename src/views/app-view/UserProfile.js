@@ -24,6 +24,7 @@ function UserProfile() {
   const { currentUser, updateProfile} = useAuth();
   const teacherID = localStorage.getItem("tid");
   const userID = localStorage.getItem("mid");
+
   const [user, setUser] = useState([]);
   const [teacher, setTeacher] = useState([]);
   const [initialVal, setInitialVal] = useState([]);
@@ -62,11 +63,11 @@ function UserProfile() {
 
   useEffect(() => {
     setInitialVal({ ...initialVal, ...user });
+    console.log("useEffect", user)
   }, [user]);
 
   useEffect(() => {
     form.resetFields();
-    console.log(initialVal)
   }, [initialVal]);
 
   // console.log(initialVal);
@@ -96,7 +97,7 @@ function UserProfile() {
           >
             {utils.getNameInitial(currentUser?.displayName)}{" "}
           </Avatar>
-          <h4 className="text-center">{currentUser?.displayName}</h4>
+          <h4 className="text-center">{user?.full_name}</h4>
         </Card>
       </Col>
 
