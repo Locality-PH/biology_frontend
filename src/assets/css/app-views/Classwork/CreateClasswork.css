@@ -51,7 +51,7 @@
 .classwork-form .underline-input {
   border: 0 !important;
   outline: 0 !important;
-  width: 100% !important;
+  width: 100% ;
   background: transparent !important;
   border-bottom: .5px solid grey !important;
   transition-duration: 150ms !important;

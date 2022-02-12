@@ -157,11 +157,11 @@ const Login = () => {
                 </div>
               </div>
               <div>
-                <div className="a-right">
+                {/* <div className="a-right">
                   <LoginLink to="/admin/forgotpassword">
                     Forgot Password?
                   </LoginLink>
-                </div>
+                </div> */}
               </div>
               <input
                 type="submit"
@@ -189,7 +189,7 @@ const Login = () => {
               </div>{" "}
               <div className="mt-2 text-center w-100">
                 Student Login
-                <LoginLink to="/client/login">Here </LoginLink>
+                <LoginLink to="/client/login"> Here </LoginLink>
               </div>
             </form>
           )}

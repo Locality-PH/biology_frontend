@@ -55,7 +55,7 @@ function CardContent(props) {
           <Avatar
             size={80}
             src={props.currentPhoto}
-            style={{ backgroundColor: props.colors }}
+            style={{ backgroundColor: props.colors, fontSize: 28}}
           >
             {utils.getNameInitial(props.name)}{" "}
           </Avatar>

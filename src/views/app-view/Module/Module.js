@@ -19,7 +19,7 @@ const Module = () => {
                 <br></br>
                 <Row>
                     <Col md="12">
-                        {/* <PresetModule></PresetModule> */}
+                        <PresetModule></PresetModule>
                     </Col>
                 </Row>
             </Container>
