@@ -378,7 +378,7 @@ const StudentViewClasswork = (props) => {
                                         Note: Score from essays will be updated by your teacher.
                                     </p>
 
-                                    <div className='center-div mb-4'>
+                                    <div className='mb-4 center-div'>
                                         <Button type="primary" htmlType="submit" disabled={!isScoreboardEmpty}>
                                             Submit
                                         </Button>

@@ -1,0 +1,7 @@
+{
+  "name": "genbioscope",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react"
+}

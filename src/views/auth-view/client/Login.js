@@ -129,6 +129,13 @@ function ClientLogin() {
                   style={{ height: "auto" }}
                 >
                   <h2 className="login-card-label">Login</h2>
+                  {error && (
+                    <Alert
+                      style={{ marginButtom: "10px" }}
+                      message={error}
+                      type="error"
+                    />
+                  )}
                   <Form layout="horizontal" onFinish={handleSubmit}>
                     <div className="form-input-field-style">
                       <Form.Item
@@ -172,14 +179,11 @@ function ClientLogin() {
                         justify="center"
                         style={{ marginBottom: "15px" }}
                       >
-                        <Col
-                          xxl={12}
-                          xl={12}
-                          lg={12}
-                          md={12}
-                          sm={24}
-                          xs={24}
-                        ></Col>
+                        <Col xxl={12} xl={12} lg={12} md={12} sm={24} xs={24}>
+                          {/* <Checkbox className="remember-me-style">
+                            Remember me
+                          </Checkbox> */}
+                        </Col>
                         <Col xxl={12} xl={12} lg={12} md={12} sm={24} xs={24}>
                           <button className="custom-button-green sm-btn">
                             Sign in
@@ -203,7 +207,7 @@ function ClientLogin() {
                     <Link to="/client/register" className="login-custom-link">
                       Create an account
                     </Link>
-                  </div>{" "}
+                  </div>
                   <Row
                     xxl={24}
                     xl={24}

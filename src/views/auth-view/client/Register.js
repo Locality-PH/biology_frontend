@@ -2,7 +2,7 @@ import React, { useRef, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { useAuth } from "contexts/AuthContext";
 import { auth } from "firebase";
-import { Alert } from "react-bootstrap";
+import { Alert } from "antd";
 import LoadingOverlay from "react-loading-overlay";
 import Loading from "components/shared-components/Loading";
 import { Row, Card, Col, Form, Input, Checkbox, Button } from "antd";
@@ -131,6 +131,13 @@ function ClientRegister() {
                   style={{ height: "auto" }}
                 >
                   <h2 className="login-card-label">Register</h2>
+                  {error && (
+                    <Alert
+                      style={{ marginButtom: "10px" }}
+                      message={error}
+                      type="error"
+                    />
+                  )}
                   <Form layout="horizontal" onFinish={handleSubmit}>
                     {" "}
                     {error && <Alert variant="danger">{error}</Alert>}

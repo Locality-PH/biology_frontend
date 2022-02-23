@@ -10,6 +10,8 @@ import Bg from "assets/img/bg6.svg";
 import Avatar from "assets/img/avatar.svg";
 import { LoginLink } from "./LoginElement";
 import axios from "axios";
+import Loading from "components/shared-components/Loading";
+import LoadingOverlay from "react-loading-overlay";
 const Login = () => {
   const emailRef = useRef();
   const passwordRef = useRef();
@@ -24,6 +26,7 @@ const Login = () => {
   // console.log(user);
   async function handleSubmit(e) {
     e.preventDefault();
+    const fullName = fullNameRef.current.value;
     console.log(error);
     if (passwordRef.current.value !== passwordConfirmRef.current.value) {
       return setError("Password do not match");
@@ -37,12 +40,12 @@ const Login = () => {
               if (user) {
                 const data = {
                   email: user.email,
-                  fullName: fullNameRef.current.value,
+                  fullName: fullName,
                   uuid: user.uid,
                 };
                 user
                   .updateProfile({
-                    displayName: fullNameRef.current.value,
+                    displayName: fullName,
 
                     // photoURL: "https://example.com/jane-q-user/profile.jpg",
                   })
@@ -68,6 +71,7 @@ const Login = () => {
                     localStorage.setItem("tid", res.data.tid);
                     localStorage.setItem("fullname", data.fullName);
                     localData(res.data.mid, res.data.role);
+                    history.push("/admin/dashboard");
                   })
                   .then((_) => {
                     history.push("/admin/dashboard");
@@ -118,75 +122,92 @@ const Login = () => {
         </div>
         <div className="login-content">
           {" "}
-          <form onSubmit={handleSubmit} className="form-login">
-            <img src={Avatar} />
-            <h2 className="title">Welcome</h2>
-            {error && <Alert variant="danger">{error}</Alert>}
-            <div className="input-div one">
-              <div className="i">
-                <i className="fas fa-user"></i>
-              </div>
+          {loading ? (
+            <div>
+              {" "}
+              <Row className="h-100" justify="center" align="middle">
+                <div className="login-card-admin" style={{ height: "500px" }}>
+                  <Col className="text-center vertical-center-auth">
+                    {" "}
+                    <Loading cover="page" />{" "}
+                    <LoadingOverlay active={true}>
+                      <p>Preparing to Log in please wait.</p>
+                    </LoadingOverlay>
+                  </Col>
+                </div>
+              </Row>
+            </div>
+          ) : (
+            <form onSubmit={handleSubmit} className="form-login">
+              <img src={Avatar} />
+              <h2 className="title">Welcome</h2>
+              {error && <Alert variant="danger">{error}</Alert>}
+              <div className="input-div one">
+                <div className="i">
+                  <i className="fas fa-user"></i>
+                </div>
 
-              <div className="div">
-                <input
-                  type="text"
-                  ref={fullNameRef}
-                  placeholder="Full Name"
-                  className="input"
-                />
-              </div>
-            </div>{" "}
-            <div className="input-div one">
-              <div className="i">
-                <i className="fas fa-user"></i>
-              </div>
+                <div className="div">
+                  <input
+                    type="text"
+                    ref={fullNameRef}
+                    placeholder="Full Name"
+                    className="input"
+                  />
+                </div>
+              </div>{" "}
+              <div className="input-div one">
+                <div className="i">
+                  <i className="fas fa-user"></i>
+                </div>
 
-              <div className="div">
-                <input
-                  type="text"
-                  ref={emailRef}
-                  placeholder="Email"
-                  className="input"
-                />
+                <div className="div">
+                  <input
+                    type="text"
+                    ref={emailRef}
+                    placeholder="Email"
+                    className="input"
+                  />
+                </div>
               </div>
-            </div>
-            <div className="input-div pass">
-              <div className="i">
-                <i className="fas fa-lock"></i>
+              <div className="input-div pass">
+                <div className="i">
+                  <i className="fas fa-lock"></i>
+                </div>
+                <div className="div">
+                  <input
+                    type="password"
+                    placeholder="Password"
+                    className="input"
+                    ref={passwordRef}
+                  />
+                </div>
               </div>
-              <div className="div">
-                <input
-                  type="password"
-                  placeholder="Password"
-                  className="input"
-                  ref={passwordRef}
-                />
+              <div className="input-div pass">
+                <div className="i">
+                  <i className="fas fa-lock"></i>
+                </div>
+                <div className="div">
+                  <input
+                    type="password"
+                    placeholder="Confirm Password"
+                    className="input"
+                    ref={passwordConfirmRef}
+                  />
+                </div>
               </div>
-            </div>
-            <div className="input-div pass">
-              <div className="i">
-                <i className="fas fa-lock"></i>
+              <input
+                type="submit"
+                disabled={loading}
+                className="form-button"
+                value="Sign Up"
+              />
+              <div className="mt-2 text-center w-100">
+                Already have an account{" "}
+                <LoginLink to="/admin/login">Login </LoginLink>
               </div>
-              <div className="div">
-                <input
-                  type="password"
-                  placeholder="Confirm Password"
-                  className="input"
-                  ref={passwordConfirmRef}
-                />
-              </div>
-            </div>
-            <input
-              type="submit"
-              disabled={loading}
-              className="form-button"
-              value="Sign Up"
-            />
-            <div className="mt-2 text-center w-100">
-              Already have an account{" "}
-              <LoginLink to="/admin/login">Login </LoginLink>
-            </div>
-          </form>{" "}
+            </form>
+          )}
         </div>
       </div>
     </>
