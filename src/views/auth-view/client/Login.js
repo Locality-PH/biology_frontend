@@ -44,7 +44,7 @@ function ClientLogin() {
                 localStorage.setItem("mid", res.data[0]?.auth_id);
                 localStorage.setItem("role", "Student");
                 localStorage.setItem("sid", res.data[0]?.student);
-
+                localStorage.setItem("fullname", res.data[0].full_name);
                 localData(res.data[0].uuid, res.data[0]?.role);
 
                 user
@@ -172,11 +172,14 @@ function ClientLogin() {
                         justify="center"
                         style={{ marginBottom: "15px" }}
                       >
-                        <Col xxl={12} xl={12} lg={12} md={12} sm={24} xs={24}>
-                          <Checkbox className="remember-me-style">
-                            Remember me
-                          </Checkbox>
-                        </Col>
+                        <Col
+                          xxl={12}
+                          xl={12}
+                          lg={12}
+                          md={12}
+                          sm={24}
+                          xs={24}
+                        ></Col>
                         <Col xxl={12} xl={12} lg={12} md={12} sm={24} xs={24}>
                           <button className="custom-button-green sm-btn">
                             Sign in

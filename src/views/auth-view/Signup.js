@@ -66,7 +66,7 @@ const Login = () => {
                     localStorage.setItem("mid", res.data.mid);
                     localStorage.setItem("role", res.data.role);
                     localStorage.setItem("tid", res.data.tid);
-
+                    localStorage.setItem("fullname", data.fullName);
                     localData(res.data.mid, res.data.role);
                   })
                   .then((_) => {

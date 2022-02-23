@@ -8,14 +8,12 @@ import Axios from 'axios'
 //css
 import "assets/css/app-views/Classwork/ViewClasswork.css"
 
-const StudentViewClasswork = (props) => {
+const ViewClassworkScore = (props) => {
     let history = useHistory();
     const classwork_code = props.match.params.classwork_code
-    const class_code = props.match.params.class_code
+    const student_id = props.match.params.student_id
     const mal_id = props.match.params.mal_id
-    const classwork_type = props.match.params.classwork_type
-    console.log("classwork_type", classwork_type)
-    const sid = localStorage.getItem("sid");
+    const tid = localStorage.getItem("tid");
 
     const [form] = Form.useForm();
     const formRef = React.createRef();
@@ -25,14 +23,13 @@ const StudentViewClasswork = (props) => {
     const [showQuestion, setShowQuestion] = useState(true)
     const [scoreModal, setScoreModal] = useState(false);
     const [scoreboard, setScoreboard] = useState({});
+    const [initialVal, setInitialVal] = useState({});
     let isScoreboardEmpty = Object.keys(scoreboard).length <= 0
 
     useEffect(() => {
         (async () => {
-            await Axios.post("/api/classwork/student/get/code/" + classwork_code, { sid, class_code, mal_id, ct: classwork_type }).then((response) => {
+            await Axios.post("/api/classwork/get/code/" + classwork_code, { tid }).then((response) => {
                 const classworkData = response.data;
-
-                console.log(classworkData)
 
                 if (response.data != "failed") {
                     setClasswork(classworkData)
@@ -41,17 +38,12 @@ const StudentViewClasswork = (props) => {
                     setTimeout(() => {
                         setShowQuestion(false)
                     }, 300);
-
-
                 } else {
-                    message.error("Classwork not found!!")
-                    setTimeout(() => {
-                        // window.location.assign("/client/home")
-                    }, 500);
+                    message.error("Classwork not found!!", 5)
                 }
             });
 
-            await Axios.post("/api/scoreboard/validate/student", { sid, cc: classwork_code, mal_id }).then((response) => {
+            await Axios.post("/api/scoreboard/validate/student", { sid: student_id, cc: classwork_code, mal_id }).then((response) => {
                 const scoreData = response.data
 
                 if (scoreData != null) {
@@ -66,110 +58,51 @@ const StudentViewClasswork = (props) => {
     }, [])
 
     useEffect(() => {
-        form.resetFields();
+
+        if (Object.keys(scoreboard).length > 0) {
+
+            let tempInitialVal = scoreboard.answer_list
+            let score_list = scoreboard.score_list
+
+            score_list.forEach(
+                (score) => {
+                    tempInitialVal[`question${score.index}_score`] = score[`question${score.index}_score`]
+                });
+
+            setInitialVal(tempInitialVal)
+
+        }
     }, [question, scoreboard])
 
-    const initialVal = scoreboard.answer_list
+    useEffect(() => {
+        form.resetFields();
+    }, [initialVal])
 
-    //Functions
-    const compareArray = (arr1, arr2) => {
 
-        if (arr1.length == arr2.length) {
-            for (let i = 0; i <= arr1.length; i++) {
-                if (arr1[i] != arr2[i]) {
-                    //array doesn't match
-                    return false
-                }
-            }
 
-            // if both array match
-            return true
-
-        } else {
-            //array doesn't match
-            return false
-        }
-
-    }
+    //Function
 
     const onFinish = async (values) => {
-        const classwork_length = Object.keys(question).length
-        let temp_cl = 0
-        let score_list = []
-        let score = 0
 
-        for (let i = 1; i < classwork_length + 1; i++) {
-            const qt = question[i - 1].type //question_type
-            const qp = question[i - 1].score  //question_score
+        let score_list = scoreboard.score_list
+        let totalScore = 0
 
-            if (qp != null) {
-                temp_cl += qp
+        score_list.map(
+            (score, key) => {
+                let newScore = values[`question${score.index}_score`]
+                score_list[key][`question${score.index}_score`] = newScore
+                totalScore += newScore
             }
+        )
 
-            if (qt != "Instruction" && qt != "Image") {
-                var sa = values["question" + i + "_answer"] //student_answer
-                var qa = question[i - 1].answer // question_answer
-                let am; //answer_match
-
-                if (qt == "Checkbox") {
-                    am = compareArray(sa, qa)
-                }
-                else if (qt == "Identification") {
-                    if (typeof sa != 'string') {
-                        sa = sa.toString()
-                    }
-
-                    if (typeof qa != 'string') {
-                        qa = qa.toString()
-                    }
-
-                    sa = sa.replace(/\s/g, '');
-                    sa = sa.toLowerCase();
-                    qa = qa.replace(/\s/g, '');
-                    qa = qa.toLowerCase();
-
-                    am = (sa == qa)
-                }
-                else if (qt == "Multiple Choice") {
-                    am = (sa == qa)
-                }
-
-                else if (qt == "Essay") {
-                    am = false
-                }
+        setScoreboard({ ...scoreboard, score: totalScore })
 
 
-                if (am == true) {
-                    score += qp;
-                    score_list.push({ ["question" + i + "_isCorrect"]: am, ["question" + i + "_score"]: qp , index: i})
-                }
+        await Axios.post("/api/scoreboard/update_score", { score_list, score: totalScore, scoreboard_id: scoreboard.scoreboard_id }
+        ).then(
+            message.success("Student new score has been uploaded.")
+        )
 
-                else {
-                    score_list.push({ ["question" + i + "_isCorrect"]: am, ["question" + i + "_score"]: 0, index: i})
-                }
-
-            }
-
-        }
-
-        const tempValues = {
-            student_id: sid,
-            score_list,
-            answer_list: values,
-            max_score: temp_cl,
-            score,
-            mal_id,
-            class_code,
-            classwork_code,
-            classwork_type,
-        }
-
-        setScoreboard(tempValues)
-        setScoreModal(true)
-
-        await Axios.post("/api/scoreboard/create", { tempValues }).then((response) => {
-            message.success("Quiz has been submitted")
-        });
 
     }
 
@@ -195,14 +128,35 @@ const StudentViewClasswork = (props) => {
                                     <Input prefix={<b>Answer:</b>} disabled={!isScoreboardEmpty} />
                                 </Form.Item>
 
+                                <Divider className='m-2' />
 
-                                {question.score == 1 ?
-                                    <p className='m-0 question-points center-div'>{question.score} point</p>
-                                    : //esle
-                                    <p className='m-0 question-points center-div'>{question.score} points</p>
-                                }
+                                <Row>
+                                    <Col span={12}>
+                                        <Form.Item
+                                            name={"question" + key + "_score"}
+                                            rules={[{ required: true, message: "Need points!" }]}
+                                            required={false}
+                                            label={<b className='mt-2'>Points:</b>}
+                                            className="m-0"
+                                        >
+                                            <InputNumber
+                                                className='underline-input m-0'
+                                                min={0}
+                                                max={question.score}
+                                                style={{ width: "60px" }}
+                                            />
+                                        </Form.Item>
 
+                                    </Col>
 
+                                    <Col span={12}>
+                                        {question.score == 1 ?
+                                            <p className='m-0 pt-2 question-maxpoints'  >{question.score} point</p>
+                                            : //esle
+                                            <p className='m-0 question-maxpoints'  >{question.score} points</p>
+                                        }
+                                    </Col>
+                                </Row>
 
                             </Card>
                         )
@@ -232,11 +186,35 @@ const StudentViewClasswork = (props) => {
                                     </Radio.Group>
                                 </Form.Item>
 
-                                {question.score == 1 ?
-                                    <p className='m-0 question-points center-div'>{question.score} point</p>
-                                    : //esle
-                                    <p className='m-0 question-points center-div'>{question.score} points</p>
-                                }
+                                <Divider className='m-2' />
+
+                                <Row>
+                                    <Col span={12}>
+                                        <Form.Item
+                                            name={"question" + key + "_score"}
+                                            rules={[{ required: true, message: "Need points!" }]}
+                                            required={false}
+                                            label={<b className='mt-2'>Points:</b>}
+                                            className="m-0"
+                                        >
+                                            <InputNumber
+                                                className='underline-input m-0'
+                                                min={0}
+                                                max={question.score}
+                                                style={{ width: "60px" }}
+                                            />
+                                        </Form.Item>
+
+                                    </Col>
+
+                                    <Col span={12}>
+                                        {question.score == 1 ?
+                                            <p className='m-0 pt-2 question-maxpoints'  >{question.score} point</p>
+                                            : //esle
+                                            <p className='m-0 question-maxpoints'  >{question.score} points</p>
+                                        }
+                                    </Col>
+                                </Row>
 
                             </Card>
                         )
@@ -266,11 +244,35 @@ const StudentViewClasswork = (props) => {
                                     </Checkbox.Group>
                                 </Form.Item>
 
-                                {question.score == 1 ?
-                                    <p className='m-0 question-points center-div'>{question.score} point</p>
-                                    : //esle
-                                    <p className='m-0 question-points center-div'>{question.score} points</p>
-                                }
+                                <Divider className='m-2' />
+
+                                <Row>
+                                    <Col span={12}>
+                                        <Form.Item
+                                            name={"question" + key + "_score"}
+                                            rules={[{ required: true, message: "Need points!" }]}
+                                            required={false}
+                                            label={<b className='mt-2'>Points:</b>}
+                                            className="m-0"
+                                        >
+                                            <InputNumber
+                                                className='underline-input m-0'
+                                                min={0}
+                                                max={question.score}
+                                                style={{ width: "60px" }}
+                                            />
+                                        </Form.Item>
+
+                                    </Col>
+
+                                    <Col span={12}>
+                                        {question.score == 1 ?
+                                            <p className='m-0 pt-2 question-maxpoints'  >{question.score} point</p>
+                                            : //esle
+                                            <p className='m-0 question-maxpoints'  >{question.score} points</p>
+                                        }
+                                    </Col>
+                                </Row>
 
                             </Card>
                         )
@@ -305,18 +307,39 @@ const StudentViewClasswork = (props) => {
                                     required={false}
                                     className="m-0"
                                 >
-                                    <Input.TextArea
-                                        style={{ marginBottom: 0 }}
-                                        autoSize={{ minRows: 3, maxRows: 7 }}
-                                        disabled={!isScoreboardEmpty}
-                                    />
+                                    <Input.TextArea style={{ marginBottom: 0 }} autoSize={{ minRows: 3, maxRows: 7 }} readOnly />
                                 </Form.Item>
 
-                                {question.score == 1 ?
-                                    <p className='m-0 question-points center-div'>{question.score} point</p>
-                                    : //esle
-                                    <p className='m-0 question-points center-div'>{question.score} points</p>
-                                }
+
+                                <Divider className='m-2' />
+
+                                <Row>
+                                    <Col span={12}>
+                                        <Form.Item
+                                            name={"question" + key + "_score"}
+                                            rules={[{ required: true, message: "Need points!" }]}
+                                            required={false}
+                                            label={<b className='mt-2'>Points:</b>}
+                                            className="m-0"
+                                        >
+                                            <InputNumber
+                                                className='underline-input m-0'
+                                                min={0}
+                                                max={question.score}
+                                                style={{ width: "60px" }}
+                                            />
+                                        </Form.Item>
+
+                                    </Col>
+
+                                    <Col span={12}>
+                                        {question.score == 1 ?
+                                            <p className='m-0 pt-2 question-maxpoints'  >{question.score} point</p>
+                                            : //esle
+                                            <p className='m-0 question-maxpoints'  >{question.score} points</p>
+                                        }
+                                    </Col>
+                                </Row>
 
                             </Card>
                         )
@@ -353,6 +376,11 @@ const StudentViewClasswork = (props) => {
                 <Row justify='center'>
                     <Col xxl={12} xl={16} lg={16} md={18} sm={24} xs={24}>
                         <Form
+                            labelCol={{ flex: '10px' }}
+                            labelAlign="left"
+                            labelWrap
+                            colon={false}
+                            wrapperCol={{ flex: 1 }}
                             name="classwork-form"
                             onFinish={onFinish}
                             ref={formRef}
@@ -374,19 +402,14 @@ const StudentViewClasswork = (props) => {
 
                                     {PrintQuestion()}
 
-                                    <p className='mb-4 question-points center-div' style={{fontSize: 16}}>
-                                        Note: Score from essays will be updated by your teacher.
-                                    </p>
-
                                     <div className='center-div mb-4'>
-                                        <Button type="primary" htmlType="submit" disabled={!isScoreboardEmpty}>
+                                        <Button type="primary" htmlType="submit" >
                                             Submit
                                         </Button>
 
                                         <Button type="primary" className='ml-2' onClick={() => setScoreModal(true)}>
                                             View Score
                                         </Button>
-
                                     </div>
                                 </div>
                             }
@@ -402,4 +425,5 @@ const StudentViewClasswork = (props) => {
     )
 }
 
-export default StudentViewClasswork
+export default ViewClassworkScore
+

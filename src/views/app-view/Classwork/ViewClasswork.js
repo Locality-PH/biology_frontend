@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Card, Row, Col, Form, Input, Space, Button, Checkbox, Radio, Select, Spin, Modal, message } from 'antd'
+import { Card, Row, Col, Form, Input, InputNumber, Space, Button, Checkbox, Radio, Select, Spin, Modal, Divider, message } from 'antd'
 import { useHistory } from "react-router-dom";
 import Axios from 'axios'
 
@@ -48,14 +48,6 @@ const ViewClasswork = (props) => {
         form.resetFields();
     }, [question])
 
-    // useEffect(() => {
-    //     if () {
-
-    //     }
-    // }, [classwork])
-
-    console.log(classwork)
-
     //Initialize default value here
     const tempInitialVal = [
         { classwork_name: classwork.name },
@@ -95,17 +87,10 @@ const ViewClasswork = (props) => {
         })
 
         initialVal = tempInitialVal.reduce(((r, c) => Object.assign(r, c)), {})
-
-        // console.log("Initial values: ", initialVal)
-
-        // form.resetFields();
     }
 
     //Functions
     const compareArray = (arr1, arr2) => {
-        // console.log(arr1)
-        // console.log(arr2)
-
         if (arr1.length == arr2.length) {
             for (let i = 0; i <= arr1.length; i++) {
                 if (arr1[i] != arr2[i]) {
@@ -125,7 +110,6 @@ const ViewClasswork = (props) => {
     }
 
     const onTempFinish = (values) => {
-        console.log("Values from classwork form:", values)
 
         const classwork_length = Object.keys(question).length
         let temp_cl = classwork_length
@@ -134,8 +118,7 @@ const ViewClasswork = (props) => {
 
         for (let i = 1; i < classwork_length + 1; i++) {
             const qt = question[i - 1].type //question_type
-
-            if (qt != "Instriction" && qt != "Image") {
+            if (qt != "Instruction" && qt != "Image") {
                 var sa = values["question" + i + "_answer"] //student_answer
                 var qa = question[i - 1].answer // question_answer
                 let am; //answer_match
@@ -168,12 +151,11 @@ const ViewClasswork = (props) => {
                 if (am == true) {
                     score++;
                 }
-            } else (temp_cl--)
+            } else if (qt == "Instruction" || qt == "Image") {
+                temp_cl--
+            }
 
         }
-
-        console.log(answer_list)
-        console.log(score)
 
         const tempValues = {
             student_id: "61ee4308545ddd8a3f4cd7fc",
@@ -182,16 +164,9 @@ const ViewClasswork = (props) => {
             score,
         }
 
-        console.log("Scoreboard:", tempValues)
         setScoreboard(tempValues)
         setScoreModal(true)
-
-        // Axios.post("/api/scoreboard/create", {tempValues}).then((response) => {
-        //             console.log(response.data)
-        // });
     }
-
-
 
     const PrintQuestion = () => {
         if (question.length != undefined) {
@@ -220,7 +195,6 @@ const ViewClasswork = (props) => {
                             <Card className='card-box-shadow-style question-card center-div' key={QTNkey}>
 
                                 <p> {question.string}</p>
-                                {/* {console.log(question.option)} */}
 
                                 <Form.Item
                                     className='mb-0'
@@ -291,7 +265,25 @@ const ViewClasswork = (props) => {
 
                             </Card>
                         )
+                    } else if (question.type == "Essay") {
+                        return (
+                            <Card className='card-box-shadow-style question-card center-div' key={QTNkey}>
+
+                                <h5><b>Essay:</b></h5>
+                                <p> {question.string} </p>
+                                <Form.Item
+                                    className='mb-0'
+                                    name={"question" + QTNkey}
+                                    colon={false}
+                                    rules={[{ required: true, message: "This can't be blank!!" }]}
+                                    required={false}
+                                >
+                                    <Input.TextArea style={{ marginBottom: 0 }} autoSize={{ minRows: 3, maxRows: 7 }} />
+                                </Form.Item>
+                            </Card>
+                        )
                     }
+
 
                 })
             )

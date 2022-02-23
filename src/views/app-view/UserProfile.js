@@ -21,9 +21,11 @@ import AvatarProfile from "components/shared-components/AvatarProfile/AvatarProf
 
 
 function UserProfile() {
-  const { currentUser, updateProfile} = useAuth();
+  const { currentUser, updateProfile } = useAuth();
   const teacherID = localStorage.getItem("tid");
   const userID = localStorage.getItem("mid");
+  const fullname = localStorage.getItem("fullname");
+
   const [user, setUser] = useState([]);
   const [teacher, setTeacher] = useState([]);
   const [initialVal, setInitialVal] = useState([]);
@@ -40,23 +42,23 @@ function UserProfile() {
         const userData = response.data;
         setUser(userData);
       });
-  
+
     })()
 
 
   }, []);
 
   const updateTeacher = async (values) => {
-    updateProfile({displayName: values.full_name})
+    updateProfile({ displayName: values.full_name })
 
     await Axios.put("/api/teacher/update", {
       values,
       teacherID,
       userID,
-    }).then((response) => {
-      console.log(response.data);
-    });
+    })
 
+    setUser({ ...user, full_name: values.full_name })
+    localStorage.setItem("fullname", values.full_name)
     message.success("Teacher updated.");
   };
 
@@ -66,14 +68,11 @@ function UserProfile() {
 
   useEffect(() => {
     form.resetFields();
-    console.log(initialVal)
   }, [initialVal]);
 
-  // console.log(initialVal);
-
   return (
-    <Row gutter={[30,30]} className="user-profile">
-       <Col xxl={{span: 8, order: 1}} xl={{span: 8, order: 1}} lg={{span: 8, order: 1}} md={24} sm={24} xs={24}>
+    <Row gutter={[30, 30]} className="user-profile">
+      <Col xxl={{ span: 8, order: 1 }} xl={{ span: 8, order: 1 }} lg={{ span: 8, order: 1 }} md={24} sm={24} xs={24}>
         <Card
           className="card-box-shadow-style"
           cover={
@@ -92,11 +91,13 @@ function UserProfile() {
             className="profile-picture-style"
             size={70}
             src={currentUser?.photoURL}
-            style={{ backgroundColor: "green", fontSize: "1.4rem"}}
+            style={{ backgroundColor: "green", fontSize: "1.4rem" }}
           >
-            {utils.getNameInitial(currentUser?.displayName)}{" "}
+            {fullname != null &&
+              utils.getNameInitial(fullname)
+            }
           </Avatar>
-          <h4 className="text-center">{currentUser?.displayName}</h4>
+          <h4 className="text-center">{user?.full_name}</h4>
         </Card>
       </Col>
 
@@ -143,7 +144,7 @@ function UserProfile() {
                           },
                         ]}
                       >
-                        <Input className="custom-input" disabled/>
+                        <Input className="custom-input" disabled />
                       </Form.Item>
                     </Col>
                   </Row>

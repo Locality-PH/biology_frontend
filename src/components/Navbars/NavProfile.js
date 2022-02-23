@@ -24,9 +24,10 @@ const menuItem = [
     path: "/client/user",
   },
 ];
+
 export const NavProfile = () => {
   const currentUrl = window.location.pathname;
-
+  const fullname = localStorage.getItem("fullname")
   const currentClassroomCode = currentUrl.split("/")[3]
 
   const studentId = localStorage.getItem("sid");
@@ -77,8 +78,6 @@ export const NavProfile = () => {
 
   const joinClassroom = () => {
     setIsDisable(true);
-    console.log("classCode: ", classCode);
-    console.log("Student id", studentId);
     setModalVisible(false);
     message.loading(`Joining "${classCode}" classroom...`, 0);
 
@@ -158,7 +157,7 @@ export const NavProfile = () => {
                 }}
               >
                 {" "}
-                <a href={`/client/classroom/${currentClassroomCode}/students`} style={menuItemStyle}> 
+                <a href={`/client/classroom/${currentClassroomCode}/students`} style={menuItemStyle}>
                   <UserOutlined className="mr-3" />
                   <span className="font-weight-normal">Student</span>
                 </a>
@@ -232,7 +231,9 @@ export const NavProfile = () => {
               src={currentUser?.photoURL}
               style={{ backgroundColor: "green" }}
             >
-              {utils.getNameInitial("Test")}{" "}
+              {fullname != null &&
+                utils.getNameInitial(fullname)
+              }
             </Avatar>
           </Menu.Item>
         </Menu>

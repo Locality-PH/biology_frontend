@@ -22,9 +22,9 @@ const LeaveClassroom = ({match}) => {
           message.destroy();
           message.error("Error, please try again later.");
           window.location.assign("/client/home")
-        } else if(response.data == "Unenrol"){
+        } else if (response.data == "Unenrol"){
           message.destroy();
-          message.success("Successfully Unenrol!");
+          message.success("Successfully Unenrolled!");
           setModalVisible(false);
           window.location.assign("/client/home")
         }
