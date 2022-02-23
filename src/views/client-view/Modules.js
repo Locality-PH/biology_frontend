@@ -11,6 +11,7 @@ import {
   Button,
   Divider,
 } from "antd";
+import { Link } from "react-router-dom";
 import ModulePages from "./Modules-pages";
 import Lesson from "./Lesson"
 const { Header, Content, Footer, Sider } = Layout;
@@ -18,7 +19,7 @@ const { SubMenu } = Menu;
 
 
 import axios from "axios";
-import { FileTextOutlined} from "@ant-design/icons";
+import { FileTextOutlined } from "@ant-design/icons";
 
 const Modules = ({ match }) => {
   const classCode = match.params.class_code;
@@ -36,32 +37,32 @@ const Modules = ({ match }) => {
     textDecoration: "underline"
   }
 
-  const getClassroomModules = () =>{
+  const getClassroomModules = () => {
     message.loading("Loading modules...", 0);
     axios
-    .get("/api/student/get-classroom-modules/" + classCode + "/" + studentId)
-    .then((response) => {
-      console.log(response.data)
-      setModules(response.data);
-      setError(null);
-      message.destroy();
-    })
-    .catch(() => {
-      setIsLoading(false);
-      message.error("Could not fetch the data in the server!");
-    });
+      .get("/api/student/get-classroom-modules/" + classCode + "/" + studentId)
+      .then((response) => {
+        // console.log(response.data)
+        setModules(response.data);
+        setError(null);
+        message.destroy();
+      })
+      .catch(() => {
+        setIsLoading(false);
+        message.error("Could not fetch the data in the server!");
+      });
 
   }
 
   const getClassroomDescription = () => {
     axios
-    .get("/api/student/get-classroom-description/" + classCode)
-    .then((response) => {
-      setDescription(response.data)
-    })
-    .catch(() => {
-      message.error("Could not fetch the data in the server!");
-    });
+      .get("/api/student/get-classroom-description/" + classCode)
+      .then((response) => {
+        setDescription(response.data)
+      })
+      .catch(() => {
+        message.error("Could not fetch the data in the server!");
+      });
 
   }
 
@@ -77,22 +78,22 @@ const Modules = ({ match }) => {
   };
 
   const ModuleContent = () => {
-    if(currentItem != null){
+    if (currentItem != null) {
       const currentItemContent = currentItem.split("/")[0]
 
-      if(currentItemContent == "introduction"){
+      if (currentItemContent == "introduction") {
         return introductionContent()
       }
 
-      if(currentItemContent == "lesson"){
+      if (currentItemContent == "lesson") {
         return lessonContent()
       }
 
-      if(currentItemContent == "quiz"){
+      if (currentItemContent == "quiz") {
         return quizContent()
       }
     }
-   
+
     return (
       <Card title="Classroom Description">
         <h2>{description}</h2>
@@ -101,7 +102,7 @@ const Modules = ({ match }) => {
   };
 
   const downloadModule = (moduleId) => {
-    console.log("Downloading");
+    // console.log("Downloading");
     window.location.assign(
       "https://biology-server.herokuapp.com/api/student/download-module/" + moduleId,
       "_blank"
@@ -120,7 +121,7 @@ const Modules = ({ match }) => {
     return (
       <>
         <Card title={
-          <Button type="primary" onClick={() => {downloadModule(moduleId)}} style={{ backgroundColor: "green", borderColor: "green" }}>
+          <Button type="primary" onClick={() => { downloadModule(moduleId) }} style={{ backgroundColor: "green", borderColor: "green" }}>
             Download {introData[0].downloadable_module.filename}
           </Button>}>
         </Card>
@@ -136,26 +137,38 @@ const Modules = ({ match }) => {
     const [hidden, setHidden] = useState(false)
 
     const ViewLesson = () => {
-      return(
+      return (
         <>
-          {(hidden == true)?<Lesson moduleLessonId={moduleLessonId}></Lesson>:""}
+          {(hidden == true) ? <Lesson moduleLessonId={moduleLessonId}></Lesson> : ""}
         </>
       )
     }
 
     return (
       <>
-        <Card hidden={hidden} title={<Button type="primary" onClick={() => {setHidden(true)}} style={{ backgroundColor: "green", borderColor: "green" }}>View Lesson</Button>}>
+        <Card hidden={hidden} className="mb-4">
+          <Button type="primary" onClick={() => { setHidden(true) }} style={{ backgroundColor: "green", borderColor: "green" }}>
+            View Lesson
+          </Button>
         </Card>
+
         <div hidden={!hidden}>
           <ViewLesson></ViewLesson>
         </div>
+
         <Card title="Activity Classwork">
-          <h4 style={underLineStyle}>
+
+          {/* <h4 style={underLineStyle}>
             <a href={`/client/${classCode}/${moduleLessonId}/activity/${lessonClassworkCode}`} target="_blank">
               client/{classCode}/{moduleLessonId}/activity/{lessonClassworkCode}
             </a>
-          </h4>
+          </h4> */}
+
+          <Link to={`/client/${classCode}/${moduleLessonId}/activity/${lessonClassworkCode}`} target="_blank">
+            <Button type="primary" style={{ backgroundColor: "green", borderColor: "green" }}>
+              Take assigned activity.
+            </Button>
+          </Link>
         </Card>
       </>
     )
@@ -193,27 +206,27 @@ const Modules = ({ match }) => {
         }}
       >
         <Menu
-        mode="inline"
-        defaultSelectedKeys={["1"]}
-        defaultOpenKeys={["sub0"]}
-        style={{ height: "100%", borderRight: 0 }}
-        onClick={HandleModules}
-      >
-        {modules.map((modulesData, modulesIndex) => (
-          <SubMenu disabled={modulesData.disabled} key={"sub" + modulesIndex} icon={<FileTextOutlined />} title={modulesData.name}>
-            <Menu.Item key={`introduction/${modulesData.module_id}`}>{modulesData.topic_name}</Menu.Item>
-            <SubMenu key={"l" + modulesIndex} title="Lessons">
-              {modulesData.lessons.map(lessonData => (
+          mode="inline"
+          defaultSelectedKeys={["1"]}
+          defaultOpenKeys={["sub0"]}
+          style={{ height: "100%", borderRight: 0 }}
+          onClick={HandleModules}
+        >
+          {modules.map((modulesData, modulesIndex) => (
+            <SubMenu disabled={modulesData.disabled} key={"sub" + modulesIndex} icon={<FileTextOutlined />} title={modulesData.name}>
+              <Menu.Item key={`introduction/${modulesData.module_id}`}>{modulesData.topic_name}</Menu.Item>
+              <SubMenu key={"l" + modulesIndex} title="Lessons">
+                {modulesData.lessons.map(lessonData => (
                   <Menu.Item disabled={lessonData.disabled} key={`lesson/${lessonData.module_lesson_id}/${lessonData.classwork_code}`}>
                     {lessonData.lesson_name}
                   </Menu.Item>
-              ))}
+                ))}
+              </SubMenu>
+              <Menu.Item disabled={modulesData.quiz_disabled} key={`quiz/${modulesData.module_id}/${modulesData.classwork_code}`}>Quiz</Menu.Item>
             </SubMenu>
-            <Menu.Item disabled={modulesData.quiz_disabled} key={`quiz/${modulesData.module_id}/${modulesData.classwork_code}`}>Quiz</Menu.Item>
-          </SubMenu>
-        ))}
-      </Menu>
-      
+          ))}
+        </Menu>
+
       </Sider>
       <Layout style={{ padding: "0 24px 24px" }}>
         <Breadcrumb style={{ margin: "16px 0" }}>

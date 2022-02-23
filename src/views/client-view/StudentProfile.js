@@ -19,42 +19,40 @@ import "assets/css/app-views/UserProfile.css"
 import "assets/css/custom-design.css"
 
 function StudentProfile() {
-  const { currentUser, updateProfile} = useAuth();
+  const { currentUser, updateProfile } = useAuth();
   const sid = localStorage.getItem("sid");
   const uid = localStorage.getItem("mid");
+  const fullname = localStorage.getItem("fullname");
+
   const [user, setUser] = useState([]);
   const [initialVal, setInitialVal] = useState([]);
 
   const [form] = Form.useForm();
-
-  console.log("current user:", currentUser)
-
 
   useEffect(() => {
 
     (async () => {
       await Axios.get("/api/student/get/" + uid).then((response) => {
         const userData = response.data;
-        console.log("student data:", userData)
         setUser(userData);
       });
-  
+
     })()
 
 
   }, []);
 
   const updateStudentName = async (values) => {
-    updateProfile({displayName: values.full_name})
+    updateProfile({ displayName: values.full_name })
 
     await Axios.put("/api/student/update", {
       values,
       sid,
       uid,
-    }).then((response) => {
-      console.log(response.data);
-    });
+    })
 
+    setUser({ ...user, full_name: values.full_name })
+    localStorage.setItem("fullname", values.full_name)
     message.success("Student updated.");
   };
 
@@ -70,8 +68,8 @@ function StudentProfile() {
   // console.log(initialVal);
 
   return (
-    <Row gutter={[30,30]} className="user-profile">
-       <Col xxl={{span: 8, order: 1}} xl={{span: 8, order: 1}} lg={{span: 8, order: 1}} md={24} sm={24} xs={24}>
+    <Row gutter={[30, 30]} className="user-profile">
+      <Col xxl={{ span: 8, order: 1 }} xl={{ span: 8, order: 1 }} lg={{ span: 8, order: 1 }} md={24} sm={24} xs={24}>
         <Card
           className="card-box-shadow-style"
           cover={
@@ -90,11 +88,13 @@ function StudentProfile() {
             className="profile-picture-style"
             size={70}
             src={currentUser?.photoURL}
-            style={{ backgroundColor: "green", fontSize: "1.4rem"}}
+            style={{ backgroundColor: "green", fontSize: "1.4rem" }}
           >
-            {utils.getNameInitial(currentUser?.displayName)}{" "}
+            {fullname != null &&
+              utils.getNameInitial(fullname)
+            }
           </Avatar>
-          <h4 className="text-center">{currentUser?.displayName}</h4>
+          <h4 className="text-center">{fullname}</h4>
         </Card>
       </Col>
 
@@ -141,7 +141,7 @@ function StudentProfile() {
                           },
                         ]}
                       >
-                        <Input className="custom-input" disabled/>
+                        <Input className="custom-input" disabled />
                       </Form.Item>
                     </Col>
                   </Row>

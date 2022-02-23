@@ -33,7 +33,6 @@ const ModuleStudentsLessonScoreTable = ({ match }) => {
 
   useEffect(() => {
     axios.get("/api/scoreboard/get-students-lesson-score/" + moduleLessonId).then((response) => {
-      console.log(response.data)
       setFinishedStudent(response.data)
       setFinishedStudentList(response.data)
       setFileName(response.data.module_name + ".csv")
@@ -74,7 +73,6 @@ const ModuleStudentsLessonScoreTable = ({ match }) => {
 
 
         <div>
-          {/* {console.log("result from module quiz:", result)} */}
           <Link
             target="_blank"
             to={`/admin/classwork/student-score/${result.student_id}/${moduleLessonId}/${result.classwork_code}`}

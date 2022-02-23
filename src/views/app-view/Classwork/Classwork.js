@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react"
 import { Link, useHistory } from "react-router-dom";
-import { Table, Card, Row, Col, Button, Input, Menu, message } from "antd";
+import { Table, Card, Row, Col, Button, Input, Menu, message, Modal } from "antd";
 import Axios from 'axios'
 import utils from 'utils'
 
@@ -17,10 +17,12 @@ import "assets/css/app-views/Classwork/Classwork.css"
 
 const Classwork = () => {
     let history = useHistory();
-    
+
     const [isLoading, setIsLoading] = useState(true)
     const [classwork, setClasswork] = useState([])
     const [classworkList, setClassworkList] = useState([])
+    const [isModalVisible, setIsModalVisible] = useState(false);
+    const [currentClasswork, setCurrentClasswork] = useState({});
 
     const tid = localStorage.getItem("tid");
 
@@ -31,7 +33,6 @@ const Classwork = () => {
         (async () => {
             await Axios.post("/api/classwork/get-all/" + tid).then((response) => {
                 const classworkData = response.data;
-                console.log(response.data)
                 setClasswork(classworkData)
                 setClassworkList(classworkData)
             }).catch(() => {
@@ -39,11 +40,9 @@ const Classwork = () => {
             });;
 
             setIsLoading(false)
-            
+
 
         })()
-
-
 
     }, [])
 
@@ -90,7 +89,7 @@ const Classwork = () => {
                                     </Link>
                                 </Menu.Item>
                                 <Menu.Divider />
-                                <Menu.Item key="2" onClick={() => deleteClasswork(result.classwork_id, rowKey)}>
+                                <Menu.Item key="2" onClick={() => deleteClasswork(result.classwork_id, rowKey, result.classwork_link)}>
                                     <>
                                         <DeleteOutlined className="menu-icons" />
                                         <span className="ml-2">Delete</span>
@@ -112,24 +111,39 @@ const Classwork = () => {
         setClassworkList(data);
     };
 
-    const deleteClasswork = (Cid, rowKey) => {
-        // console.log(Cid)
-        // console.log(rowKey)
+    const deleteClasswork = (cid, rowKey, classwork_link) => {
+        setCurrentClasswork({cid, rowKey, classwork_link})
+        showModal()
+    }
+    
 
-        Axios.delete('/api/classwork/delete', { data: { tid, Cid } }).then((response) => {
+    const showModal = () => {
+        setIsModalVisible(true);
+    };
+
+    const handleOk = () => {
+        setIsModalVisible(false);
+
+        Axios.delete('/api/classwork/delete', { data: { tid, cid: currentClasswork.cid, cc: currentClasswork.classwork_link } }).then((response) => {
             const data = response.data;
             // console.log(data)
 
             let tempClasswork = classwork
-            tempClasswork = tempClasswork.filter((value, index) => index!==rowKey)
+            tempClasswork = tempClasswork.filter((value, index) => index !== currentClasswork.rowKey)
             setClasswork(tempClasswork)
             setClassworkList(tempClasswork)
             message.success("Classwork deleted.")
-    
-        }).catch(() => {
+
+        }).catch((error) => {
+            console.log(error)
             message.error("Error cannot connect to database!!")
         });;
-    }
+    };
+
+    const handleCancel = () => {
+        setIsModalVisible(false);
+
+    };
 
     return (
         <div className="classwork">
@@ -168,6 +182,10 @@ const Classwork = () => {
                     scroll={{ x: "max-content" }}
                 />
             </Card>
+
+            <Modal title="Deleting Classwork" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
+                <p style={{textAlign: "justify"}}>Classwork and all recorded data will be permanently deleted. And you have to assign a substitute classwork in your module/lesson for student to continue their progress. Do you still want to continue??</p>
+            </Modal>
         </div>
     )
 }

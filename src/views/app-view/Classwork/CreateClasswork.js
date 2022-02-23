@@ -35,11 +35,11 @@ const EditClasswork = (props) => {
         form.resetFields()
     }, [initialVal]);
 
-    useEffect(() => {
-        if (Object.keys(newFile).length > 0) {
-            console.log("newFile:", newFile)
-        }
-    }, [newFile]);
+    // useEffect(() => {
+    //     if (Object.keys(newFile).length > 0) {
+    //         // console.log("newFile:", newFile)
+    //     }
+    // }, [newFile]);
 
     useEffect(() => {
         if (question.length != undefined) {
@@ -47,8 +47,6 @@ const EditClasswork = (props) => {
                 { classwork_name: classwork.name },
                 { classwork_description: classwork.description }
             ]
-
-            console.log("tempInitialVal", tempInitialVal)
 
             let tempNewFile = {}
 
@@ -82,7 +80,6 @@ const EditClasswork = (props) => {
                 }
 
                 if (question.img != undefined) {
-                    console.log([`question${i + 1}_image`])
                     tempNewFile[`question${i + 1}_image`] = { file: question.img.file, filename: question.img.filename, index: i + 1, isNewFile: true }
 
                     if (question._id != null) {
@@ -101,14 +98,11 @@ const EditClasswork = (props) => {
             SetNewFile({ ...tempNewFile })
         }
 
-        console.log("question", question)
     }, [question]);
 
 
     const setIsAnswer = (key, QTNkey) => {
         let temp_options = formRef.current.getFieldValue("question" + QTNkey + "_options");
-        // console.log(key, QTNkey)
-        // console.log(temp_options)
 
         temp_options = temp_options.map((option, option_key) => {
             if (option == undefined) {
@@ -141,7 +135,7 @@ const EditClasswork = (props) => {
 
         if (classwork_type == "Multiple Choice") {
             newQuestion = {
-                string: "This is a new test question ",
+                string: "",
                 type: classwork_type,
                 answer: [null],
                 option: [{ isAnswer: false }, { isAnswer: false }, { isAnswer: false }, { isAnswer: false }]
@@ -150,7 +144,7 @@ const EditClasswork = (props) => {
 
         else {
             newQuestion = {
-                string: "This is a new test question ",
+                string: "",
                 type: classwork_type,
                 answer: [null],
                 option: [null]
@@ -184,7 +178,6 @@ const EditClasswork = (props) => {
         // splice (remove this index, how many to remove)
         currentFormData.question.splice(QTNkey - 1, 1)
 
-        console.log(currentFormData)
         setClasswork({ ...classwork, name: currentFormData.name, description: currentFormData.description })
         setQuestion(currentFormData.question)
 
@@ -200,8 +193,6 @@ const EditClasswork = (props) => {
     const updateForm = (values) => {
         let classwork_length = question.length
         let newClasswork = {}
-
-        console.log("values for update form", values)
 
         newClasswork["name"] = values["classwork_name"]
         newClasswork["description"] = values["classwork_description"]
@@ -258,14 +249,12 @@ const EditClasswork = (props) => {
             newClasswork["question"].push(newQuestion)
 
         }
-        console.log("newClasswork", newClasswork)
 
         return newClasswork
     }
 
     const updateNewFile = (currentFormData) => {
         var newFileKeys = Object.keys(newFile)
-        console.log("updateNewFile", newFile)
 
         newFileKeys.map((file) => {
             var cf = newFile[file] //Current NewFile
@@ -275,7 +264,6 @@ const EditClasswork = (props) => {
 
         })
 
-        console.log("updateNewFile done:", currentFormData)
         return currentFormData
     }
 
@@ -744,7 +732,6 @@ const EditClasswork = (props) => {
     }
 
     const onFinish = async (values) => {
-        console.log("Values from form", values)
         let classwork_length = question.length
         let newClasswork = {}
         let hasError = false;
@@ -776,7 +763,6 @@ const EditClasswork = (props) => {
                 for (let x = 0; x < newOptions.length; x++) {
                     if (newOptions[x].isAnswer == true) {
                         newQuestion["answer"].push(newOptions[x].value)
-                        // console.log("Answer: " + newOptions[x].value)
                     }
                 }
 
@@ -803,8 +789,6 @@ const EditClasswork = (props) => {
             newClasswork["question"].push(newQuestion)
         }
 
-        console.log(newClasswork)
-
         if (!hasError) {
             const formData = new FormData()
             var newFileObject = Object.keys(newFile)
@@ -819,14 +803,12 @@ const EditClasswork = (props) => {
 
             });
 
-            console.log(newFile)
-
             formData.append("newClasswork", JSON.stringify(newClasswork))
             formData.append("tid", tid)
 
             try {
                 await Axios.post("/api/classwork/create-classwork", formData).then((response) => {
-                    console.log(response.data)
+                    // console.log(response.data)
                 }).then( () => {
                     message.success("Classwork has been created successfully.", 10)
 

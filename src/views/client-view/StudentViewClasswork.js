@@ -69,16 +69,10 @@ const StudentViewClasswork = (props) => {
         form.resetFields();
     }, [question, scoreboard])
 
-    console.log("This is classwork array:", classwork)
-    console.log("This is scoreboard array:", scoreboard.answer_list)
-    console.log("This is cc:", classwork_code)
-
     const initialVal = scoreboard.answer_list
 
     //Functions
     const compareArray = (arr1, arr2) => {
-        // console.log(arr1)
-        // console.log(arr2)
 
         if (arr1.length == arr2.length) {
             for (let i = 0; i <= arr1.length; i++) {
@@ -99,8 +93,6 @@ const StudentViewClasswork = (props) => {
     }
 
     const onFinish = async (values) => {
-        // console.log("Values from classwork form:", values)
-
         const classwork_length = Object.keys(question).length
         let temp_cl = 0
         let score_list = []
@@ -160,9 +152,6 @@ const StudentViewClasswork = (props) => {
 
         }
 
-        // console.log(score_list)
-        // console.log(score)
-
         const tempValues = {
             student_id: sid,
             score_list,
@@ -175,14 +164,13 @@ const StudentViewClasswork = (props) => {
             classwork_type,
         }
 
-        // console.log("Scoreboard:", tempValues)
         setScoreboard(tempValues)
-        console.log(tempValues)
         setScoreModal(true)
 
         await Axios.post("/api/scoreboard/create", { tempValues }).then((response) => {
-            console.log(response.data)
+            message.success("Quiz has been submitted")
         });
+
     }
 
 
@@ -320,6 +308,7 @@ const StudentViewClasswork = (props) => {
                                     <Input.TextArea
                                         style={{ marginBottom: 0 }}
                                         autoSize={{ minRows: 3, maxRows: 7 }}
+                                        disabled={!isScoreboardEmpty}
                                     />
                                 </Form.Item>
 

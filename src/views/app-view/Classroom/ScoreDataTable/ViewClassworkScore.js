@@ -39,10 +39,7 @@ const ViewClassworkScore = (props) => {
                         setShowQuestion(false)
                     }, 300);
                 } else {
-                    message.error("Classwork not found!!")
-                    setTimeout(() => {
-                        history.goBack()
-                    }, 500);
+                    message.error("Classwork not found!!", 5)
                 }
             });
 
@@ -63,13 +60,9 @@ const ViewClassworkScore = (props) => {
     useEffect(() => {
 
         if (Object.keys(scoreboard).length > 0) {
-            // console.log(question)
-            // console.log(scoreboard)
 
             let tempInitialVal = scoreboard.answer_list
             let score_list = scoreboard.score_list
-
-            // console.log(score_list)
 
             score_list.forEach(
                 (score) => {
@@ -82,7 +75,6 @@ const ViewClassworkScore = (props) => {
     }, [question, scoreboard])
 
     useEffect(() => {
-        console.log("initialVal", initialVal)
         form.resetFields();
     }, [initialVal])
 
@@ -91,8 +83,6 @@ const ViewClassworkScore = (props) => {
     //Function
 
     const onFinish = async (values) => {
-        // const classwork_length = Object.keys(question).length
-        // console.log("Values from classwork form:", values)
 
         let score_list = scoreboard.score_list
         let totalScore = 0
@@ -107,10 +97,13 @@ const ViewClassworkScore = (props) => {
 
         setScoreboard({ ...scoreboard, score: totalScore })
 
-        await Axios.post("/api/scoreboard/update_score", { score_list, score: totalScore, scoreboard_id: scoreboard.scoreboard_id }).then((response) => {
-            console.log(response.data)
 
-        });
+        await Axios.post("/api/scoreboard/update_score", { score_list, score: totalScore, scoreboard_id: scoreboard.scoreboard_id }
+        ).then(
+            message.success("Student new score has been uploaded.")
+        )
+
+
     }
 
 

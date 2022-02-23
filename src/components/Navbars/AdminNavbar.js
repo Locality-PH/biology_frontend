@@ -32,10 +32,6 @@ function Header() {
 
   const history = useHistory();
 
-  useEffect(() => {
-    console.log(localStorage.getItem('avatar'))
-  }, [])
-
   async function handleLogout() {
     setError("");
 
@@ -142,9 +138,9 @@ function Header() {
                   className="navbar-avatar-icon"
                   size={33}
                   src={currentUser?.photoURL}
-                  style={{ backgroundColor: "green" }}
+                  style={{ backgroundColor: "green", fontSize: 16 }}
                 >
-                  {utils.getNameInitial("Test")}{" "}
+                  {utils.getNameInitial(localStorage.getItem("fullname"))}
                 </Avatar>
               </Nav.Link>
             </Nav.Item>

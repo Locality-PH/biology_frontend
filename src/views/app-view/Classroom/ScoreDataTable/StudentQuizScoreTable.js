@@ -53,7 +53,6 @@ const StudentQuizScoreTable = ({ studentEnrolledId, classCode }) => {
       render: (_, result) => (
 
         <div>
-          {console.log("result from lesson activity:", result)}
           <Link
             target="_blank"
             to={`/admin/classwork/student-score/${result.student_id}/${result.mal_id}/${result.classwork_code}`}

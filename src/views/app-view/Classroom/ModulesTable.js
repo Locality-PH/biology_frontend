@@ -40,12 +40,12 @@ const ModulesTable = ({classCode}) => {
     , []);
 
     const viewModule = (moduleId) => {
-      console.log("View")
+      // console.log("View")
       window.open("/teacher/view-module/" + moduleId, "_blank")
     }
 
     const downloadModule = (moduleId) => {
-      console.log("Downloading");
+      // console.log("Downloading");
       window.location.assign(
         "https://biology-server.herokuapp.com/api/teacher/download-module/" + moduleId,
         "_blank"

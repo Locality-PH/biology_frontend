@@ -17,14 +17,15 @@ const Module = () => {
                     </Col>
                 </Row>
                 <br></br>
-                <Row>
+                {/* <Row>
                     <Col md="12">
                         <PresetModule></PresetModule>
                     </Col>
-                </Row>
+                </Row> */}
             </Container>
         </>
     )
 }
 
 export default Module
+

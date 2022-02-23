@@ -47,7 +47,7 @@ const CreateClassroom = () => {
       .get("/api/teacher/get-teacher-fullname/" + teacherId)
       .then((response) => {
         setTeacherName(response.data);
-        console.log(response.data);
+        // console.log(response.data);
       })
       .catch(() => {
         message.error("Could not fetch the data in the server!");
@@ -183,14 +183,14 @@ const CreateClassroom = () => {
     axios
       .post("/api/teacher/create-classroom", data)
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         axios
           .get("/api/teacher/get-classroom-code/" + response.data)
           .then((response) => {
             message.destroy();
             setModalVisible(true);
             setClassCode(response.data);
-            console.log(response.data);
+            // console.log(response.data);
           })
           .catch((error) => {
             console.log(error);
@@ -229,7 +229,7 @@ const CreateClassroom = () => {
   };
 
   const copyClasscode = () => {
-    console.log("Copy Class Code");
+    // console.log("Copy Class Code");
     navigator.clipboard.writeText(classCode);
     setModalVisible(false);
   };
