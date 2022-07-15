@@ -4,7 +4,17 @@ import { useAuth } from "contexts/AuthContext";
 import { auth } from "firebase";
 import { Alert } from "react-bootstrap";
 import axios from "axios";
-import { Row, Card, Col, Form, Input, Checkbox, Button, Space } from "antd";
+import {
+  Row,
+  Card,
+  Col,
+  Form,
+  Input,
+  Checkbox,
+  Button,
+  Space,
+  message,
+} from "antd";
 import { FaUserAlt } from "react-icons/fa";
 import { AiFillLock } from "react-icons/ai";
 import { FcGoogle } from "react-icons/fc";
@@ -18,7 +28,14 @@ function ClientLogin() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const history = useHistory();
-  console.log(currentUser?.uid);
+
+  const errors = () => {
+    message.error("Error Account");
+  };
+
+  const warning = () => {
+    message.warning("This is account is a Teacher");
+  };
   async function loginGoogleUser(e) {
     SignInWithGoogleStudent(history);
   }
@@ -28,7 +45,6 @@ function ClientLogin() {
     try {
       setError("");
       setLoading(true);
-      console.log("test");
       await login(values.email, values.password).then(() => {
         setTimeout(async () => {
           auth.onAuthStateChanged((user) => {
@@ -37,12 +53,12 @@ function ClientLogin() {
               // https://firebase.google.com/docs/reference/js/firebase.User
               var uid = user.uid;
               console.log("user is signed in");
-              console.log(user?.uid);
               axios.get("/api/student/login/" + user.uid).then((res) => {
                 console.log("resdata:", res.data);
-                console.log(res.data[0].full_name);
+                console.log(res.data[0]?.role);
+
                 localStorage.setItem("mid", res.data[0]?.auth_id);
-                localStorage.setItem("role", "Student");
+                localStorage.setItem("role", res.data[0]?.role);
                 localStorage.setItem("sid", res.data[0]?.student);
                 localStorage.setItem("fullname", res.data[0].full_name);
                 localData(res.data[0].uuid, res.data[0]?.role);
@@ -51,12 +67,14 @@ function ClientLogin() {
                   .updateProfile({
                     displayName: res.data[0].full_name,
                   })
-                  .then(() => {
+                  .then((_) => {
+                    if (res.data[0]?.role != "Student") warning();
                     console.log("Update successful");
                     history.push("/client/home");
                   })
                   .catch((error) => {
                     console.log("displayName failed");
+                    errors();
                   });
               });
               // .then((_) => {
@@ -71,7 +89,6 @@ function ClientLogin() {
 
         // history.push("/");
       });
-      console.log("test");
     } catch (err) {
       setError("Email or Password is wrong");
       console.log(err);

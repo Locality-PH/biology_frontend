@@ -1,6 +1,7 @@
 import React, { useContext, useState, useEffect } from "react";
+import { message } from "antd";
 import { auth } from "../firebase";
-import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { GoogleAuthProvider } from "firebase/auth";
 import Axios from "axios";
 const provider = new GoogleAuthProvider();
 const AuthContext = React.createContext();
@@ -15,28 +16,31 @@ export function AuthProvider({ children }) {
   const [localMid, setLocalMid] = useState();
   const [localrole, setLocalRole] = useState();
 
+  const warningAdmin = () => {
+    message.warning("This is account is a Teacher");
+  };
+  const warningStudent = () => {
+    message.warning("This is account is a Student");
+  };
   async function SignInWithGoogle(history) {
     return auth
       .signInWithPopup(provider)
       .then((result) => {
         const user = result.user;
-        console.log(user)
         const avatar = user.photoURL;
 
         Axios.post("/api/admin/google-login", { user }).then((response) => {
           const currentUserUUID = response.data;
-          console.log("response from controller");
-          console.log(currentUserUUID);
 
           Axios.get("/api/admin/login/" + currentUserUUID)
             .then((res) => {
-              console.log(res.data);
               localStorage.setItem("mid", res.data[0]?.auth_id);
               localStorage.setItem("role", res.data[0]?.role);
               localStorage.setItem("tid", res.data[0]?.teacher);
               localStorage.setItem("avatar", avatar);
               localStorage.setItem("fullname", res.data[0]?.full_name);
               localData(res.data[0].uuid, res.data[0]?.role);
+              if (res.data[0]?.role != "Admin") warningStudent();
             })
             .then((_) => {
               history.push("/admin/dashboard");
@@ -58,17 +62,15 @@ export function AuthProvider({ children }) {
           user,
         }).then((response) => {
           const currentUserUUID = response.data;
-          console.log("response from controller");
-          console.log(currentUserUUID);
 
           Axios.get("/api/admin/login/" + currentUserUUID)
             .then((res) => {
-              console.log(res.data);
               localStorage.setItem("mid", res.data[0]?.auth_id);
               localStorage.setItem("role", res.data[0]?.role);
               localStorage.setItem("sid", res.data[0]?.student);
               localStorage.setItem("fullname", res.data[0]?.full_name);
               localData(res.data[0].uuid, res.data[0]?.role);
+              if (res.data[0]?.role != "Student") warningAdmin();
             })
             .then((_) => {
               history.push("/client/home");
@@ -118,7 +120,6 @@ export function AuthProvider({ children }) {
       localStorage.setItem("auth_id", user?.uid);
 
       setLoading(false);
-      console.log("test");
     });
 
     return unsubscribe;

@@ -3,7 +3,7 @@ import { Card, Form, Alert, Container } from "react-bootstrap";
 import { Link, useHistory } from "react-router-dom";
 import { useAuth } from "contexts/AuthContext";
 import { auth } from "firebase";
-import { Row, Col, Button, Space } from "antd";
+import { Row, Col, message, Space } from "antd";
 import "assets/css/custom.css";
 import Wave from "assets/img/wave.png";
 import Bg from "assets/img/bg.svg";
@@ -22,8 +22,9 @@ const Login = () => {
   const history = useHistory();
   const [loading, setLoading] = useState(false);
 
-  console.log(currentUser?.uid);
-
+  const warning = () => {
+    message.warning("This is account is a Student");
+  };
   async function loginGoogleUser(e) {
     SignInWithGoogle(history);
   }
@@ -55,7 +56,9 @@ const Login = () => {
                     localStorage.setItem("tid", res.data[0]?.teacher);
                     localStorage.setItem("fullname", res.data[0]?.full_name);
                     localData(res.data[0].uuid, res.data[0]?.role);
+                    if (res.data[0]?.role != "Admin") warning();
                   })
+
                   .then((_) => {
                     history.push("/admin/dashboard");
                   });
