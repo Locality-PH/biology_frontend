@@ -411,7 +411,15 @@ body {
 
   background: #f0f2f5;
 }
+.site-layout-content-home-2 {
+  position: relative;
 
+  background: #ffffff;
+  background-size: contain;
+  /* background-image: url("../img/bghome2.png"); */
+  background-repeat: no-repeat;
+  background-position: center top;
+}
 .site-layout-content-home {
   padding: 18px;
   position: relative;
@@ -861,4 +869,136 @@ h3 {
   .login-card-admin {
     width: 300px;
   }
+}
+.ant-card-bordered {
+  border: 1px solid #f0f0f0;
+  border-radius: 25px !important;
+  box-shadow: 8px 8px 5px 2px rgba(161, 157, 157, 0.75);
+  -webkit-box-shadow: 8px 8px 5px 2px rgba(161, 157, 157, 0.75);
+  -moz-box-shadow: 8px 8px 5px 2px rgba(161, 157, 157, 0.75);
+}
+.gutter-box {
+  padding: 8px 0;
+  background: #00a0e9;
+}
+
+.profile-card {
+  width: 300px;
+  border-radius: 2px;
+  overflow: hidden;
+  /* box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2),
+    0 1px 5px 0 rgba(0, 0, 0, 0.12); */
+  position: relative;
+  margin: auto;
+  background: rgba(255, 255, 255, 1);
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.profile-card header {
+  display: block;
+  position: relative;
+  background: rgba(255, 255, 255, 1);
+  text-align: center;
+  padding: 30px 0 20px;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.profile-card header:before {
+  content: "";
+  position: absolute;
+  background: url("http://ali.shahab.pk/blur.php?img=http://ali.shahab.pk/ali-shahab.jpg&x=60")
+    no-repeat;
+  background-size: cover;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  z-index: -1;
+}
+
+.profile-card header:after {
+  content: "";
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  background-image: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 1) 100%
+  );
+}
+
+.profile-card header img {
+  border-radius: 100%;
+  overflow: hidden;
+  width: 150px;
+  height: 150px;
+
+  /*border: 1px solid rgba(255,255,255,.5);*/
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.profile-card header h1 {
+  font-weight: 200;
+  font-size: 20px;
+  color: #444;
+  letter-spacing: 2px;
+  margin: 0;
+  padding-top: 5px;
+}
+
+.profile-card header h2 {
+  font-weight: 400;
+  font-size: 14px;
+  color: #666;
+  letter-spacing: 0.5px;
+  margin: 0;
+  padding: 0;
+}
+
+.profile-card .profile-bio {
+  padding: 0 30px;
+  text-align: center;
+  color: #888;
+}
+
+.profile-card .profile-social-links {
+  display: table;
+  width: 70%;
+  margin: 20px auto;
+}
+
+.profile-card .profile-social-links li {
+  display: table-cell;
+  width: 33.3333333333333333%;
+}
+
+.profile-card .profile-social-links li a {
+  display: block;
+  text-align: center;
+  padding: 10px;
+  margin: 0 10px;
+  border-radius: 100%;
+  -webkit-transition: box-shadow 0.2s;
+  -moz-transition: box-shadow 0.2s;
+  -o-transition: box-shadow 0.2s;
+  transition: box-shadow 0.2s;
+}
+.profile-card .profile-social-links li a:hover {
+  box-shadow: 0 1px 1.5px 0 rgba(0, 0, 0, 0.12), 0 1px 1px 0 rgba(0, 0, 0, 0.24);
+}
+
+.profile-card .profile-social-links li a:active {
+  box-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12),
+    0 2px 4px -1px rgba(0, 0, 0, 0.2);
+}
+
+.profile-card .profile-social-links li a img {
+  width: 100%;
+  display: block;
 }
