@@ -5,7 +5,7 @@
 
 ### BIOGENSCOPE (PROJECT)
 
-[![BioGenScope](https://raw.githubusercontent.com/Locality-PH/biology_frontend/main/src/assets/img/genbioscope.svg)](https://www.genbioscope.netlify.app)
+<img src="https://raw.githubusercontent.com/Locality-PH/biology_frontend/main/src/assets/img/genbioscope.svg"></img>
 
 
 GenBioScope purpose is a project based Web Application alternative for learning Biology lesson with Modular Support
